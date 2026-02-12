@@ -1,0 +1,149 @@
+{
+  "timestamp": "2026-02-12T18:02:11.818Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-12T18:02:10.999Z",
+    "activeFeatures": [
+      "focus-valley",
+      "ui"
+    ],
+    "primaryFeature": "focus-valley",
+    "features": {
+      "focus-valley": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-12T17:54:13.855Z",
+          "lastUpdated": "2026-02-12T18:02:10.999Z"
+        },
+        "lastFile": "E:\\프로젝트\\focus-valley\\src\\App.tsx"
+      },
+      "ui": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-12T18:01:07.896Z",
+          "lastUpdated": "2026-02-12T18:01:07.896Z"
+        },
+        "lastFile": "E:\\프로젝트\\focus-valley\\src\\components\\ui\\pixel-plants.tsx"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-02-12T17:17:55.937Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-02-12T18:02:10.999Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-12T17:54:13.855Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:54:27.834Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:54:34.970Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:00.531Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:20.108Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:33.862Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:36.694Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:41.406Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:57:48.140Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:58:19.464Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:59:50.864Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T17:59:57.243Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T18:00:13.935Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T18:01:07.896Z",
+        "feature": "ui",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T18:01:35.350Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-12T18:02:10.999Z",
+        "feature": "focus-valley",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}
