@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AlertTriangle } from "lucide-react";
 
 type ConfirmModalProps = {
     isOpen: boolean;
@@ -35,7 +36,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
                     onClick={onCancel}
                     role="dialog"
                     aria-modal="true"
@@ -43,25 +44,29 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     aria-describedby="confirm-message"
                 >
                     <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.95, opacity: 0 }}
+                        initial={{ scale: 0.9, opacity: 0, y: 10 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 5 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-card border border-border shadow-xl p-6 max-w-sm w-full mx-4 space-y-4"
+                        className="bg-card border-2 border-border shadow-[6px_6px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)] p-6 max-w-sm w-full mx-4 space-y-4"
                     >
-                        <h3 id="confirm-title" className="font-pixel text-sm text-primary">{title}</h3>
-                        <p id="confirm-message" className="text-sm text-muted-foreground">{message}</p>
-                        <div className="flex gap-3 justify-end">
+                        <div className="flex items-center gap-3">
+                            <AlertTriangle size={18} className="text-destructive" />
+                            <h3 id="confirm-title" className="font-pixel text-[11px] tracking-wider text-destructive">{title}</h3>
+                        </div>
+                        <p id="confirm-message" className="font-retro text-lg text-muted-foreground leading-snug">{message}</p>
+                        <div className="flex gap-3 justify-end pt-2">
                             <button
                                 ref={cancelRef}
                                 onClick={onCancel}
-                                className="px-6 py-2 font-pixel text-xs text-muted-foreground hover:text-foreground border border-border hover:bg-accent transition-all"
+                                className="px-6 py-2.5 font-pixel text-[10px] tracking-wider text-foreground border-2 border-border hover:bg-muted shadow-[3px_3px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.1)] active:shadow-none transition-all"
                             >
                                 {cancelLabel}
                             </button>
                             <button
                                 onClick={onConfirm}
-                                className="px-6 py-2 font-pixel text-xs bg-destructive text-destructive-foreground hover:translate-x-0.5 hover:translate-y-0.5 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none transition-all"
+                                className="px-6 py-2.5 font-pixel text-[10px] tracking-wider bg-destructive text-destructive-foreground border-2 border-destructive shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] active:shadow-none transition-all"
                             >
                                 {confirmLabel}
                             </button>

@@ -48,7 +48,8 @@ export default {
           sm: "calc(var(--radius) - 4px)",
         },
         fontFamily: {
-             pixel: ["'Press Start 2P'", "cursive"],
+          pixel: ["'Press Start 2P'", "cursive"],
+          retro: ["'VT323'", "monospace"],
         },
         keyframes: {
           "bounce-slow": {
@@ -64,11 +65,26 @@ export default {
             "0%, 100%": { opacity: "1" },
             "50%": { opacity: "0.7" },
           },
+          "glow-pulse": {
+            "0%, 100%": { textShadow: "0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1)" },
+            "50%": { textShadow: "0 0 30px hsl(var(--primary) / 0.5), 0 0 60px hsl(var(--primary) / 0.2)" },
+          },
+          "float-up": {
+            "0%": { opacity: "0", transform: "translateY(20px)" },
+            "100%": { opacity: "1", transform: "translateY(0)" },
+          },
+          shimmer: {
+            "0%": { backgroundPosition: "-200% 0" },
+            "100%": { backgroundPosition: "200% 0" },
+          },
         },
         animation: {
           "bounce-slow": "bounce-slow 2s ease-in-out infinite",
           sway: "sway 4s ease-in-out infinite",
           "pulse-slow": "pulse-slow 3s ease-in-out infinite",
+          "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+          "float-up": "float-up 0.6s ease-out both",
+          shimmer: "shimmer 3s ease-in-out infinite",
         },
       },
     },

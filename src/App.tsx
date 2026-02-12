@@ -7,11 +7,12 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import { cn } from "./lib/utils";
 import { playCompletionSound } from "./lib/notification-sound";
 import { TimerDisplay } from "./components/TimerDisplay";
+import { Fireflies } from "./components/Fireflies";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { HistoryPanel } from "./components/HistoryPanel";
 import { getPlantComponent } from "./components/ui/pixel-plants";
-import { Trees, History, Moon, Sun } from "lucide-react";
+import { TreePine, ScrollText, Moon, Sun, ChevronDown, ChevronUp } from "lucide-react";
 
 const AudioMixer = lazy(() =>
   import("./components/AudioMixer").then((m) => ({ default: m.AudioMixer }))
@@ -92,79 +93,157 @@ function App() {
   };
 
   const PlantComponent = getPlantComponent(garden.type, garden.stage);
+  const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
 
   return (
-    <div className={cn(
-      "min-h-screen bg-background text-foreground flex flex-col items-center justify-between p-6 overflow-hidden transition-colors duration-500",
-      screenFlash && "animate-pulse"
-    )}>
-      {screenFlash && (
-        <div className="fixed inset-0 bg-primary/10 z-40 pointer-events-none animate-pulse" />
-      )}
+    <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700">
+      {/* Sky Gradient Background */}
+      <div
+        className="fixed inset-0 z-0 transition-all duration-1000"
+        style={{
+          background: `linear-gradient(180deg, var(--sky-from) 0%, var(--sky-via) 50%, var(--sky-to) 100%)`,
+        }}
+      />
+
+      {/* Fireflies */}
+      <Fireflies />
+
+      {/* Screen Flash */}
+      <AnimatePresence>
+        {screenFlash && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.15 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-primary z-40 pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Header */}
-      <header className="w-full max-w-4xl flex justify-between items-center z-10">
-        <div className="flex items-center gap-2 font-pixel text-xl tracking-tighter">
-          <Trees className="text-primary" />
-          <span>FOCUS VALLEY</span>
-        </div>
-        <div className="flex items-center gap-2">
+      <header className="w-full max-w-2xl flex justify-between items-center z-10 px-6 pt-6 pb-4">
+        <motion.div
+          className="flex items-center gap-2.5"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <TreePine size={22} className="text-primary" />
+          <span className="font-pixel text-sm tracking-wider text-foreground">
+            FOCUS VALLEY
+          </span>
+        </motion.div>
+        <motion.div
+          className="flex items-center gap-1.5"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <button
             onClick={toggleDark}
-            className="p-2 border border-border rounded-lg hover:bg-accent transition-colors"
+            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
             aria-label="Toggle dark mode"
           >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <button
             onClick={() => setShowHistory(true)}
-            className="p-2 border border-border rounded-lg hover:bg-accent transition-colors"
+            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
             aria-label="View history"
           >
-            <History size={20} />
+            <ScrollText size={16} />
           </button>
-        </div>
+        </motion.div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-4xl relative">
-        {/* The Garden Stage */}
-        <div className="relative w-full h-64 md:h-96 flex items-end justify-center mb-12">
-          <div className="absolute bottom-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-
-          {/* Animated Plant */}
-          <button
-            className="mb-4 cursor-pointer bg-transparent border-none p-0"
-            onClick={handlePlantClick}
-            aria-label={
-              garden.stage === "TREE" || garden.stage === "FLOWER"
-                ? "Harvest your plant"
-                : garden.stage === "DEAD"
-                ? "Plant a new seed"
-                : `${garden.type} plant - ${garden.stage} stage`
-            }
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`${garden.type}-${garden.stage}`}
-                initial={{ scale: 0.5, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.8, opacity: 0, y: -10 }}
-                transition={{ type: "spring", damping: 15, stiffness: 200 }}
-                whileHover={{ scale: 1.15 }}
-              >
-                <PlantComponent />
-              </motion.div>
-            </AnimatePresence>
-          </button>
-
-          <div className="absolute -top-10 font-mono text-xs text-muted-foreground uppercase tracking-widest">
-            {garden.type} - {garden.stage}
+      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl relative z-10 px-6">
+        {/* Garden Stage */}
+        <motion.div
+          className="relative w-full flex flex-col items-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {/* Stage Label */}
+          <div className="font-retro text-sm text-muted-foreground tracking-widest uppercase mb-4">
+            {garden.type} &middot; {garden.stage}
           </div>
-        </div>
+
+          {/* Plant Area */}
+          <div className="relative h-48 md:h-64 flex items-end justify-center w-full">
+            {/* Plant Glow */}
+            {(garden.stage === "TREE" || garden.stage === "FLOWER") && (
+              <div className="absolute bottom-8 w-32 h-32 bg-primary/15 rounded-full blur-3xl animate-pulse-slow" />
+            )}
+
+            {/* Animated Plant */}
+            <button
+              className={cn(
+                "mb-2 bg-transparent border-none p-0 transition-all",
+                canInteract ? "cursor-pointer" : "cursor-default"
+              )}
+              onClick={handlePlantClick}
+              aria-label={
+                garden.stage === "TREE" || garden.stage === "FLOWER"
+                  ? "Harvest your plant"
+                  : garden.stage === "DEAD"
+                  ? "Plant a new seed"
+                  : `${garden.type} plant - ${garden.stage} stage`
+              }
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${garden.type}-${garden.stage}`}
+                  initial={{ scale: 0.5, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.8, opacity: 0, y: -10 }}
+                  transition={{ type: "spring", damping: 15, stiffness: 200 }}
+                  whileHover={canInteract ? { scale: 1.12, y: -4 } : {}}
+                >
+                  <PlantComponent />
+                </motion.div>
+              </AnimatePresence>
+            </button>
+          </div>
+
+          {/* Ground Line */}
+          <div className="w-full max-w-xs relative">
+            <div
+              className="h-2 w-full"
+              style={{
+                background: `linear-gradient(90deg, transparent 0%, var(--ground-from) 20%, var(--ground-to) 80%, transparent 100%)`,
+              }}
+            />
+            <div
+              className="h-1 w-3/4 mx-auto"
+              style={{
+                background: `linear-gradient(90deg, transparent 0%, var(--ground-edge) 50%, transparent 100%)`,
+                opacity: 0.5,
+              }}
+            />
+          </div>
+
+          {/* Harvest hint */}
+          {canInteract && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="font-retro text-sm text-primary/70 mt-3 tracking-wide"
+            >
+              {garden.stage === "DEAD" ? "Click to plant a new seed" : "Click to harvest!"}
+            </motion.div>
+          )}
+        </motion.div>
 
         {/* Timer Control */}
-        <div className="z-10 w-full">
+        <motion.div
+          className="z-10 w-full"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           <TimerDisplay
             timeLeft={timer.timeLeft}
             isRunning={timer.isRunning}
@@ -177,38 +256,55 @@ function App() {
             onSwitchMode={timer.switchMode}
             onSkip={timer.advanceToNextMode}
           />
-        </div>
+        </motion.div>
       </main>
 
-      {/* Footer Controls */}
-      <footer className="w-full max-w-md z-10">
-        <button
+      {/* Footer - Soundscape */}
+      <footer className="w-full max-w-md z-10 px-6 pb-6 pt-4">
+        <motion.button
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
           aria-label={showMixer ? "Hide soundscape mixer" : "Open soundscape mixer"}
-          className="w-full py-4 text-center font-pixel text-xs text-muted-foreground hover:text-primary transition-colors flex flex-col items-center gap-2"
+          className="w-full py-3 flex items-center justify-center gap-2 font-pixel text-[10px] tracking-wider text-muted-foreground hover:text-primary transition-colors group"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
         >
-          <div className="w-8 h-1 bg-border rounded-full" />
-          {showMixer ? "HIDE SOUNDSCAPE" : "OPEN SOUNDSCAPE"}
-        </button>
-
-        <div className={cn(
-          "overflow-hidden transition-all duration-500 ease-in-out",
-          showMixer ? "max-h-96 opacity-100 mb-8" : "max-h-0 opacity-0"
-        )}>
-          {showMixer && (
-            <Suspense fallback={<div className="h-64 flex items-center justify-center text-muted-foreground font-pixel text-xs">Loading...</div>}>
-              <AudioMixer mixer={mixer} />
-            </Suspense>
+          <div className="h-px w-8 bg-border group-hover:bg-primary/30 transition-colors" />
+          {showMixer ? (
+            <>
+              HIDE SOUNDSCAPE <ChevronDown size={12} />
+            </>
+          ) : (
+            <>
+              SOUNDSCAPE <ChevronUp size={12} />
+            </>
           )}
-        </div>
-      </footer>
+          <div className="h-px w-8 bg-border group-hover:bg-primary/30 transition-colors" />
+        </motion.button>
 
-      {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none opacity-20 z-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
+        <AnimatePresence>
+          {showMixer && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="pb-6 flex justify-center">
+                <Suspense fallback={
+                  <div className="h-48 w-full max-w-md flex items-center justify-center text-muted-foreground font-retro">
+                    Loading...
+                  </div>
+                }>
+                  <AudioMixer mixer={mixer} />
+                </Suspense>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </footer>
 
       {/* Overlays */}
       <Toast message={toast.message} isVisible={toast.visible} onClose={closeToast} />
