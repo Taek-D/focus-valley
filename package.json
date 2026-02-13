@@ -7,9 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "video:preview": "npx remotion studio remotion/index.ts",
+    "video:render": "npx remotion render remotion/index.ts FocusValleyIntro out/intro.mp4"
   },
   "dependencies": {
+    "@remotion/cli": "^4.0.422",
+    "@remotion/player": "^4.0.422",
     "@sentry/react": "^10.38.0",
     "@supabase/supabase-js": "^2.95.3",
     "@tailwindcss/vite": "^4.1.18",
@@ -19,6 +23,7 @@
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "remotion": "^4.0.422",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^5.0.11"

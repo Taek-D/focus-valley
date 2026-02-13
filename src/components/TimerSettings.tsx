@@ -1,23 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, RotateCcw, Clock, Coffee, Sunset, Target, SkipForward } from "lucide-react";
+import { X, RotateCcw, Clock, Coffee, Sunset, Target, SkipForward, Globe } from "lucide-react";
 import { useTimerSettings, LIMITS, type TimerDurations } from "../hooks/useTimerSettings";
+import { useTranslation, useI18n, LOCALE_LABELS, type TranslationKey, type Locale } from "../lib/i18n";
 
 type TimerSettingsProps = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-const FIELDS: { key: keyof TimerDurations; label: string; icon: React.ReactNode }[] = [
-    { key: "focus", label: "Focus", icon: <Clock size={14} /> },
-    { key: "shortBreak", label: "Short Break", icon: <Coffee size={14} /> },
-    { key: "longBreak", label: "Long Break", icon: <Sunset size={14} /> },
+const FIELDS: { key: keyof TimerDurations; labelKey: TranslationKey; icon: React.ReactNode }[] = [
+    { key: "focus", labelKey: "timer.focus", icon: <Clock size={14} /> },
+    { key: "shortBreak", labelKey: "timer.shortBreak", icon: <Coffee size={14} /> },
+    { key: "longBreak", labelKey: "timer.longBreak", icon: <Sunset size={14} /> },
 ];
 
 export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose }) => {
     const { focus, shortBreak, longBreak, dailyGoal, autoAdvance, setDuration, setDailyGoal, setAutoAdvance, resetDefaults } = useTimerSettings();
     const values: TimerDurations = { focus, shortBreak, longBreak };
     const closeRef = useRef<HTMLButtonElement>(null);
+    const { t } = useTranslation();
+    const { locale, setLocale } = useI18n();
 
     useEffect(() => {
         if (!isOpen) return;
@@ -53,7 +56,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between">
-                            <h3 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground">Settings</h3>
+                            <h3 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground">{t("settings.settings")}</h3>
                             <button
                                 ref={closeRef}
                                 onClick={onClose}
@@ -66,8 +69,9 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
 
                         {/* Duration Fields */}
                         <div className="space-y-4">
-                            {FIELDS.map(({ key, label, icon }) => {
+                            {FIELDS.map(({ key, labelKey, icon }) => {
                                 const { min, max } = LIMITS[key];
+                                const label = t(labelKey);
                                 return (
                                     <div key={key} className="space-y-2">
                                         <div className="flex items-center gap-2 text-muted-foreground/60">
@@ -85,7 +89,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                             </button>
                                             <div className="flex-1 text-center">
                                                 <span className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>{values[key]}</span>
-                                                <span className="font-body text-[10px] text-muted-foreground/50 ml-1">min</span>
+                                                <span className="font-body text-[10px] text-muted-foreground/50 ml-1">{t("settings.minutes")}</span>
                                             </div>
                                             <button
                                                 onClick={() => setDuration(key, values[key] + 1)}
@@ -97,7 +101,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                             </button>
                                         </div>
                                         <div className="font-body text-[10px] text-muted-foreground/30 text-center">
-                                            {min} – {max} min
+                                            {min} – {max} {t("settings.minutes")}
                                         </div>
                                     </div>
                                 );
@@ -108,32 +112,32 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         <div className="space-y-2">
                             <div className="flex items-center gap-2 text-muted-foreground/60">
                                 <Target size={14} />
-                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">Daily Goal</span>
+                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">{t("settings.dailyGoal")}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={() => setDailyGoal(dailyGoal - 10)}
                                     disabled={dailyGoal <= LIMITS.dailyGoal.min}
-                                    aria-label="Decrease daily goal"
+                                    aria-label={`Decrease ${t("settings.dailyGoal")}`}
                                     className="w-10 h-10 font-display text-base rounded-xl border border-foreground/10 text-foreground disabled:opacity-20 hover:border-foreground/20 transition-all flex items-center justify-center"
                                 >
                                     -
                                 </button>
                                 <div className="flex-1 text-center">
                                     <span className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>{dailyGoal}</span>
-                                    <span className="font-body text-[10px] text-muted-foreground/50 ml-1">min</span>
+                                    <span className="font-body text-[10px] text-muted-foreground/50 ml-1">{t("settings.minutes")}</span>
                                 </div>
                                 <button
                                     onClick={() => setDailyGoal(dailyGoal + 10)}
                                     disabled={dailyGoal >= LIMITS.dailyGoal.max}
-                                    aria-label="Increase daily goal"
+                                    aria-label={`Increase ${t("settings.dailyGoal")}`}
                                     className="w-10 h-10 font-display text-base rounded-xl border border-foreground/10 text-foreground disabled:opacity-20 hover:border-foreground/20 transition-all flex items-center justify-center"
                                 >
                                     +
                                 </button>
                             </div>
                             <div className="font-body text-[10px] text-muted-foreground/30 text-center">
-                                {LIMITS.dailyGoal.min} – {LIMITS.dailyGoal.max} min
+                                {LIMITS.dailyGoal.min} – {LIMITS.dailyGoal.max} {t("settings.minutes")}
                             </div>
                         </div>
 
@@ -141,7 +145,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-2 text-muted-foreground/60">
                                 <SkipForward size={14} />
-                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">Auto-advance</span>
+                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">{t("settings.autoAdvance")}</span>
                             </div>
                             <button
                                 onClick={() => setAutoAdvance(!autoAdvance)}
@@ -156,13 +160,36 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                             </button>
                         </div>
 
+                        {/* Language */}
+                        <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center gap-2 text-muted-foreground/60">
+                                <Globe size={14} />
+                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">{t("settings.language")}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                {(["en", "ko", "ja"] as const).map((loc) => (
+                                    <button
+                                        key={loc}
+                                        onClick={() => setLocale(loc as Locale)}
+                                        className={`px-2.5 py-1 rounded-lg font-body text-[10px] transition-all ${
+                                            locale === loc
+                                                ? "bg-foreground/10 text-foreground font-medium"
+                                                : "text-muted-foreground/40 hover:text-muted-foreground/60"
+                                        }`}
+                                    >
+                                        {LOCALE_LABELS[loc]}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
                         {/* Reset */}
                         <button
                             onClick={resetDefaults}
                             className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-wide text-muted-foreground/50 hover:text-foreground rounded-xl border border-foreground/5 hover:border-foreground/15 transition-all"
                         >
                             <RotateCcw size={10} />
-                            Reset to Defaults
+                            {t("settings.resetDefaults")}
                         </button>
                     </motion.div>
                 </motion.div>

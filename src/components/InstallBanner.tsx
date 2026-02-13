@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, X } from "lucide-react";
+import { useTranslation } from "../lib/i18n";
 
 type InstallBannerProps = {
     canInstall: boolean;
@@ -13,6 +14,7 @@ export const InstallBanner = memo(function InstallBanner({
     onInstall,
     onDismiss,
 }: InstallBannerProps) {
+    const { t } = useTranslation();
     return (
         <AnimatePresence>
             {canInstall && (
@@ -26,13 +28,13 @@ export const InstallBanner = memo(function InstallBanner({
                     <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-foreground/[0.06] backdrop-blur-xl border border-foreground/[0.06] shadow-lg max-w-sm w-full">
                         <Download size={14} className="text-foreground/50 shrink-0" />
                         <span className="font-body text-[11px] text-foreground/60 flex-1">
-                            Install Focus Valley for quick access
+                            {t("install.message")}
                         </span>
                         <button
                             onClick={onInstall}
                             className="px-3 py-1.5 rounded-lg bg-foreground/10 text-foreground font-body text-[10px] font-medium tracking-wide uppercase hover:bg-foreground/15 transition-colors shrink-0"
                         >
-                            Install
+                            {t("install.button")}
                         </button>
                         <button
                             onClick={onDismiss}

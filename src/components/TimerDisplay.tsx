@@ -3,8 +3,14 @@ import { motion } from "framer-motion";
 import { Play, Pause, RotateCcw, SkipForward } from "lucide-react";
 import { cn } from "../lib/utils";
 import { ProgressRing } from "./ProgressRing";
-import { MODE_CONFIG } from "../lib/constants";
+import { useTranslation, type TranslationKey } from "../lib/i18n";
 import type { TimerMode } from "../hooks/useTimer";
+
+const MODE_KEYS: Record<TimerMode, { label: TranslationKey; short: TranslationKey }> = {
+    FOCUS: { label: "timer.focus", short: "timer.focus" },
+    SHORT_BREAK: { label: "timer.shortBreak", short: "timer.shortBreakShort" },
+    LONG_BREAK: { label: "timer.longBreak", short: "timer.longBreakShort" },
+};
 
 type TimerDisplayProps = {
     timeLeft: number;
@@ -24,6 +30,7 @@ export const TimerDisplay = memo(function TimerDisplay({
     timeLeft, totalDuration, isRunning, isCompleted, mode, focusCount,
     onStart, onPause, onReset, onSwitchMode, onSkip,
 }: TimerDisplayProps) {
+    const { t } = useTranslation();
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     const pad = (d: number) => d.toString().padStart(2, "0");
@@ -39,7 +46,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                         onClick={() => !isRunning && onSwitchMode(m)}
                         disabled={isRunning}
                         aria-pressed={mode === m}
-                        aria-label={`Switch to ${MODE_CONFIG[m].label} mode`}
+                        aria-label={`Switch to ${t(MODE_KEYS[m].label)} mode`}
                         className={cn(
                             "relative px-5 py-2 font-body text-[10px] tracking-[0.08em] uppercase rounded-full transition-all",
                             mode === m
@@ -54,8 +61,8 @@ export const TimerDisplay = memo(function TimerDisplay({
                                 transition={{ type: "spring", stiffness: 400, damping: 35 }}
                             />
                         )}
-                        <span className="relative z-10 hidden sm:inline">{MODE_CONFIG[m].label}</span>
-                        <span className="relative z-10 sm:hidden">{MODE_CONFIG[m].short}</span>
+                        <span className="relative z-10 hidden sm:inline">{t(MODE_KEYS[m].label)}</span>
+                        <span className="relative z-10 sm:hidden">{t(MODE_KEYS[m].short)}</span>
                     </button>
                 ))}
             </div>
@@ -119,24 +126,24 @@ export const TimerDisplay = memo(function TimerDisplay({
                         animate={{ scale: 1, opacity: 1 }}
                         className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all"
                     >
-                        <SkipForward size={13} /> Next
+                        <SkipForward size={13} /> {t("timer.next")}
                     </motion.button>
                 ) : !isRunning ? (
                     <button
                         onClick={onStart}
-                        aria-label="Start timer"
+                        aria-label={t("timer.start")}
                         className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_2px_16px_hsl(var(--foreground)/0.08)]"
                     >
-                        <Play size={13} fill="currentColor" /> Start
+                        <Play size={13} fill="currentColor" /> {t("timer.start")}
                     </button>
                 ) : (
                     <>
                         <button
                             onClick={onPause}
-                            aria-label="Pause timer"
+                            aria-label={t("timer.pause")}
                             className="flex items-center justify-center gap-2.5 w-36 py-3.5 border border-foreground/12 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/25 active:scale-[0.98] transition-all"
                         >
-                            <Pause size={13} /> Pause
+                            <Pause size={13} /> {t("timer.pause")}
                         </button>
                         <motion.button
                             onClick={onReset}

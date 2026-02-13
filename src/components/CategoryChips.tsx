@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useCategories } from "@/hooks/useCategories";
 import { trackCategoryAdded, trackCategoryRemoved } from "@/lib/analytics";
+import { useTranslation, type TranslationKey } from "@/lib/i18n";
+
+const PRESET_IDS = new Set(["study", "code", "read", "work", "design", "exercise"]);
 
 const PRESET_COLORS = [
     "220 70% 55%",
@@ -27,6 +30,7 @@ const LONG_PRESS_MOVE_TOLERANCE = 5;
 
 export const CategoryChips: React.FC = React.memo(() => {
     const { categories, activeCategoryId, setActiveCategory, addCategory, removeCategory, reorderCategories } = useCategories();
+    const { t } = useTranslation();
     const [showAddModal, setShowAddModal] = useState(false);
     const [newLabel, setNewLabel] = useState("");
     const [newEmoji, setNewEmoji] = useState(PRESET_EMOJIS[0]);
@@ -186,7 +190,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                     `}
                                 >
                                     <span className="text-sm leading-none">{cat.emoji}</span>
-                                    <span>{cat.label}</span>
+                                    <span>{PRESET_IDS.has(cat.id) ? t(`category.${cat.id}` as TranslationKey) : cat.label}</span>
                                     {isActive && (
                                         <motion.div
                                             layoutId="category-indicator"
@@ -215,7 +219,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                     <button
                         onClick={() => setShowAddModal(true)}
                         className="flex items-center justify-center w-7 h-7 rounded-full text-muted-foreground/30 hover:text-muted-foreground/60 hover:bg-foreground/5 transition-all"
-                        aria-label="Add custom category"
+                        aria-label={t("category.addCustom")}
                     >
                         <Plus size={13} />
                     </button>
@@ -241,14 +245,14 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[min(320px,90vw)] glass-strong rounded-3xl p-5 shadow-cozy-lg"
                             >
                                 <h3 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground mb-4">
-                                    New Category
+                                    {t("category.newCategory")}
                                 </h3>
 
                                 <input
                                     type="text"
                                     value={newLabel}
                                     onChange={(e) => setNewLabel(e.target.value)}
-                                    placeholder="Category name"
+                                    placeholder={t("category.categoryName")}
                                     maxLength={20}
                                     className="w-full bg-foreground/5 rounded-xl px-3 py-2 font-body text-xs text-foreground placeholder:text-muted-foreground/30 outline-none focus:ring-1 focus:ring-foreground/10 mb-3"
                                     autoFocus
@@ -256,7 +260,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 />
 
                                 <div className="mb-3">
-                                    <div className="font-body text-[9px] text-muted-foreground/40 mb-1.5">Emoji</div>
+                                    <div className="font-body text-[9px] text-muted-foreground/40 mb-1.5">{t("category.emoji")}</div>
                                     <div className="flex gap-1.5 flex-wrap">
                                         {PRESET_EMOJIS.map((e) => (
                                             <button
@@ -273,7 +277,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 </div>
 
                                 <div className="mb-4">
-                                    <div className="font-body text-[9px] text-muted-foreground/40 mb-1.5">Color</div>
+                                    <div className="font-body text-[9px] text-muted-foreground/40 mb-1.5">{t("category.color")}</div>
                                     <div className="flex gap-1.5 flex-wrap">
                                         {PRESET_COLORS.map((c) => (
                                             <button
@@ -294,14 +298,14 @@ export const CategoryChips: React.FC = React.memo(() => {
                                         onClick={() => setShowAddModal(false)}
                                         className="flex-1 py-2 rounded-xl font-body text-[11px] text-muted-foreground/50 hover:bg-foreground/5 transition-all"
                                     >
-                                        Cancel
+                                        {t("category.cancel")}
                                     </button>
                                     <button
                                         onClick={handleAdd}
                                         disabled={!newLabel.trim()}
                                         className="flex-1 py-2 rounded-xl font-body text-[11px] font-medium bg-foreground/8 text-foreground hover:bg-foreground/12 transition-all disabled:opacity-30"
                                     >
-                                        Add
+                                        {t("category.add")}
                                     </button>
                                 </div>
                             </motion.div>

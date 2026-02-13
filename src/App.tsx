@@ -22,6 +22,7 @@ import {
   trackSeedPlanted,
 } from "./lib/analytics";
 import { syncWithCloud } from "./lib/sync";
+import { useTranslation } from "./lib/i18n";
 import { TimerDisplay } from "./components/TimerDisplay";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
@@ -33,6 +34,7 @@ import { AppHeader } from "./components/AppHeader";
 import { PlantGarden } from "./components/PlantGarden";
 import { AuthModal } from "./components/AuthModal";
 import { InstallBanner } from "./components/InstallBanner";
+import { Onboarding, useOnboarding } from "./components/Onboarding";
 import { useAuth } from "./hooks/useAuth";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { Volume2, ChevronDown, ChevronUp, Heart } from "lucide-react";
@@ -79,6 +81,8 @@ function App() {
   const { advanceToNextMode } = timer;
   const { user, initialize: initAuth } = useAuth();
   const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
+  const { showOnboarding, completeOnboarding } = useOnboarding();
+  const { t } = useTranslation();
 
   const [showMixer, setShowMixer] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
@@ -152,19 +156,19 @@ function App() {
 
       if (timer.mode === "FOCUS") {
         addFocusMinutes(timer.focusDuration, activeCategoryId);
-        showToast("Focus complete! Your plant has grown.");
-        notify("Focus Valley", "Focus session complete! Your plant has grown.");
-        setConfettiTrigger((t) => t + 1);
+        showToast(t("toast.focusComplete"));
+        notify("Focus Valley", t("notification.focusComplete"));
+        setConfettiTrigger((c) => c + 1);
         trackSessionComplete("FOCUS", timer.focusDuration, activeCategoryId);
         // Background cloud sync after focus completion
         if (user) setTimeout(() => syncWithCloud(user), 1000);
       } else {
-        showToast("Break is over! Ready to focus?");
-        notify("Focus Valley", "Break is over! Time to focus.");
+        showToast(t("toast.breakOver"));
+        notify("Focus Valley", t("notification.breakOver"));
         trackSessionComplete(timer.mode, 0);
       }
     });
-  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId]);
+  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId, t, user]);
 
   // Auto-advance to next mode after completion
   useEffect(() => {
@@ -180,9 +184,9 @@ function App() {
     const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
     clearPendingUnlock();
     if (unlock) {
-      queueMicrotask(() => showToast(`New plant unlocked: ${unlock.label}!`));
+      queueMicrotask(() => showToast(`${t("toast.unlocked")} ${unlock.label}!`));
     }
-  }, [garden.pendingUnlock, clearPendingUnlock, showToast]);
+  }, [garden.pendingUnlock, clearPendingUnlock, showToast, t]);
 
   const handleStart = useCallback(() => {
     notification.requestPermission();
@@ -205,7 +209,7 @@ function App() {
     garden.killPlant();
     timer.reset();
     setConfirmModal(false);
-    showToast("Plant withered...");
+    showToast(t("toast.plantDied"));
   };
 
   const handlePlantClick = () => {
@@ -213,11 +217,11 @@ function App() {
       trackPlantHarvested(garden.type);
       garden.harvest();
       timer.reset();
-      showToast("Harvested! +1 to your garden");
+      showToast(t("toast.harvested"));
     } else if (garden.stage === "DEAD") {
       trackSeedPlanted(garden.type);
       garden.plantSeed();
-      showToast("New seed planted!");
+      showToast(t("toast.newSeed"));
     }
   };
 
@@ -362,14 +366,14 @@ function App() {
         <motion.button
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
-          aria-label={showMixer ? "Hide ambient sounds" : "Open ambient sounds"}
+          aria-label={showMixer ? t("footer.hideSounds") : t("footer.openSounds")}
           className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
           <Volume2 size={11} className="opacity-50" />
-          Sounds
+          {t("footer.sounds")}
           {showMixer ? <ChevronDown size={11} /> : <ChevronUp size={11} />}
         </motion.button>
 
@@ -387,7 +391,7 @@ function App() {
                   <div className="h-48 w-full max-w-lg flex items-center justify-center">
                     <div className="flex flex-col items-center gap-2">
                       <div className="w-5 h-5 rounded-full border-2 border-foreground/10 border-t-foreground/30 animate-spin" />
-                      <span className="font-body text-[10px] tracking-[0.1em] uppercase text-muted-foreground/30">Loading sounds</span>
+                      <span className="font-body text-[10px] tracking-[0.1em] uppercase text-muted-foreground/30">{t("footer.loadingSounds")}</span>
                     </div>
                   </div>
                 }>
@@ -400,11 +404,11 @@ function App() {
 
         <div className="flex items-center justify-center gap-3 py-2">
           <a href="/privacy.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
-            Privacy
+            {t("footer.privacy")}
           </a>
           <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a href="/terms.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
-            Terms
+            {t("footer.terms")}
           </a>
           <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a
@@ -414,7 +418,7 @@ function App() {
             className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-pink-400/60 transition-colors"
           >
             <Heart size={8} />
-            Support
+            {t("footer.support")}
           </a>
         </div>
       </footer>
@@ -424,10 +428,10 @@ function App() {
 
       <ConfirmModal
         isOpen={confirmModal}
-        title="Give up?"
-        message="Your plant will wither and die. Are you sure?"
-        confirmLabel="Give Up"
-        cancelLabel="Keep Going"
+        title={t("confirm.giveUpTitle")}
+        message={t("confirm.giveUpMessage")}
+        confirmLabel={t("confirm.giveUp")}
+        cancelLabel={t("confirm.keepGoing")}
         onConfirm={confirmGiveUp}
         onCancel={() => setConfirmModal(false)}
       />
@@ -484,6 +488,8 @@ function App() {
       />
 
       <Confetti trigger={confettiTrigger} />
+
+      <Onboarding isOpen={showOnboarding} onComplete={completeOnboarding} />
     </div>
   );
 }

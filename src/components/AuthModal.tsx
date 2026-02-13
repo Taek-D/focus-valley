@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, LogOut, User, RefreshCw, Cloud, CloudOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { syncWithCloud, getLastSyncTime } from "@/lib/sync";
+import { useTranslation } from "@/lib/i18n";
 import { BottomSheet } from "./ui/BottomSheet";
 
 type AuthModalProps = {
@@ -12,6 +13,7 @@ type AuthModalProps = {
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const { user, loading, error, signUpWithEmail, signInWithEmail, signInWithGoogle, signOut, clearError } = useAuth();
+    const { t } = useTranslation();
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -72,30 +74,29 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         switch (result) {
             case "pushed":
-                setSyncStatus("Data uploaded to cloud");
+                setSyncStatus(t("sync.pushed"));
                 break;
             case "pulled":
-                setSyncStatus("Data downloaded from cloud");
-                // Reload to pick up new localStorage data
+                setSyncStatus(t("sync.pulled"));
                 setTimeout(() => window.location.reload(), 1500);
                 break;
             case "merged":
-                setSyncStatus("Data synced across devices");
+                setSyncStatus(t("sync.merged"));
                 setTimeout(() => window.location.reload(), 1500);
                 break;
             case "error":
-                setSyncStatus("Sync failed. Please try again.");
+                setSyncStatus(t("sync.failed"));
                 break;
         }
-    }, [user, syncing]);
+    }, [user, syncing, t]);
 
     const formatLastSync = (iso: string | null) => {
-        if (!iso) return "Never";
+        if (!iso) return t("sync.never");
         const d = new Date(iso);
         const now = new Date();
         const diffMs = now.getTime() - d.getTime();
         const diffMin = Math.floor(diffMs / 60000);
-        if (diffMin < 1) return "Just now";
+        if (diffMin < 1) return t("sync.justNow");
         if (diffMin < 60) return `${diffMin}m ago`;
         const diffH = Math.floor(diffMin / 60);
         if (diffH < 24) return `${diffH}h ago`;
@@ -108,7 +109,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
 
         return (
-            <BottomSheet isOpen={isOpen} onClose={onClose} title="Account">
+            <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.account")}>
                 <div className="px-5 pb-8 space-y-5">
                     {/* Profile */}
                     <div className="flex items-center gap-3 p-4 rounded-2xl border border-foreground/5">
@@ -140,7 +141,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <div className="flex items-center gap-2">
                                 <Cloud size={13} className="text-foreground/40" />
                                 <span className="font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/40">
-                                    Cloud Sync
+                                    {t("sync.title")}
                                 </span>
                             </div>
                             <span className="font-body text-[10px] text-muted-foreground/25">
@@ -148,7 +149,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             </span>
                         </div>
                         <p className="font-body text-[11px] text-foreground/40 leading-relaxed">
-                            Sync your garden, stats, settings, and todos across devices.
+                            {t("sync.description")}
                         </p>
                         <button
                             onClick={handleSync}
@@ -156,7 +157,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] font-body text-[11px] font-medium text-foreground/60 hover:bg-foreground/[0.07] hover:text-foreground transition-all disabled:opacity-30"
                         >
                             <RefreshCw size={12} className={syncing ? "animate-spin" : ""} />
-                            {syncing ? "Syncing..." : "Sync Now"}
+                            {syncing ? t("sync.syncing") : t("sync.now")}
                         </button>
                         <AnimatePresence>
                             {syncStatus && (
@@ -179,7 +180,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border border-foreground/8 font-body text-[11px] font-medium text-muted-foreground/50 hover:text-foreground hover:border-foreground/15 transition-all disabled:opacity-30"
                     >
                         <LogOut size={13} />
-                        Sign Out
+                        {t("auth.signOut")}
                     </button>
                 </div>
             </BottomSheet>
@@ -188,7 +189,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     // Auth form
     return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title={mode === "login" ? "Sign In" : "Create Account"}>
+        <BottomSheet isOpen={isOpen} onClose={onClose} title={mode === "login" ? t("auth.signIn") : t("auth.createAccount")}>
             <div className="px-5 pb-8 space-y-4">
                 {/* Signup success message */}
                 <AnimatePresence>
@@ -200,7 +201,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20"
                         >
                             <p className="font-body text-[11px] text-emerald-400/80 text-center">
-                                Check your email to confirm your account!
+                                {t("auth.checkEmail")}
                             </p>
                         </motion.div>
                     )}
@@ -224,7 +225,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-foreground/[0.02]">
                     <CloudOff size={11} className="text-muted-foreground/25 shrink-0" />
                     <p className="font-body text-[10px] text-muted-foreground/30 leading-relaxed">
-                        Sign in to sync your garden and progress across devices
+                        {t("auth.syncInfo")}
                     </p>
                 </div>
 
@@ -240,13 +241,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                     </svg>
-                    Continue with Google
+                    {t("auth.continueGoogle")}
                 </button>
 
                 {/* Divider */}
                 <div className="flex items-center gap-3">
                     <div className="flex-1 h-px bg-foreground/5" />
-                    <span className="font-body text-[9px] text-muted-foreground/25 uppercase tracking-wider">or</span>
+                    <span className="font-body text-[9px] text-muted-foreground/25 uppercase tracking-wider">{t("auth.or")}</span>
                     <div className="flex-1 h-px bg-foreground/5" />
                 </div>
 
@@ -258,7 +259,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
+                            placeholder={t("auth.email")}
                             required
                             autoComplete="email"
                             className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
@@ -271,7 +272,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
+                            placeholder={t("auth.password")}
                             required
                             minLength={6}
                             autoComplete={mode === "signup" ? "new-password" : "current-password"}
@@ -287,21 +288,21 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         {loading ? (
                             <div className="w-4 h-4 mx-auto rounded-full border-2 border-foreground/20 border-t-foreground/60 animate-spin" />
                         ) : mode === "login" ? (
-                            "Sign In"
+                            t("auth.signIn")
                         ) : (
-                            "Create Account"
+                            t("auth.createAccount")
                         )}
                     </button>
                 </form>
 
                 {/* Switch mode */}
                 <p className="text-center font-body text-[11px] text-muted-foreground/40">
-                    {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+                    {mode === "login" ? t("auth.noAccount") : t("auth.hasAccount")}{" "}
                     <button
                         onClick={switchMode}
                         className="text-foreground/60 hover:text-foreground font-medium transition-colors"
                     >
-                        {mode === "login" ? "Sign up" : "Sign in"}
+                        {mode === "login" ? t("auth.signUp") : t("auth.signIn")}
                     </button>
                 </p>
             </div>

@@ -37,3 +37,6 @@ Focus-Valley-OAuth.txt
 
 # Playwright MCP
 .playwright-mcp/
+
+# Remotion output
+out/

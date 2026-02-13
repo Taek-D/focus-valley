@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Moon, Sun, Leaf, Settings, Sprout, Flame, ListTodo, UserCircle } from "lucide-react";
+import { useTranslation } from "../lib/i18n";
 import type { User } from "@supabase/supabase-js";
 
 type AppHeaderProps = {
@@ -19,6 +20,7 @@ export const AppHeader = memo(function AppHeader({
     isDark, currentStreak, user,
     onToggleDark, onShowSettings, onShowTodo, onShowGarden, onShowHistory, onShowAuth,
 }: AppHeaderProps) {
+    const { t } = useTranslation();
     return (
         <header className="w-full max-w-lg flex justify-between items-center z-10 px-4 sm:px-6 pt-4 sm:pt-5 pb-2">
             <motion.div
@@ -46,11 +48,11 @@ export const AppHeader = memo(function AppHeader({
             >
 
                 {[
-                    { action: onToggleDark, label: "Toggle dark mode", icon: isDark ? <Sun size={15} /> : <Moon size={15} /> },
-                    { action: onShowSettings, label: "Timer settings", icon: <Settings size={15} /> },
-                    { action: onShowTodo, label: "To-do list", icon: <ListTodo size={15} /> },
-                    { action: onShowGarden, label: "My garden", icon: <Sprout size={15} /> },
-                    { action: onShowHistory, label: "Stats & history", icon: <ScrollText size={15} /> },
+                    { action: onToggleDark, label: t("header.darkMode"), icon: isDark ? <Sun size={15} /> : <Moon size={15} /> },
+                    { action: onShowSettings, label: t("header.settings"), icon: <Settings size={15} /> },
+                    { action: onShowTodo, label: t("header.todo"), icon: <ListTodo size={15} /> },
+                    { action: onShowGarden, label: t("header.garden"), icon: <Sprout size={15} /> },
+                    { action: onShowHistory, label: t("header.history"), icon: <ScrollText size={15} /> },
                 ].map((btn) => (
                     <button
                         key={btn.label}
@@ -64,7 +66,7 @@ export const AppHeader = memo(function AppHeader({
                 <button
                     onClick={onShowAuth}
                     className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={user ? "Account" : "Sign in"}
+                    aria-label={user ? t("header.account") : t("header.signIn")}
                 >
                     {user?.user_metadata?.avatar_url ? (
                         <img
