@@ -20,6 +20,13 @@ export function useTimer() {
 
     const workerRef = useRef<Worker | null>(null);
 
+    // Sync timeLeft when settings change while timer is idle
+    useEffect(() => {
+        if (!isRunning && !isCompleted) {
+            setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+        }
+    }, [focus, shortBreak, longBreak, mode, isRunning, isCompleted]);
+
     useEffect(() => {
         workerRef.current = new TimerWorker();
 
