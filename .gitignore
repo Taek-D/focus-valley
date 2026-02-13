@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Screenshots (dev artifacts)
+/*.png
+
+# bkit temp files
+docs/.pdca-snapshots/
+.claude/agent-memory/
