@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, lazy, Suspense } from "react";
+import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTimer } from "./hooks/useTimer";
 import { useAudioMixer } from "./hooks/useAudioMixer";
@@ -166,8 +166,11 @@ function App() {
   }, [timer.timeLeft, timer.isRunning, timer.mode, timer.focusDuration, garden]);
 
   useEffect(() => {
-    if (timer.isCompleted) {
-      playCompletionSound();
+    if (!timer.isCompleted) return;
+    playCompletionSound();
+
+    // Use microtask to avoid synchronous setState in effect body
+    queueMicrotask(() => {
       setScreenFlash(true);
       setTimeout(() => setScreenFlash(false), 600);
 
@@ -180,8 +183,8 @@ function App() {
         showToast("Break is over! Ready to focus?");
         notification.notify("Focus Valley", "Break is over! Time to focus.");
       }
-    }
-  }, [timer.isCompleted, timer.mode, showToast, garden, notification]);
+    });
+  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, garden, notification]);
 
   // Auto-advance to next mode after completion
   useEffect(() => {
@@ -193,12 +196,11 @@ function App() {
   }, [timer.isCompleted, autoAdvance, timer]);
 
   useEffect(() => {
-    if (garden.pendingUnlock) {
-      const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
-      if (unlock) {
-        showToast(`New plant unlocked: ${unlock.label}!`);
-      }
-      garden.clearPendingUnlock();
+    if (!garden.pendingUnlock) return;
+    const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
+    garden.clearPendingUnlock();
+    if (unlock) {
+      queueMicrotask(() => showToast(`New plant unlocked: ${unlock.label}!`));
     }
   }, [garden.pendingUnlock, garden, showToast]);
 
@@ -271,7 +273,7 @@ function App() {
     mode: timer.mode,
   });
 
-  const PlantComponent = getPlantComponent(garden.type, garden.stage);
+  const PlantComponent = useMemo(() => getPlantComponent(garden.type, garden.stage), [garden.type, garden.stage]);
   const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
 
   return (
@@ -310,7 +312,7 @@ function App() {
       </AnimatePresence>
 
       {/* Header */}
-      <header className="w-full max-w-lg flex justify-between items-center z-10 px-6 pt-5 pb-2">
+      <header className="w-full max-w-lg flex justify-between items-center z-10 px-4 sm:px-6 pt-4 sm:pt-5 pb-2">
         <motion.div
           className="flex items-center gap-2.5"
           initial={{ opacity: 0, x: -20 }}
@@ -344,7 +346,7 @@ function App() {
             <button
               key={btn.label}
               onClick={btn.action}
-              className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+              className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground transition-colors"
               aria-label={btn.label}
             >
               {btn.icon}
@@ -354,10 +356,10 @@ function App() {
       </header>
 
       {/* Main */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-lg relative z-10 px-6">
+      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-lg relative z-10 px-4 sm:px-6">
         {/* Aurora Blob — large, vivid central orb */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-          <div className="relative" style={{ width: 550, height: 550 }}>
+          <div className="relative w-[85vw] h-[85vw] max-w-[550px] max-h-[550px]">
             <div
               className="absolute inset-0 rounded-full animate-aurora-1"
               style={{
@@ -421,6 +423,7 @@ function App() {
                   transition={{ type: "spring", damping: 20, stiffness: 180, duration: 0.4 }}
                   whileHover={canInteract ? { scale: 1.05, y: -2 } : {}}
                 >
+                  {/* eslint-disable-next-line react-hooks/static-components -- lookup table returns stable refs */}
                   <PlantComponent />
                 </motion.div>
               </AnimatePresence>
@@ -482,7 +485,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full max-w-md z-10 px-6 pb-6 pt-2">
+      <footer className="w-full max-w-md z-10 px-4 sm:px-6 pb-6 pt-2">
         <motion.button
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
@@ -512,8 +515,11 @@ function App() {
             >
               <div className="pb-6 flex justify-center">
                 <Suspense fallback={
-                  <div className="h-48 w-full max-w-md flex items-center justify-center text-muted-foreground font-body text-xs">
-                    Loading...
+                  <div className="h-48 w-full max-w-md flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-5 h-5 rounded-full border-2 border-foreground/10 border-t-foreground/30 animate-spin" />
+                      <span className="font-body text-[10px] tracking-[0.1em] uppercase text-muted-foreground/30">Loading sounds</span>
+                    </div>
                   </div>
                 }>
                   <AudioMixer mixer={mixer} />

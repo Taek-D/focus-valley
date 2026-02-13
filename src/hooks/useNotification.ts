@@ -1,25 +1,25 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useState } from "react";
 
-type NotificationPermission = "default" | "denied" | "granted";
+type NotificationPermissionState = "default" | "denied" | "granted";
 
-function getPermission(): NotificationPermission {
+function getPermission(): NotificationPermissionState {
     if (typeof Notification === "undefined") return "denied";
     return Notification.permission;
 }
 
 export function useNotification() {
-    const permissionRef = useRef<NotificationPermission>(getPermission());
+    const [permission, setPermission] = useState<NotificationPermissionState>(getPermission);
 
     const requestPermission = useCallback(async (): Promise<boolean> => {
         if (typeof Notification === "undefined") return false;
         if (Notification.permission === "granted") {
-            permissionRef.current = "granted";
+            setPermission("granted");
             return true;
         }
         if (Notification.permission === "denied") return false;
 
         const result = await Notification.requestPermission();
-        permissionRef.current = result;
+        setPermission(result);
         return result === "granted";
     }, []);
 
@@ -37,7 +37,7 @@ export function useNotification() {
     }, []);
 
     return {
-        permission: permissionRef.current,
+        permission,
         requestPermission,
         notify,
     };

@@ -25,7 +25,8 @@ export function useAudioMixer() {
     // Initialize AudioContext (must be triggered by user gesture)
     const initAudio = useCallback(() => {
         if (!contextRef.current) {
-            contextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+            contextRef.current = new AudioCtx();
         }
         if (contextRef.current.state === "suspended") {
             contextRef.current.resume();

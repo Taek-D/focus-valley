@@ -10,6 +10,8 @@ function getDuration(mode: TimerMode, focus: number, shortBreak: number, longBre
     return longBreak * 60;
 }
 
+type SettingsSnapshot = { focus: number; shortBreak: number; longBreak: number; mode: TimerMode };
+
 export function useTimer() {
     const { focus, shortBreak, longBreak } = useTimerSettings();
     const [mode, setMode] = useState<TimerMode>("FOCUS");
@@ -20,12 +22,15 @@ export function useTimer() {
 
     const workerRef = useRef<Worker | null>(null);
 
-    // Sync timeLeft when settings change while timer is idle
-    useEffect(() => {
-        if (!isRunning && !isCompleted) {
-            setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
-        }
-    }, [focus, shortBreak, longBreak, mode, isRunning, isCompleted]);
+    // Render-time state adjustment: sync timeLeft when settings change while idle
+    const [prevSettings, setPrevSettings] = useState<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
+    if (
+        !isRunning && !isCompleted &&
+        (prevSettings.focus !== focus || prevSettings.shortBreak !== shortBreak || prevSettings.longBreak !== longBreak || prevSettings.mode !== mode)
+    ) {
+        setPrevSettings({ focus, shortBreak, longBreak, mode });
+        setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+    }
 
     useEffect(() => {
         workerRef.current = new TimerWorker();

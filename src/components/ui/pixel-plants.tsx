@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- exports both SVG components and getPlantComponent lookup */
 import type { PlantType } from "../../hooks/useGarden";
 
 /* ─── Shared: Terracotta Pot ─── */

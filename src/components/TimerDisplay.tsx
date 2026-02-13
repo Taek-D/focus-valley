@@ -59,7 +59,8 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
                                 transition={{ type: "spring", stiffness: 400, damping: 35 }}
                             />
                         )}
-                        <span className="relative z-10">{MODE_CONFIG[m].label}</span>
+                        <span className="relative z-10 hidden sm:inline">{MODE_CONFIG[m].label}</span>
+                        <span className="relative z-10 sm:hidden">{MODE_CONFIG[m].short}</span>
                     </button>
                 ))}
             </div>
