@@ -3,12 +3,41 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type PlantStage = "SEED" | "SPROUT" | "BUD" | "FLOWER" | "TREE" | "DEAD";
-export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE";
+export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID";
 
-const PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"];
+export type FocusSession = { date: string; minutes: number };
 
-function randomPlantType(): PlantType {
-    return PLANT_TYPES[Math.floor(Math.random() * PLANT_TYPES.length)];
+const BASE_PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"];
+
+export const STREAK_UNLOCKS: { streak: number; plant: PlantType; label: string }[] = [
+    { streak: 3, plant: "ROSE", label: "Rose" },
+    { streak: 7, plant: "ORCHID", label: "Orchid" },
+];
+
+function getTodayStr(): string {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function getYesterdayStr(): string {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toISOString().slice(0, 10);
+}
+
+export function getDisplayStreak(currentStreak: number, lastFocusDate: string | null): number {
+    if (!lastFocusDate || currentStreak === 0) return 0;
+    const today = getTodayStr();
+    const yesterday = getYesterdayStr();
+    if (lastFocusDate === today || lastFocusDate === yesterday) return currentStreak;
+    return 0;
+}
+
+function getAvailablePlants(unlocked: PlantType[]): PlantType[] {
+    return [...BASE_PLANT_TYPES, ...unlocked];
+}
+
+function randomPlantType(available: PlantType[]): PlantType {
+    return available[Math.floor(Math.random() * available.length)];
 }
 
 type HistoryEntry = { type: PlantType; date: string };
@@ -18,31 +47,81 @@ interface GardenState {
     type: PlantType;
     history: HistoryEntry[];
     totalFocusMinutes: number;
+    focusSessions: FocusSession[];
+    currentStreak: number;
+    bestStreak: number;
+    lastFocusDate: string | null;
+    unlockedPlants: PlantType[];
+    pendingUnlock: PlantType | null;
     setStage: (stage: PlantStage) => void;
     plantSeed: () => void;
     killPlant: () => void;
     harvestPlant: () => void;
     addFocusMinutes: (minutes: number) => void;
+    clearPendingUnlock: () => void;
 }
 
 const useGardenStore = create<GardenState>()(
     persist(
         (set) => ({
             stage: "SEED",
-            type: randomPlantType(),
+            type: randomPlantType(BASE_PLANT_TYPES),
             history: [],
             totalFocusMinutes: 0,
+            focusSessions: [],
+            currentStreak: 0,
+            bestStreak: 0,
+            lastFocusDate: null,
+            unlockedPlants: [],
+            pendingUnlock: null,
             setStage: (stage) => set({ stage }),
-            plantSeed: () => set({ stage: "SEED", type: randomPlantType() }),
+            plantSeed: () => set((state) => ({
+                stage: "SEED",
+                type: randomPlantType(getAvailablePlants(state.unlockedPlants)),
+            })),
             killPlant: () => set({ stage: "DEAD" }),
             harvestPlant: () => set((state) => ({
                 stage: "SEED",
-                type: randomPlantType(),
+                type: randomPlantType(getAvailablePlants(state.unlockedPlants)),
                 history: [...state.history, { type: state.type, date: new Date().toISOString() }],
             })),
-            addFocusMinutes: (minutes) => set((state) => ({
-                totalFocusMinutes: state.totalFocusMinutes + minutes,
-            })),
+            addFocusMinutes: (minutes) => set((state) => {
+                const today = getTodayStr();
+                const newSessions = [...state.focusSessions, { date: today, minutes }];
+
+                let newStreak = state.currentStreak;
+
+                if (state.lastFocusDate !== today) {
+                    const yesterday = getYesterdayStr();
+                    if (state.lastFocusDate === yesterday || state.lastFocusDate === null) {
+                        newStreak = state.currentStreak + 1;
+                    } else {
+                        newStreak = 1;
+                    }
+                }
+
+                const newBestStreak = Math.max(state.bestStreak, newStreak);
+
+                let pendingUnlock: PlantType | null = null;
+                const newUnlocks = [...state.unlockedPlants];
+                for (const unlock of STREAK_UNLOCKS) {
+                    if (newStreak >= unlock.streak && !newUnlocks.includes(unlock.plant)) {
+                        newUnlocks.push(unlock.plant);
+                        pendingUnlock = unlock.plant;
+                    }
+                }
+
+                return {
+                    totalFocusMinutes: state.totalFocusMinutes + minutes,
+                    focusSessions: newSessions,
+                    currentStreak: newStreak,
+                    bestStreak: newBestStreak,
+                    lastFocusDate: today,
+                    unlockedPlants: newUnlocks,
+                    pendingUnlock,
+                };
+            }),
+            clearPendingUnlock: () => set({ pendingUnlock: null }),
         }),
         {
             name: "focus-valley-garden",
@@ -69,6 +148,8 @@ export function useGarden() {
         }
     }, [store]);
 
+    const displayStreak = getDisplayStreak(store.currentStreak, store.lastFocusDate);
+
     return {
         stage: store.stage,
         type: store.type,
@@ -76,8 +157,14 @@ export function useGarden() {
         killPlant: store.killPlant,
         harvest: store.harvestPlant,
         addFocusMinutes: store.addFocusMinutes,
+        clearPendingUnlock: store.clearPendingUnlock,
         grow,
         history: store.history,
         totalFocusMinutes: store.totalFocusMinutes,
+        focusSessions: store.focusSessions,
+        currentStreak: displayStreak,
+        bestStreak: store.bestStreak,
+        unlockedPlants: store.unlockedPlants,
+        pendingUnlock: store.pendingUnlock,
     };
 }

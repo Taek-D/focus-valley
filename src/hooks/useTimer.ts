@@ -81,9 +81,12 @@ export function useTimer() {
         setIsCompleted(false);
     }, [mode, focusCount, switchMode]);
 
+    const totalDuration = getDuration(mode, focus, shortBreak, longBreak);
+
     return {
         mode,
         timeLeft,
+        totalDuration,
         isRunning,
         isCompleted,
         focusCount,

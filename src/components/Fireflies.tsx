@@ -1,47 +1,56 @@
 import { useMemo } from "react";
+import { motion } from "framer-motion";
 
-const FIREFLY_COUNT = 18;
+type Mote = {
+    id: number;
+    x: number;
+    y: number;
+    size: number;
+    duration: number;
+    delay: number;
+    opacity: number;
+};
 
-function seededRandom(seed: number) {
-    const x = Math.sin(seed * 9301 + 49297) * 49297;
-    return x - Math.floor(x);
+function generateMotes(count: number): Mote[] {
+    return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        x: 15 + Math.random() * 70,
+        y: 10 + Math.random() * 70,
+        size: 3 + Math.random() * 5,
+        duration: 12 + Math.random() * 18,
+        delay: Math.random() * 8,
+        opacity: 0.08 + Math.random() * 0.12,
+    }));
 }
 
 export const Fireflies = () => {
-    const particles = useMemo(() =>
-        Array.from({ length: FIREFLY_COUNT }, (_, i) => ({
-            id: i,
-            left: `${seededRandom(i * 7 + 1) * 100}%`,
-            top: `${seededRandom(i * 13 + 5) * 80}%`,
-            dx: `${(seededRandom(i * 3 + 2) - 0.5) * 80}px`,
-            dy: `${(seededRandom(i * 11 + 7) - 0.5) * 60}px`,
-            duration: `${6 + seededRandom(i * 5 + 3) * 10}s`,
-            glowDuration: `${2 + seededRandom(i * 9 + 4) * 4}s`,
-            delay: `${seededRandom(i * 17 + 8) * -12}s`,
-            brightness: 0.3 + seededRandom(i * 23 + 11) * 0.6,
-            size: 2 + seededRandom(i * 19 + 6) * 4,
-        })),
-        []
-    );
+    const motes = useMemo(() => generateMotes(8), []);
 
     return (
-        <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
-            {particles.map((p) => (
-                <div
-                    key={p.id}
-                    className="firefly"
+        <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden" aria-hidden="true">
+            {motes.map((m) => (
+                <motion.div
+                    key={m.id}
+                    className="absolute rounded-full"
                     style={{
-                        left: p.left,
-                        top: p.top,
-                        width: `${p.size}px`,
-                        height: `${p.size}px`,
-                        animationDelay: `${p.delay}, ${p.delay}`,
-                        "--dx": p.dx,
-                        "--dy": p.dy,
-                        "--duration": p.duration,
-                        "--glow-duration": p.glowDuration,
-                        "--brightness": p.brightness,
-                    } as React.CSSProperties}
+                        left: `${m.x}%`,
+                        top: `${m.y}%`,
+                        width: m.size,
+                        height: m.size,
+                        background: `hsl(var(--aurora-1) / ${m.opacity})`,
+                        filter: `blur(${m.size * 0.6}px)`,
+                    }}
+                    animate={{
+                        x: [0, 30, -20, 10, 0],
+                        y: [0, -25, 15, -10, 0],
+                        opacity: [m.opacity, m.opacity * 1.8, m.opacity * 0.5, m.opacity * 1.4, m.opacity],
+                    }}
+                    transition={{
+                        duration: m.duration,
+                        delay: m.delay,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    }}
                 />
             ))}
         </div>

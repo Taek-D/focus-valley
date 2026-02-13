@@ -44,49 +44,46 @@ export default {
         },
         borderRadius: {
           lg: "var(--radius)",
-          md: "calc(var(--radius) - 2px)",
-          sm: "calc(var(--radius) - 4px)",
+          md: "calc(var(--radius) - 4px)",
+          sm: "calc(var(--radius) - 8px)",
         },
         fontFamily: {
-          pixel: ["'Press Start 2P'", "cursive"],
-          retro: ["'VT323'", "monospace"],
+          display: ["'Sora'", "sans-serif"],
+          body: ["'Sora'", "sans-serif"],
         },
         keyframes: {
-          "bounce-slow": {
-            "0%, 100%": { transform: "translateY(0)" },
-            "50%": { transform: "translateY(-6px)" },
+          "aurora-drift-1": {
+            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+            "33%": { transform: "translate(15px, -10px) scale(1.05)" },
+            "66%": { transform: "translate(-10px, 8px) scale(0.95)" },
           },
-          sway: {
-            "0%, 100%": { transform: "rotate(0deg)" },
-            "25%": { transform: "rotate(2deg)" },
-            "75%": { transform: "rotate(-2deg)" },
+          "aurora-drift-2": {
+            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+            "33%": { transform: "translate(-12px, 12px) scale(1.08)" },
+            "66%": { transform: "translate(10px, -8px) scale(0.92)" },
+          },
+          "aurora-drift-3": {
+            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+            "33%": { transform: "translate(8px, 15px) scale(0.95)" },
+            "66%": { transform: "translate(-15px, -5px) scale(1.05)" },
           },
           "pulse-slow": {
             "0%, 100%": { opacity: "1" },
-            "50%": { opacity: "0.7" },
+            "50%": { opacity: "0.4" },
           },
-          "glow-pulse": {
-            "0%, 100%": { textShadow: "0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1)" },
-            "50%": { textShadow: "0 0 30px hsl(var(--primary) / 0.5), 0 0 60px hsl(var(--primary) / 0.2)" },
-          },
-          "float-up": {
-            "0%": { opacity: "0", transform: "translateY(20px)" },
+          "fade-in-up": {
+            "0%": { opacity: "0", transform: "translateY(10px)" },
             "100%": { opacity: "1", transform: "translateY(0)" },
-          },
-          shimmer: {
-            "0%": { backgroundPosition: "-200% 0" },
-            "100%": { backgroundPosition: "200% 0" },
           },
         },
         animation: {
-          "bounce-slow": "bounce-slow 2s ease-in-out infinite",
-          sway: "sway 4s ease-in-out infinite",
+          "aurora-1": "aurora-drift-1 12s ease-in-out infinite",
+          "aurora-2": "aurora-drift-2 15s ease-in-out infinite",
+          "aurora-3": "aurora-drift-3 18s ease-in-out infinite",
           "pulse-slow": "pulse-slow 3s ease-in-out infinite",
-          "glow-pulse": "glow-pulse 2s ease-in-out infinite",
-          "float-up": "float-up 0.6s ease-out both",
-          shimmer: "shimmer 3s ease-in-out infinite",
+          "fade-in-up": "fade-in-up 0.5s ease-out both",
         },
       },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [],
   }

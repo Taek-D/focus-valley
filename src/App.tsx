@@ -2,35 +2,125 @@ import { useEffect, useState, useCallback, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTimer } from "./hooks/useTimer";
 import { useAudioMixer } from "./hooks/useAudioMixer";
-import { useGarden } from "./hooks/useGarden";
+import { useGarden, STREAK_UNLOCKS } from "./hooks/useGarden";
 import { useDarkMode } from "./hooks/useDarkMode";
+import { useNotification } from "./hooks/useNotification";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { useDocumentTitle } from "./hooks/useDocumentTitle";
 import { cn } from "./lib/utils";
 import { playCompletionSound } from "./lib/notification-sound";
 import { TimerDisplay } from "./components/TimerDisplay";
-import { Fireflies } from "./components/Fireflies";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { HistoryPanel } from "./components/HistoryPanel";
+import { GardenCollection } from "./components/GardenCollection";
 import { TimerSettings } from "./components/TimerSettings";
+import { TodoPanel } from "./components/TodoPanel";
+import { Fireflies } from "./components/Fireflies";
+import { PlantParticles } from "./components/PlantParticles";
 import { getPlantComponent } from "./components/ui/pixel-plants";
-import { TreePine, ScrollText, Moon, Sun, ChevronDown, ChevronUp, Settings } from "lucide-react";
+import { ScrollText, Moon, Sun, Leaf, ChevronDown, ChevronUp, Settings, Volume2, Sprout, Flame, ListTodo } from "lucide-react";
+import type { PlantStage } from "./hooks/useGarden";
+import type { TargetAndTransition } from "framer-motion";
 
 const AudioMixer = lazy(() =>
   import("./components/AudioMixer").then((m) => ({ default: m.AudioMixer }))
 );
+
+type StageTransition = { initial: TargetAndTransition; animate: TargetAndTransition; exit: TargetAndTransition };
+
+// Stage-specific animation variants for plant transitions
+const stageVariants: Record<string, StageTransition> = {
+    "SEED-SPROUT": {
+        initial: { scale: 0.3, opacity: 0, y: 20 },
+        animate: { scale: 1, opacity: 1, y: 0 },
+        exit: { scale: 0.8, opacity: 0, y: -10 },
+    },
+    "SPROUT-BUD": {
+        initial: { scale: 0.8, opacity: 0, rotate: -5 },
+        animate: { scale: 1, opacity: 1, rotate: 0 },
+        exit: { scale: 0.8, opacity: 0, y: -10 },
+    },
+    "BUD-FLOWER": {
+        initial: { scale: 0.9, opacity: 0 },
+        animate: { scale: [0.9, 1.1, 1], opacity: 1 },
+        exit: { scale: 0.8, opacity: 0 },
+    },
+    "FLOWER-TREE": {
+        initial: { scale: 0.95, opacity: 0, y: 10 },
+        animate: { scale: 1, opacity: 1, y: 0 },
+        exit: { scale: 0.8, opacity: 0, y: -10 },
+    },
+    "DEAD": {
+        initial: { rotate: 0, opacity: 1 },
+        animate: { rotate: 5, opacity: 0.6 },
+        exit: { scale: 0.5, opacity: 0 },
+    },
+    "default": {
+        initial: { scale: 0.5, opacity: 0, y: 20 },
+        animate: { scale: 1, opacity: 1, y: 0 },
+        exit: { scale: 0.8, opacity: 0, y: -10 },
+    },
+};
+
+function getStageTransition(prev: PlantStage | null, current: PlantStage): StageTransition {
+    if (current === "DEAD") return stageVariants["DEAD"];
+    if (prev) {
+        const key = `${prev}-${current}`;
+        if (key in stageVariants) return stageVariants[key];
+    }
+    return stageVariants["default"];
+}
 
 function App() {
   const timer = useTimer();
   const mixer = useAudioMixer();
   const garden = useGarden();
   const { isDark, toggle: toggleDark } = useDarkMode();
+  const notification = useNotification();
 
   const [showMixer, setShowMixer] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showGarden, setShowGarden] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showTodo, setShowTodo] = useState(false);
   const [toast, setToast] = useState({ message: "", visible: false });
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
+
+  // Plant particles state — render-time state adjustment (React recommended pattern)
+  const [particleTrigger, setParticleTrigger] = useState(0);
+  const [particleType, setParticleType] = useState<"growth" | "harvest" | "death">("growth");
+  const [prevStage, setPrevStage] = useState<PlantStage>(garden.stage);
+
+  // Detect stage changes during render (avoids effect + setState)
+  if (prevStage !== garden.stage) {
+    const current = garden.stage;
+
+    if (current === "DEAD") {
+      setParticleType("death");
+      setParticleTrigger((t) => t + 1);
+    } else if (current === "SEED" && (prevStage === "TREE" || prevStage === "FLOWER")) {
+      setParticleType("harvest");
+      setParticleTrigger((t) => t + 1);
+    } else if (
+      (prevStage === "SEED" && current === "SPROUT") ||
+      (prevStage === "SPROUT" && current === "BUD") ||
+      (prevStage === "BUD" && current === "FLOWER") ||
+      (prevStage === "FLOWER" && current === "TREE")
+    ) {
+      setParticleType("growth");
+      setParticleTrigger((t) => t + 1);
+    }
+    setPrevStage(current);
+  }
+
+  // Compute transition variant from current state (derived, not stored)
+  const stageTransition = getStageTransition(prevStage, garden.stage);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-mode", timer.mode);
+  }, [timer.mode]);
 
   const showToast = useCallback((message: string) => {
     setToast({ message, visible: true });
@@ -40,7 +130,6 @@ function App() {
     setToast((prev) => ({ ...prev, visible: false }));
   }, []);
 
-  // Sync Timer with Garden
   useEffect(() => {
     if (timer.isRunning && timer.mode === "FOCUS") {
       const totalTime = timer.focusDuration * 60;
@@ -50,7 +139,6 @@ function App() {
     }
   }, [timer.timeLeft, timer.isRunning, timer.mode, timer.focusDuration, garden]);
 
-  // Completion notification + focus time tracking
   useEffect(() => {
     if (timer.isCompleted) {
       playCompletionSound();
@@ -60,13 +148,29 @@ function App() {
       if (timer.mode === "FOCUS") {
         garden.addFocusMinutes(timer.focusDuration);
         showToast("Focus complete! Your plant has grown.");
+        notification.notify("Focus Valley", "Focus session complete! Your plant has grown.");
       } else {
         showToast("Break is over! Ready to focus?");
+        notification.notify("Focus Valley", "Break is over! Time to focus.");
       }
     }
-  }, [timer.isCompleted, timer.mode, showToast, garden]);
+  }, [timer.isCompleted, timer.mode, showToast, garden, notification]);
 
-  // Handle Give Up
+  useEffect(() => {
+    if (garden.pendingUnlock) {
+      const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
+      if (unlock) {
+        showToast(`New plant unlocked: ${unlock.label}!`);
+      }
+      garden.clearPendingUnlock();
+    }
+  }, [garden.pendingUnlock, garden, showToast]);
+
+  const handleStart = useCallback(() => {
+    notification.requestPermission();
+    timer.start();
+  }, [notification, timer]);
+
   const handleReset = () => {
     if (timer.isRunning && timer.mode === "FOCUS") {
       setConfirmModal(true);
@@ -82,115 +186,180 @@ function App() {
     showToast("Plant withered...");
   };
 
-  // Handle plant click
   const handlePlantClick = () => {
     if (garden.stage === "TREE" || garden.stage === "FLOWER") {
       garden.harvest();
       timer.reset();
-      showToast("Harvested! +1 Focus Tree");
+      showToast("Harvested! +1 to your garden");
     } else if (garden.stage === "DEAD") {
       garden.plantSeed();
       showToast("New seed planted!");
     }
   };
 
+  // Keyboard shortcuts
+  const handleToggle = useCallback(() => {
+    if (timer.isCompleted) return;
+    if (timer.isRunning) {
+      timer.pause();
+    } else {
+      handleStart();
+    }
+  }, [timer, handleStart]);
+
+  const handleToggleMixer = useCallback(() => {
+    setShowMixer((v) => !v);
+  }, []);
+
+  useKeyboardShortcuts({
+    isRunning: timer.isRunning,
+    isCompleted: timer.isCompleted,
+    onToggle: handleToggle,
+    onReset: handleReset,
+    onSkip: timer.advanceToNextMode,
+    onSwitchMode: timer.switchMode,
+    onToggleMixer: handleToggleMixer,
+  });
+
+  // Document title
+  useDocumentTitle({
+    timeLeft: timer.timeLeft,
+    totalDuration: timer.totalDuration,
+    isRunning: timer.isRunning,
+    isCompleted: timer.isCompleted,
+    mode: timer.mode,
+  });
+
   const PlantComponent = getPlantComponent(garden.type, garden.stage);
   const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
 
   return (
-    <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700">
-      {/* Sky Gradient Background */}
-      <div
-        className="fixed inset-0 z-0 transition-all duration-1000"
-        style={{
-          background: `linear-gradient(180deg, var(--sky-from) 0%, var(--sky-via) 50%, var(--sky-to) 100%)`,
-        }}
-      />
+    <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700 dot-grid">
+      {/* Grain */}
+      <svg className="grain-overlay" aria-hidden="true">
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain)" />
+      </svg>
 
-      {/* Fireflies */}
+      {/* Ambient light particles */}
       <Fireflies />
+
+      {/* Vignette — subtle edge darkening */}
+      <div
+        className="fixed inset-0 pointer-events-none z-[4]"
+        style={{
+          background: "radial-gradient(ellipse at 50% 50%, transparent 50%, hsl(var(--background) / 0.4) 100%)",
+        }}
+        aria-hidden="true"
+      />
 
       {/* Screen Flash */}
       <AnimatePresence>
         {screenFlash && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.15 }}
+            animate={{ opacity: 0.06 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-primary z-40 pointer-events-none"
+            className="fixed inset-0 bg-foreground z-40 pointer-events-none"
           />
         )}
       </AnimatePresence>
 
       {/* Header */}
-      <header className="w-full max-w-2xl flex justify-between items-center z-10 px-6 pt-6 pb-4">
+      <header className="w-full max-w-lg flex justify-between items-center z-10 px-6 pt-5 pb-2">
         <motion.div
           className="flex items-center gap-2.5"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <TreePine size={22} className="text-primary" />
-          <span className="font-pixel text-sm tracking-wider text-foreground">
-            FOCUS VALLEY
+          <Leaf size={15} className="text-muted-foreground" />
+          <span className="font-display text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground">
+            Focus Valley
           </span>
+          {garden.currentStreak > 0 && (
+            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/60">
+              <Flame size={10} />
+              <span className="font-body text-[10px] font-medium">{garden.currentStreak}</span>
+            </span>
+          )}
         </motion.div>
         <motion.div
-          className="flex items-center gap-1.5"
+          className="flex items-center gap-0.5"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <button
-            onClick={toggleDark}
-            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
-            aria-label="Toggle dark mode"
-          >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-          <button
-            onClick={() => setShowSettings(true)}
-            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
-            aria-label="Timer settings"
-          >
-            <Settings size={16} />
-          </button>
-          <button
-            onClick={() => setShowHistory(true)}
-            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
-            aria-label="View history"
-          >
-            <ScrollText size={16} />
-          </button>
+          {[
+            { action: toggleDark, label: "Toggle dark mode", icon: isDark ? <Sun size={15} /> : <Moon size={15} /> },
+            { action: () => setShowSettings(true), label: "Timer settings", icon: <Settings size={15} /> },
+            { action: () => setShowTodo(true), label: "To-do list", icon: <ListTodo size={15} /> },
+            { action: () => setShowGarden(true), label: "My garden", icon: <Sprout size={15} /> },
+            { action: () => setShowHistory(true), label: "Stats & history", icon: <ScrollText size={15} /> },
+          ].map((btn) => (
+            <button
+              key={btn.label}
+              onClick={btn.action}
+              className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={btn.label}
+            >
+              {btn.icon}
+            </button>
+          ))}
         </motion.div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl relative z-10 px-6">
-        {/* Garden Stage */}
+      {/* Main */}
+      <main className="flex-1 flex flex-col items-center justify-center w-full max-w-lg relative z-10 px-6">
+        {/* Aurora Blob — large, vivid central orb */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          <div className="relative" style={{ width: 550, height: 550 }}>
+            <div
+              className="absolute inset-0 rounded-full animate-aurora-1"
+              style={{
+                background: `radial-gradient(circle at 30% 30%, hsl(var(--aurora-1) / 0.5), transparent 50%)`,
+                filter: "blur(60px)",
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full animate-aurora-2"
+              style={{
+                background: `radial-gradient(circle at 75% 35%, hsl(var(--aurora-2) / 0.45), transparent 50%)`,
+                filter: "blur(65px)",
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full animate-aurora-3"
+              style={{
+                background: `radial-gradient(circle at 50% 75%, hsl(var(--aurora-3) / 0.4), transparent 50%)`,
+                filter: "blur(60px)",
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `radial-gradient(circle at 40% 55%, hsl(var(--aurora-4) / 0.3), transparent 55%)`,
+                filter: "blur(70px)",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Garden */}
         <motion.div
-          className="relative w-full flex flex-col items-center mb-8"
+          className="relative w-full flex flex-col items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          {/* Stage Label */}
-          <div className="font-retro text-sm text-muted-foreground tracking-widest uppercase mb-4">
-            {garden.type} &middot; {garden.stage}
-          </div>
-
-          {/* Plant Area */}
-          <div className="relative h-48 md:h-64 flex items-end justify-center w-full">
-            {/* Plant Glow */}
-            {(garden.stage === "TREE" || garden.stage === "FLOWER") && (
-              <div className="absolute bottom-8 w-32 h-32 bg-primary/15 rounded-full blur-3xl animate-pulse-slow" />
-            )}
-
-            {/* Animated Plant */}
+          {/* Plant area */}
+          <div className="relative h-32 md:h-40 flex items-end justify-center w-full">
             <button
               className={cn(
-                "mb-2 bg-transparent border-none p-0 transition-all",
+                "mb-1 bg-transparent border-none p-0 transition-all relative",
                 canInteract ? "cursor-pointer" : "cursor-default"
               )}
               onClick={handlePlantClick}
@@ -205,48 +374,38 @@ function App() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${garden.type}-${garden.stage}`}
-                  initial={{ scale: 0.5, opacity: 0, y: 20 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  exit={{ scale: 0.8, opacity: 0, y: -10 }}
-                  transition={{ type: "spring", damping: 15, stiffness: 200 }}
-                  whileHover={canInteract ? { scale: 1.12, y: -4 } : {}}
+                  initial={stageTransition.initial}
+                  animate={stageTransition.animate}
+                  exit={stageTransition.exit}
+                  transition={{ type: "spring", damping: 20, stiffness: 180, duration: 0.4 }}
+                  whileHover={canInteract ? { scale: 1.05, y: -2 } : {}}
                 >
                   <PlantComponent />
                 </motion.div>
               </AnimatePresence>
+
+              {/* Particles overlay */}
+              <PlantParticles trigger={particleTrigger} type={particleType} />
             </button>
           </div>
 
-          {/* Ground Line */}
-          <div className="w-full max-w-xs relative">
-            <div
-              className="h-2 w-full"
-              style={{
-                background: `linear-gradient(90deg, transparent 0%, var(--ground-from) 20%, var(--ground-to) 80%, transparent 100%)`,
-              }}
-            />
-            <div
-              className="h-1 w-3/4 mx-auto"
-              style={{
-                background: `linear-gradient(90deg, transparent 0%, var(--ground-edge) 50%, transparent 100%)`,
-                opacity: 0.5,
-              }}
-            />
+          {/* Stage label — just below the plant */}
+          <div className="font-body text-[9px] text-muted-foreground/40 tracking-[0.3em] uppercase mt-1 mb-3">
+            {garden.type} &middot; {garden.stage}
           </div>
 
-          {/* Harvest hint */}
           {canInteract && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="font-retro text-sm text-primary/70 mt-3 tracking-wide"
+              className="font-body text-[11px] text-muted-foreground/50 tracking-wide -mt-1 mb-2"
             >
-              {garden.stage === "DEAD" ? "Click to plant a new seed" : "Click to harvest!"}
+              {garden.stage === "DEAD" ? "Tap to plant a new seed" : "Tap to harvest"}
             </motion.div>
           )}
         </motion.div>
 
-        {/* Timer Control */}
+        {/* Timer */}
         <motion.div
           className="z-10 w-full"
           initial={{ opacity: 0, y: 20 }}
@@ -255,11 +414,12 @@ function App() {
         >
           <TimerDisplay
             timeLeft={timer.timeLeft}
+            totalDuration={timer.totalDuration}
             isRunning={timer.isRunning}
             isCompleted={timer.isCompleted}
             mode={timer.mode}
             focusCount={timer.focusCount}
-            onStart={timer.start}
+            onStart={handleStart}
             onPause={timer.pause}
             onReset={handleReset}
             onSwitchMode={timer.switchMode}
@@ -268,28 +428,24 @@ function App() {
         </motion.div>
       </main>
 
-      {/* Footer - Soundscape */}
-      <footer className="w-full max-w-md z-10 px-6 pb-6 pt-4">
+      {/* Footer */}
+      <footer className="w-full max-w-md z-10 px-6 pb-6 pt-2">
         <motion.button
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
-          aria-label={showMixer ? "Hide soundscape mixer" : "Open soundscape mixer"}
-          className="w-full py-3 flex items-center justify-center gap-2 font-pixel text-[10px] tracking-wider text-muted-foreground hover:text-primary transition-colors group"
+          aria-label={showMixer ? "Hide ambient sounds" : "Open ambient sounds"}
+          className="w-full py-3 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          <div className="h-px w-8 bg-border group-hover:bg-primary/30 transition-colors" />
+          <Volume2 size={11} className="opacity-50" />
+          Sounds
           {showMixer ? (
-            <>
-              HIDE SOUNDSCAPE <ChevronDown size={12} />
-            </>
+            <ChevronDown size={11} />
           ) : (
-            <>
-              SOUNDSCAPE <ChevronUp size={12} />
-            </>
+            <ChevronUp size={11} />
           )}
-          <div className="h-px w-8 bg-border group-hover:bg-primary/30 transition-colors" />
         </motion.button>
 
         <AnimatePresence>
@@ -303,7 +459,7 @@ function App() {
             >
               <div className="pb-6 flex justify-center">
                 <Suspense fallback={
-                  <div className="h-48 w-full max-w-md flex items-center justify-center text-muted-foreground font-retro">
+                  <div className="h-48 w-full max-w-md flex items-center justify-center text-muted-foreground font-body text-xs">
                     Loading...
                   </div>
                 }>
@@ -320,10 +476,10 @@ function App() {
 
       <ConfirmModal
         isOpen={confirmModal}
-        title="GIVE UP?"
+        title="Give up?"
         message="Your plant will wither and die. Are you sure?"
-        confirmLabel="GIVE UP"
-        cancelLabel="KEEP GOING"
+        confirmLabel="Give Up"
+        cancelLabel="Keep Going"
         onConfirm={confirmGiveUp}
         onCancel={() => setConfirmModal(false)}
       />
@@ -333,11 +489,28 @@ function App() {
         onClose={() => setShowHistory(false)}
         history={garden.history}
         totalFocusMinutes={garden.totalFocusMinutes}
+        focusSessions={garden.focusSessions}
+        currentStreak={garden.currentStreak}
+        bestStreak={garden.bestStreak}
+      />
+
+      <GardenCollection
+        isOpen={showGarden}
+        onClose={() => setShowGarden(false)}
+        history={garden.history}
+        unlockedPlants={garden.unlockedPlants}
+        currentStreak={garden.currentStreak}
+        bestStreak={garden.bestStreak}
       />
 
       <TimerSettings
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
+      />
+
+      <TodoPanel
+        isOpen={showTodo}
+        onClose={() => setShowTodo(false)}
       />
     </div>
   );

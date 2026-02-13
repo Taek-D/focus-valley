@@ -1,82 +1,121 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@plugin "tailwindcss-animate";
 
 @layer base {
   :root {
-    --background: 40 30% 97%;
-    --foreground: 24 10% 10%;
+    --background: 220 10% 97%;
+    --foreground: 220 15% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 24 10% 10%;
+    --card-foreground: 220 15% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 24 10% 10%;
+    --popover-foreground: 220 15% 8%;
 
-    --primary: 142 72% 29%;
-    --primary-foreground: 40 30% 97%;
+    --primary: 220 12% 15%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 151 81% 96%;
-    --secondary-foreground: 142 72% 29%;
+    --secondary: 220 6% 93%;
+    --secondary-foreground: 220 10% 30%;
 
-    --muted: 40 20% 93%;
-    --muted-foreground: 24 5% 45%;
+    --muted: 220 6% 93%;
+    --muted-foreground: 220 5% 50%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 24 10% 10%;
+    --accent: 220 8% 90%;
+    --accent-foreground: 220 12% 15%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 40 30% 97%;
+    --destructive: 0 60% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 87%;
-    --input: 40 15% 87%;
-    --ring: 142 72% 29%;
+    --border: 220 6% 90%;
+    --input: 220 6% 90%;
+    --ring: 250 50% 60%;
 
-    --radius: 0px;
+    --radius: 20px;
 
-    --sky-from: #e0ecff;
-    --sky-via: #fef3c7;
-    --sky-to: #f0fdf4;
-    --ground-from: #65a30d;
-    --ground-to: #365314;
-    --ground-edge: #1a2e05;
+    /* Aurora orb colors — FOCUS mode: pink → purple → cyan */
+    --aurora-1: 330 80% 75%;
+    --aurora-2: 270 70% 74%;
+    --aurora-3: 185 65% 74%;
+    --aurora-4: 140 55% 80%;
+
+    --mode-accent: 250 50% 60%;
+
+    /* Dot grid */
+    --dot-opacity: 0.05;
   }
 
   .dark {
-    --background: 230 50% 7%;
-    --foreground: 35 30% 88%;
+    --background: 230 15% 6%;
+    --foreground: 220 10% 90%;
 
-    --card: 230 40% 10%;
-    --card-foreground: 35 30% 88%;
+    --card: 230 12% 10%;
+    --card-foreground: 220 10% 90%;
 
-    --popover: 230 40% 10%;
-    --popover-foreground: 35 30% 88%;
+    --popover: 230 12% 10%;
+    --popover-foreground: 220 10% 90%;
 
-    --primary: 38 92% 50%;
-    --primary-foreground: 230 50% 7%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 230 15% 6%;
 
-    --secondary: 150 30% 12%;
-    --secondary-foreground: 35 30% 88%;
+    --secondary: 230 10% 12%;
+    --secondary-foreground: 220 8% 70%;
 
-    --muted: 230 25% 15%;
-    --muted-foreground: 35 15% 60%;
+    --muted: 230 8% 14%;
+    --muted-foreground: 220 5% 45%;
 
-    --accent: 142 72% 40%;
-    --accent-foreground: 230 50% 7%;
+    --accent: 230 10% 16%;
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 35 30% 88%;
+    --destructive: 0 55% 50%;
+    --destructive-foreground: 220 10% 90%;
 
-    --border: 230 20% 18%;
-    --input: 230 20% 18%;
-    --ring: 38 92% 50%;
+    --border: 230 8% 14%;
+    --input: 230 8% 14%;
+    --ring: 250 50% 65%;
 
-    --sky-from: #0c1222;
-    --sky-via: #1a1040;
-    --sky-to: #0d1a08;
-    --ground-from: #1e3a12;
-    --ground-to: #0d1a08;
-    --ground-edge: #060d04;
+    --aurora-1: 330 70% 60%;
+    --aurora-2: 270 60% 62%;
+    --aurora-3: 185 55% 55%;
+    --aurora-4: 140 45% 58%;
+
+    --mode-accent: 250 50% 65%;
+    --dot-opacity: 0.04;
+  }
+
+  /* Mode: SHORT_BREAK — Cyan / Mint aurora */
+  :root[data-mode="SHORT_BREAK"] {
+    --aurora-1: 185 65% 72%;
+    --aurora-2: 210 55% 70%;
+    --aurora-3: 160 60% 72%;
+    --aurora-4: 250 45% 78%;
+    --mode-accent: 185 50% 55%;
+  }
+
+  .dark[data-mode="SHORT_BREAK"] {
+    --aurora-1: 185 60% 55%;
+    --aurora-2: 210 50% 58%;
+    --aurora-3: 160 55% 55%;
+    --aurora-4: 250 40% 60%;
+    --mode-accent: 185 50% 60%;
+  }
+
+  /* Mode: LONG_BREAK — Warm peach / coral aurora */
+  :root[data-mode="LONG_BREAK"] {
+    --aurora-1: 20 70% 72%;
+    --aurora-2: 340 60% 72%;
+    --aurora-3: 45 60% 75%;
+    --aurora-4: 15 55% 70%;
+    --mode-accent: 20 55% 55%;
+  }
+
+  .dark[data-mode="LONG_BREAK"] {
+    --aurora-1: 20 65% 58%;
+    --aurora-2: 340 55% 58%;
+    --aurora-3: 45 55% 60%;
+    --aurora-4: 15 50% 55%;
+    --mode-accent: 20 50% 58%;
   }
 }
 
@@ -87,25 +126,27 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'VT323', monospace;
-    font-size: 18px;
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
+    border-radius: 2px;
   }
 }
 
-/* Pixel range slider */
 @layer components {
-  input[type="range"].pixel-slider {
+  /* Minimal range slider */
+  input[type="range"].cozy-slider {
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
@@ -113,84 +154,92 @@
     height: 20px;
   }
 
-  input[type="range"].pixel-slider::-webkit-slider-track {
-    height: 6px;
+  input[type="range"].cozy-slider::-webkit-slider-track {
+    height: 3px;
     background: hsl(var(--muted));
-    border: 2px solid hsl(var(--border));
+    border-radius: 2px;
   }
 
-  input[type="range"].pixel-slider::-webkit-slider-thumb {
+  input[type="range"].cozy-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 14px;
     height: 14px;
-    background: hsl(var(--primary));
-    border: 2px solid hsl(var(--foreground) / 0.3);
-    margin-top: -6px;
-    box-shadow: 2px 2px 0px hsl(var(--foreground) / 0.15);
-    transition: transform 0.1s;
+    background: hsl(var(--foreground));
+    border: 2px solid hsl(var(--background));
+    border-radius: 50%;
+    margin-top: -5.5px;
+    box-shadow: 0 1px 4px hsl(var(--foreground) / 0.15);
+    transition: transform 0.15s ease;
   }
 
-  input[type="range"].pixel-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
+  input[type="range"].cozy-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
   }
 
-  input[type="range"].pixel-slider::-moz-range-track {
-    height: 6px;
+  input[type="range"].cozy-slider::-moz-range-track {
+    height: 3px;
     background: hsl(var(--muted));
-    border: 2px solid hsl(var(--border));
+    border-radius: 2px;
+    border: none;
   }
 
-  input[type="range"].pixel-slider::-moz-range-thumb {
+  input[type="range"].cozy-slider::-moz-range-thumb {
     width: 14px;
     height: 14px;
-    background: hsl(var(--primary));
-    border: 2px solid hsl(var(--foreground) / 0.3);
-    border-radius: 0;
-    box-shadow: 2px 2px 0px hsl(var(--foreground) / 0.15);
+    background: hsl(var(--foreground));
+    border: 2px solid hsl(var(--background));
+    border-radius: 50%;
+    box-shadow: 0 1px 4px hsl(var(--foreground) / 0.15);
   }
 
-  input[type="range"].pixel-slider:disabled::-webkit-slider-thumb {
+  input[type="range"].cozy-slider:disabled::-webkit-slider-thumb {
     background: hsl(var(--muted-foreground));
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }
 
-/* Firefly particle */
 @layer utilities {
-  .firefly {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: hsl(var(--primary));
-    box-shadow: 0 0 6px 2px hsl(var(--primary) / 0.4);
-    animation: firefly-float var(--duration, 8s) ease-in-out infinite,
-               firefly-glow var(--glow-duration, 3s) ease-in-out infinite;
-    opacity: 0;
+  /* Dot grid background */
+  .dot-grid {
+    background-image: radial-gradient(circle, hsl(var(--foreground) / var(--dot-opacity)) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
 
-  @keyframes firefly-float {
-    0%, 100% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(var(--dx, 30px), var(--dy, -20px));
-    }
-    50% {
-      transform: translate(calc(var(--dx, 30px) * -0.5), calc(var(--dy, -20px) * 1.5));
-    }
-    75% {
-      transform: translate(calc(var(--dx, 30px) * 0.8), calc(var(--dy, -20px) * -0.3));
-    }
+  /* Glass — very minimal, near-transparent */
+  .glass {
+    background: hsl(var(--card) / 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.3);
   }
 
-  @keyframes firefly-glow {
-    0%, 100% {
-      opacity: 0;
-    }
-    40%, 60% {
-      opacity: var(--brightness, 0.7);
-    }
+  .glass-strong {
+    background: hsl(var(--card) / 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border) / 0.4);
+  }
+
+  /* Shadows — very soft */
+  .shadow-cozy {
+    box-shadow:
+      0 1px 2px hsl(var(--foreground) / 0.02),
+      0 4px 16px hsl(var(--foreground) / 0.04);
+  }
+
+  .shadow-cozy-lg {
+    box-shadow:
+      0 2px 4px hsl(var(--foreground) / 0.02),
+      0 8px 32px hsl(var(--foreground) / 0.06);
+  }
+
+  /* Grain — barely visible */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+    opacity: 0.015;
   }
 }
