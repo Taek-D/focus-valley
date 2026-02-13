@@ -1,8 +1,9 @@
-import React from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Play, Pause, RotateCcw, SkipForward } from "lucide-react";
 import { cn } from "../lib/utils";
 import { ProgressRing } from "./ProgressRing";
+import { MODE_CONFIG } from "../lib/constants";
 import type { TimerMode } from "../hooks/useTimer";
 
 type TimerDisplayProps = {
@@ -19,16 +20,10 @@ type TimerDisplayProps = {
     onSkip: () => void;
 };
 
-const MODE_CONFIG: Record<TimerMode, { label: string; short: string }> = {
-    FOCUS: { label: "Focus", short: "Focus" },
-    SHORT_BREAK: { label: "Short Break", short: "Short" },
-    LONG_BREAK: { label: "Long Break", short: "Long" },
-};
-
-export const TimerDisplay: React.FC<TimerDisplayProps> = ({
+export const TimerDisplay = memo(function TimerDisplay({
     timeLeft, totalDuration, isRunning, isCompleted, mode, focusCount,
     onStart, onPause, onReset, onSwitchMode, onSkip,
-}) => {
+}: TimerDisplayProps) {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     const pad = (d: number) => d.toString().padStart(2, "0");
@@ -151,4 +146,4 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
             </div>
         </div>
     );
-};
+});

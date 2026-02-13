@@ -1,10 +1,10 @@
-import React from "react";
+import { memo } from "react";
 
 type ProgressRingProps = {
     progress: number;
 };
 
-export const ProgressRing: React.FC<ProgressRingProps> = ({ progress }) => {
+export const ProgressRing = memo(function ProgressRing({ progress }: ProgressRingProps) {
     const size = 200;
     const strokeWidth = 1.5;
     const radius = (size - strokeWidth * 2) / 2;
@@ -59,4 +59,4 @@ export const ProgressRing: React.FC<ProgressRingProps> = ({ progress }) => {
             />
         </svg>
     );
-};
+});

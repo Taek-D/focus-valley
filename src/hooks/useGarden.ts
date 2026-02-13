@@ -14,20 +14,12 @@ export const STREAK_UNLOCKS: { streak: number; plant: PlantType; label: string }
     { streak: 7, plant: "ORCHID", label: "Orchid" },
 ];
 
-function getTodayStr(): string {
-    return new Date().toISOString().slice(0, 10);
-}
-
-function getYesterdayStr(): string {
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-    return d.toISOString().slice(0, 10);
-}
+import { getToday, getYesterday } from "@/lib/date-utils";
 
 export function getDisplayStreak(currentStreak: number, lastFocusDate: string | null): number {
     if (!lastFocusDate || currentStreak === 0) return 0;
-    const today = getTodayStr();
-    const yesterday = getYesterdayStr();
+    const today = getToday();
+    const yesterday = getYesterday();
     if (lastFocusDate === today || lastFocusDate === yesterday) return currentStreak;
     return 0;
 }
@@ -86,13 +78,13 @@ const useGardenStore = create<GardenState>()(
                 history: [...state.history, { type: state.type, date: new Date().toISOString() }],
             })),
             addFocusMinutes: (minutes) => set((state) => {
-                const today = getTodayStr();
+                const today = getToday();
                 const newSessions = [...state.focusSessions, { date: today, minutes }];
 
                 let newStreak = state.currentStreak;
 
                 if (state.lastFocusDate !== today) {
-                    const yesterday = getYesterdayStr();
+                    const yesterday = getYesterday();
                     if (state.lastFocusDate === yesterday || state.lastFocusDate === null) {
                         newStreak = state.currentStreak + 1;
                     } else {

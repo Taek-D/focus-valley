@@ -8,7 +8,7 @@ type Todo = {
     createdAt: string;
 };
 
-type TodoState = {
+export type TodoState = {
     todos: Todo[];
     activeTodoId: string | null;
     addTodo: (text: string) => void;

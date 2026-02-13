@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import type { TimerMode } from "./useTimer";
-
-const MODE_LABELS: Record<TimerMode, string> = {
-    FOCUS: "Focus",
-    SHORT_BREAK: "Short Break",
-    LONG_BREAK: "Long Break",
-};
+import { MODE_CONFIG } from "@/lib/constants";
 
 type DocumentTitleOptions = {
     timeLeft: number;
@@ -23,12 +18,12 @@ export function useDocumentTitle({ timeLeft, totalDuration, isRunning, isComplet
         const timeStr = `${pad(minutes)}:${pad(seconds)}`;
 
         if (isCompleted) {
-            document.title = `\u2713 Done \u2014 ${MODE_LABELS[mode]} | Focus Valley`;
+            document.title = `\u2713 Done \u2014 ${MODE_CONFIG[mode].label} | Focus Valley`;
         } else if (isRunning) {
-            document.title = `${timeStr} \u2014 ${MODE_LABELS[mode]} | Focus Valley`;
+            document.title = `${timeStr} \u2014 ${MODE_CONFIG[mode].label} | Focus Valley`;
         } else if (timeLeft < totalDuration) {
             // Paused mid-session
-            document.title = `\u23F8 ${timeStr} \u2014 ${MODE_LABELS[mode]} | Focus Valley`;
+            document.title = `\u23F8 ${timeStr} \u2014 ${MODE_CONFIG[mode].label} | Focus Valley`;
         } else {
             document.title = "Focus Valley";
         }

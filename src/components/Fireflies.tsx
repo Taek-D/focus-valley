@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { motion } from "framer-motion";
 
 type Mote = {
@@ -23,7 +23,7 @@ function generateMotes(count: number): Mote[] {
     }));
 }
 
-export const Fireflies = () => {
+export const Fireflies = memo(function Fireflies() {
     const motes = useMemo(() => generateMotes(8), []);
 
     return (
@@ -55,4 +55,4 @@ export const Fireflies = () => {
             ))}
         </div>
     );
-};
+});
