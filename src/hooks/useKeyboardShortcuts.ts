@@ -9,6 +9,7 @@ type KeyboardShortcutOptions = {
     onSkip: () => void;
     onSwitchMode: (mode: TimerMode) => void;
     onToggleMixer: () => void;
+    onToggleShortcutGuide: () => void;
 };
 
 export function useKeyboardShortcuts({
@@ -19,6 +20,7 @@ export function useKeyboardShortcuts({
     onSkip,
     onSwitchMode,
     onToggleMixer,
+    onToggleShortcutGuide,
 }: KeyboardShortcutOptions) {
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -51,10 +53,13 @@ export function useKeyboardShortcuts({
                 case "M":
                     onToggleMixer();
                     break;
+                case "?":
+                    onToggleShortcutGuide();
+                    break;
             }
         };
 
         document.addEventListener("keydown", handler);
         return () => document.removeEventListener("keydown", handler);
-    }, [isRunning, isCompleted, onToggle, onReset, onSkip, onSwitchMode, onToggleMixer]);
+    }, [isRunning, isCompleted, onToggle, onReset, onSkip, onSwitchMode, onToggleMixer, onToggleShortcutGuide]);
 }

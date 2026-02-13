@@ -73,3 +73,74 @@ export function getWeeklyStats(sessions: FocusSession[]): WeeklyStats {
 
     return { thisWeek, lastWeek, totalMinutes, avgMinutes, bestDay, changePercent };
 }
+
+export type HeatmapDay = { date: string; minutes: number; level: 0 | 1 | 2 | 3 | 4 };
+
+export function getMonthlyHeatmap(sessions: FocusSession[], dailyGoal: number): (HeatmapDay | null)[][] {
+    const minutesByDay: Record<string, number> = {};
+    for (const session of sessions) {
+        minutesByDay[session.date] = (minutesByDay[session.date] || 0) + session.minutes;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayDow = (today.getDay() + 6) % 7; // 0=Mon, 6=Sun
+    const thisMonday = new Date(today);
+    thisMonday.setDate(thisMonday.getDate() - todayDow);
+
+    const startMonday = new Date(thisMonday);
+    startMonday.setDate(startMonday.getDate() - 12 * 7);
+
+    const weeks: (HeatmapDay | null)[][] = [];
+    const current = new Date(startMonday);
+
+    for (let w = 0; w < 13; w++) {
+        const week: (HeatmapDay | null)[] = [];
+        for (let d = 0; d < 7; d++) {
+            if (current > today) {
+                week.push(null);
+            } else {
+                const dateStr = current.toISOString().slice(0, 10);
+                const minutes = minutesByDay[dateStr] || 0;
+
+                let level: 0 | 1 | 2 | 3 | 4 = 0;
+                if (minutes > 0) {
+                    const ratio = minutes / dailyGoal;
+                    if (ratio >= 1) level = 4;
+                    else if (ratio >= 0.75) level = 3;
+                    else if (ratio >= 0.5) level = 2;
+                    else level = 1;
+                }
+
+                week.push({ date: dateStr, minutes, level });
+            }
+            current.setDate(current.getDate() + 1);
+        }
+        weeks.push(week);
+    }
+
+    return weeks;
+}
+
+export function exportSessionsCSV(sessions: FocusSession[]): string {
+    const header = "Date,Minutes\n";
+    const byDate: Record<string, number> = {};
+    for (const s of sessions) {
+        byDate[s.date] = (byDate[s.date] || 0) + s.minutes;
+    }
+    const rows = Object.entries(byDate)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([date, minutes]) => `${date},${minutes}`)
+        .join("\n");
+    return header + rows;
+}
+
+export function downloadCSV(content: string, filename: string) {
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+}

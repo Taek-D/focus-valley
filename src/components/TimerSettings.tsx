@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, RotateCcw, Clock, Coffee, Sunset } from "lucide-react";
+import { X, RotateCcw, Clock, Coffee, Sunset, Target, SkipForward } from "lucide-react";
 import { useTimerSettings, LIMITS, type TimerDurations } from "../hooks/useTimerSettings";
 
 type TimerSettingsProps = {
@@ -15,7 +15,7 @@ const FIELDS: { key: keyof TimerDurations; label: string; icon: React.ReactNode 
 ];
 
 export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose }) => {
-    const { focus, shortBreak, longBreak, setDuration, resetDefaults } = useTimerSettings();
+    const { focus, shortBreak, longBreak, dailyGoal, autoAdvance, setDuration, setDailyGoal, setAutoAdvance, resetDefaults } = useTimerSettings();
     const values: TimerDurations = { focus, shortBreak, longBreak };
     const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -102,6 +102,58 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                     </div>
                                 );
                             })}
+                        </div>
+
+                        {/* Daily Goal */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-muted-foreground/60">
+                                <Target size={14} />
+                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">Daily Goal</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={() => setDailyGoal(dailyGoal - 10)}
+                                    disabled={dailyGoal <= LIMITS.dailyGoal.min}
+                                    aria-label="Decrease daily goal"
+                                    className="w-10 h-10 font-display text-base rounded-xl border border-foreground/10 text-foreground disabled:opacity-20 hover:border-foreground/20 transition-all flex items-center justify-center"
+                                >
+                                    -
+                                </button>
+                                <div className="flex-1 text-center">
+                                    <span className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>{dailyGoal}</span>
+                                    <span className="font-body text-[10px] text-muted-foreground/50 ml-1">min</span>
+                                </div>
+                                <button
+                                    onClick={() => setDailyGoal(dailyGoal + 10)}
+                                    disabled={dailyGoal >= LIMITS.dailyGoal.max}
+                                    aria-label="Increase daily goal"
+                                    className="w-10 h-10 font-display text-base rounded-xl border border-foreground/10 text-foreground disabled:opacity-20 hover:border-foreground/20 transition-all flex items-center justify-center"
+                                >
+                                    +
+                                </button>
+                            </div>
+                            <div className="font-body text-[10px] text-muted-foreground/30 text-center">
+                                {LIMITS.dailyGoal.min} – {LIMITS.dailyGoal.max} min
+                            </div>
+                        </div>
+
+                        {/* Auto-advance */}
+                        <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center gap-2 text-muted-foreground/60">
+                                <SkipForward size={14} />
+                                <span className="font-body text-[10px] font-medium tracking-[0.1em] uppercase">Auto-advance</span>
+                            </div>
+                            <button
+                                onClick={() => setAutoAdvance(!autoAdvance)}
+                                aria-label={autoAdvance ? "Disable auto-advance" : "Enable auto-advance"}
+                                className={`w-10 h-5 rounded-full transition-all flex items-center ${
+                                    autoAdvance ? "bg-foreground/20 justify-end" : "bg-foreground/5 justify-start"
+                                }`}
+                            >
+                                <div className={`w-4 h-4 rounded-full mx-0.5 transition-colors ${
+                                    autoAdvance ? "bg-foreground" : "bg-foreground/30"
+                                }`} />
+                            </button>
                         </div>
 
                         {/* Reset */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
-import { X, Trash2, Check } from "lucide-react";
+import { X, Trash2, Check, Pin } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useTodos } from "../hooks/useTodos";
 
@@ -10,7 +10,7 @@ type TodoPanelProps = {
 };
 
 export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
-    const { todos, addTodo, toggleTodo, removeTodo, clearCompleted } = useTodos();
+    const { todos, activeTodoId, addTodo, toggleTodo, removeTodo, clearCompleted, setActiveTodo } = useTodos();
     const [input, setInput] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
@@ -118,7 +118,12 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
-                                            className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-foreground/3 transition-colors group"
+                                            className={cn(
+                                                "flex items-center gap-3 py-2.5 px-3 rounded-xl transition-colors group",
+                                                activeTodoId === todo.id && !todo.completed
+                                                    ? "bg-foreground/5 hover:bg-foreground/8"
+                                                    : "hover:bg-foreground/3"
+                                            )}
                                         >
                                             <button
                                                 onClick={() => toggleTodo(todo.id)}
@@ -142,6 +147,20 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                             >
                                                 {todo.text}
                                             </span>
+                                            {!todo.completed && (
+                                                <button
+                                                    onClick={() => setActiveTodo(activeTodoId === todo.id ? null : todo.id)}
+                                                    aria-label={activeTodoId === todo.id ? "Unpin task" : "Pin as focus task"}
+                                                    className={cn(
+                                                        "flex-shrink-0 p-1 rounded-lg transition-all",
+                                                        activeTodoId === todo.id
+                                                            ? "text-foreground/50"
+                                                            : "text-muted-foreground/20 opacity-0 group-hover:opacity-100"
+                                                    )}
+                                                >
+                                                    <Pin size={12} />
+                                                </button>
+                                            )}
                                             <button
                                                 onClick={() => removeTodo(todo.id)}
                                                 aria-label="Remove task"

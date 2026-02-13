@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
-import { X, Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target } from "lucide-react";
+import { X, Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download } from "lucide-react";
 import type { PlantType, FocusSession } from "../hooks/useGarden";
-import { getWeeklyStats } from "../lib/stats";
+import { useTimerSettings } from "../hooks/useTimerSettings";
+import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV } from "../lib/stats";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -50,7 +51,13 @@ function getDayLabel(dateStr: string): string {
     return d.toLocaleDateString(undefined, { weekday: "short" });
 }
 
-const DAILY_GOAL_MINUTES = 120;
+const HEATMAP_COLORS = [
+    "bg-foreground/4",
+    "bg-foreground/10",
+    "bg-foreground/20",
+    "bg-foreground/30",
+    "bg-foreground/45",
+];
 
 export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     isOpen, onClose, history, totalFocusMinutes, focusSessions, currentStreak, bestStreak,
@@ -60,6 +67,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const totalHours = Math.floor(totalFocusMinutes / 60);
     const remainingMinutes = totalFocusMinutes % 60;
     const closeRef = useRef<HTMLButtonElement>(null);
+    const { dailyGoal } = useTimerSettings();
 
     const weekData = useMemo(() => {
         const days = getLast7Days();
@@ -68,9 +76,11 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             minutesByDay[session.date] = (minutesByDay[session.date] || 0) + session.minutes;
         }
         const data = days.map((d) => ({ date: d, minutes: minutesByDay[d] || 0 }));
-        const max = Math.max(...data.map((d) => d.minutes), DAILY_GOAL_MINUTES, 1);
+        const max = Math.max(...data.map((d) => d.minutes), dailyGoal, 1);
         return { data, max };
-    }, [focusSessions]);
+    }, [focusSessions, dailyGoal]);
+
+    const heatmapWeeks = useMemo(() => getMonthlyHeatmap(focusSessions, dailyGoal), [focusSessions, dailyGoal]);
 
     const weeklyStats = useMemo(() => getWeeklyStats(focusSessions), [focusSessions]);
 
@@ -86,7 +96,12 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
         if (info.offset.y > 100 || info.velocity.y > 500) onClose();
     };
 
-    const goalLinePercent = (DAILY_GOAL_MINUTES / weekData.max) * 100;
+    const goalLinePercent = (dailyGoal / weekData.max) * 100;
+
+    const handleExport = () => {
+        const csv = exportSessionsCSV(focusSessions);
+        downloadCSV(csv, `focus-valley-${new Date().toISOString().slice(0, 10)}.csv`);
+    };
 
     return (
         <AnimatePresence>
@@ -121,14 +136,23 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                         {/* Header */}
                         <div className="flex items-center justify-between px-5 pb-3 pt-1">
                             <h2 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground">Stats & History</h2>
-                            <button
-                                ref={closeRef}
-                                onClick={onClose}
-                                aria-label="Close history panel"
-                                className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
-                            >
-                                <X size={14} />
-                            </button>
+                            <div className="flex items-center gap-1">
+                                <button
+                                    onClick={handleExport}
+                                    aria-label="Export data as CSV"
+                                    className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
+                                >
+                                    <Download size={14} />
+                                </button>
+                                <button
+                                    ref={closeRef}
+                                    onClick={onClose}
+                                    aria-label="Close history panel"
+                                    className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Stats Grid */}
@@ -157,7 +181,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                     style={{ bottom: `${Math.min(goalLinePercent, 100) * 0.7}%` }}
                                 >
                                     <span className="absolute -top-3 right-0 font-body text-[8px] text-muted-foreground/25">
-                                        {DAILY_GOAL_MINUTES}m goal
+                                        {dailyGoal}m goal
                                     </span>
                                 </div>
 
@@ -190,6 +214,37 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                         </div>
                                     );
                                 })}
+                            </div>
+                        </div>
+
+                        {/* Activity Heatmap — 13 weeks */}
+                        <div className="px-5 pb-4">
+                            <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-2">
+                                Activity · Last 3 Months
+                            </div>
+                            <div className="flex gap-[2px] justify-center">
+                                {heatmapWeeks.map((week, wi) => (
+                                    <div key={wi} className="flex flex-col gap-[2px]">
+                                        {week.map((day, di) => (
+                                            <div
+                                                key={`${wi}-${di}`}
+                                                className={`w-[10px] h-[10px] rounded-[2px] ${
+                                                    day === null
+                                                        ? "bg-transparent"
+                                                        : HEATMAP_COLORS[day.level]
+                                                }`}
+                                                title={day ? `${day.date}: ${day.minutes}m` : ""}
+                                            />
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex items-center justify-end gap-1 mt-1.5">
+                                <span className="font-body text-[8px] text-muted-foreground/25">Less</span>
+                                {HEATMAP_COLORS.map((color, i) => (
+                                    <div key={i} className={`w-[8px] h-[8px] rounded-[1px] ${color}`} />
+                                ))}
+                                <span className="font-body text-[8px] text-muted-foreground/25">More</span>
                             </div>
                         </div>
 

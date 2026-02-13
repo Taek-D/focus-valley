@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 import { X, Lock } from "lucide-react";
-import { type PlantType, STREAK_UNLOCKS } from "../hooks/useGarden";
+import { type PlantType, type PlantStage, STREAK_UNLOCKS } from "../hooks/useGarden";
 import { getPlantComponent } from "./ui/pixel-plants";
 
 type HistoryEntry = { type: PlantType; date: string };
@@ -25,6 +25,7 @@ const PLANT_LABELS: Record<PlantType, string> = {
 };
 
 const ALL_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE", "ROSE", "ORCHID"];
+const GROWTH_STAGES: PlantStage[] = ["SEED", "SPROUT", "BUD", "FLOWER", "TREE"];
 
 export const GardenCollection: React.FC<GardenCollectionProps> = ({
     isOpen, onClose, history, unlockedPlants, currentStreak, bestStreak,
@@ -147,9 +148,23 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                             </div>
                                             <div className="font-body text-[10px] font-medium text-foreground/70">{PLANT_LABELS[type]}</div>
                                             {isUnlocked && (
-                                                <div className="font-body text-[9px] text-muted-foreground/30">
-                                                    {count > 0 ? `${count} grown` : "Not yet grown"}
-                                                </div>
+                                                <>
+                                                    <div className="font-body text-[9px] text-muted-foreground/30">
+                                                        {count > 0 ? `${count} grown` : "Not yet grown"}
+                                                    </div>
+                                                    <div className="flex items-end gap-0.5 mt-1">
+                                                        {GROWTH_STAGES.map((stage) => {
+                                                            const StageSvg = getPlantComponent(type, stage);
+                                                            return (
+                                                                <div key={stage} className="w-4 h-4 flex items-center justify-center opacity-40">
+                                                                    <div className="scale-[0.12] origin-center">
+                                                                        <StageSvg />
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </>
                                             )}
                                         </motion.div>
                                     );

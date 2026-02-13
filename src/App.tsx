@@ -16,10 +16,14 @@ import { HistoryPanel } from "./components/HistoryPanel";
 import { GardenCollection } from "./components/GardenCollection";
 import { TimerSettings } from "./components/TimerSettings";
 import { TodoPanel } from "./components/TodoPanel";
+import { ShortcutGuide } from "./components/ShortcutGuide";
+import { Confetti } from "./components/Confetti";
 import { Fireflies } from "./components/Fireflies";
 import { PlantParticles } from "./components/PlantParticles";
 import { getPlantComponent } from "./components/ui/pixel-plants";
-import { ScrollText, Moon, Sun, Leaf, ChevronDown, ChevronUp, Settings, Volume2, Sprout, Flame, ListTodo } from "lucide-react";
+import { useTimerSettings } from "./hooks/useTimerSettings";
+import { useTodos } from "./hooks/useTodos";
+import { ScrollText, Moon, Sun, Leaf, ChevronDown, ChevronUp, Settings, Volume2, Sprout, Flame, ListTodo, Pin } from "lucide-react";
 import type { PlantStage } from "./hooks/useGarden";
 import type { TargetAndTransition } from "framer-motion";
 
@@ -84,6 +88,8 @@ function App() {
   const [showGarden, setShowGarden] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showTodo, setShowTodo] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [confettiTrigger, setConfettiTrigger] = useState(0);
   const [toast, setToast] = useState({ message: "", visible: false });
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
@@ -118,9 +124,29 @@ function App() {
   // Compute transition variant from current state (derived, not stored)
   const stageTransition = getStageTransition(prevStage, garden.stage);
 
+  // Timer settings for auto-advance
+  const { autoAdvance } = useTimerSettings();
+
+  // Active todo from store
+  const activeTodo = useTodos((s) => {
+    if (!s.activeTodoId) return null;
+    return s.todos.find((t) => t.id === s.activeTodoId && !t.completed) ?? null;
+  });
+
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", timer.mode);
   }, [timer.mode]);
+
+  // Set seasonal theme
+  useEffect(() => {
+    const month = new Date().getMonth();
+    let season: string;
+    if (month >= 2 && month <= 4) season = "spring";
+    else if (month >= 5 && month <= 7) season = "summer";
+    else if (month >= 8 && month <= 10) season = "autumn";
+    else season = "winter";
+    document.documentElement.setAttribute("data-season", season);
+  }, []);
 
   const showToast = useCallback((message: string) => {
     setToast({ message, visible: true });
@@ -149,12 +175,22 @@ function App() {
         garden.addFocusMinutes(timer.focusDuration);
         showToast("Focus complete! Your plant has grown.");
         notification.notify("Focus Valley", "Focus session complete! Your plant has grown.");
+        setConfettiTrigger((t) => t + 1);
       } else {
         showToast("Break is over! Ready to focus?");
         notification.notify("Focus Valley", "Break is over! Time to focus.");
       }
     }
   }, [timer.isCompleted, timer.mode, showToast, garden, notification]);
+
+  // Auto-advance to next mode after completion
+  useEffect(() => {
+    if (!timer.isCompleted || !autoAdvance) return;
+    const timeout = setTimeout(() => {
+      timer.advanceToNextMode();
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [timer.isCompleted, autoAdvance, timer]);
 
   useEffect(() => {
     if (garden.pendingUnlock) {
@@ -211,6 +247,10 @@ function App() {
     setShowMixer((v) => !v);
   }, []);
 
+  const handleToggleShortcutGuide = useCallback(() => {
+    setShowShortcuts((v) => !v);
+  }, []);
+
   useKeyboardShortcuts({
     isRunning: timer.isRunning,
     isCompleted: timer.isCompleted,
@@ -219,6 +259,7 @@ function App() {
     onSkip: timer.advanceToNextMode,
     onSwitchMode: timer.switchMode,
     onToggleMixer: handleToggleMixer,
+    onToggleShortcutGuide: handleToggleShortcutGuide,
   });
 
   // Document title
@@ -403,6 +444,18 @@ function App() {
               {garden.stage === "DEAD" ? "Tap to plant a new seed" : "Tap to harvest"}
             </motion.div>
           )}
+
+          {/* Active todo — focus task display */}
+          {activeTodo && !canInteract && (
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="font-body text-[11px] text-foreground/40 tracking-wide -mt-1 mb-2 flex items-center gap-1.5 max-w-[200px] truncate"
+            >
+              <Pin size={10} className="flex-shrink-0 opacity-50" />
+              <span className="truncate">{activeTodo.text}</span>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Timer */}
@@ -512,6 +565,13 @@ function App() {
         isOpen={showTodo}
         onClose={() => setShowTodo(false)}
       />
+
+      <ShortcutGuide
+        isOpen={showShortcuts}
+        onClose={() => setShowShortcuts(false)}
+      />
+
+      <Confetti trigger={confettiTrigger} />
     </div>
   );
 }

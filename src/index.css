@@ -117,6 +117,47 @@
     --aurora-4: 15 50% 55%;
     --mode-accent: 20 50% 58%;
   }
+
+  /* Seasonal aurora — only affects FOCUS mode (break modes keep own colors) */
+  :root[data-season="spring"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 340 75% 78%;
+    --aurora-2: 140 60% 72%;
+    --aurora-3: 280 50% 75%;
+    --aurora-4: 100 55% 78%;
+  }
+  .dark[data-season="spring"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 340 65% 62%;
+    --aurora-2: 140 55% 55%;
+    --aurora-3: 280 45% 58%;
+    --aurora-4: 100 50% 60%;
+  }
+
+  :root[data-season="summer"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 30 80% 72%;
+    --aurora-2: 180 65% 70%;
+    --aurora-3: 60 70% 75%;
+    --aurora-4: 210 50% 78%;
+  }
+  .dark[data-season="summer"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 30 70% 58%;
+    --aurora-2: 180 60% 52%;
+    --aurora-3: 60 60% 58%;
+    --aurora-4: 210 45% 60%;
+  }
+
+  :root[data-season="autumn"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 15 75% 68%;
+    --aurora-2: 40 70% 65%;
+    --aurora-3: 350 55% 70%;
+    --aurora-4: 55 60% 72%;
+  }
+  .dark[data-season="autumn"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 15 65% 52%;
+    --aurora-2: 40 60% 50%;
+    --aurora-3: 350 50% 55%;
+    --aurora-4: 55 55% 55%;
+  }
+  /* Winter uses default aurora colors (cool blue-purple-cyan) */
 }
 
 @layer base {
