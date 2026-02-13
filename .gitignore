@@ -31,3 +31,9 @@ dist-ssr
 # bkit temp files
 docs/.pdca-snapshots/
 .claude/agent-memory/
+
+# OAuth credentials
+Focus-Valley-OAuth.txt
+
+# Playwright MCP
+.playwright-mcp/

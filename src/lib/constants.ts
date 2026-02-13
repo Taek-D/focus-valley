@@ -36,3 +36,19 @@ export const MODE_CONFIG: Record<TimerMode, { label: string; short: string }> = 
     SHORT_BREAK: { label: "Short Break", short: "Short" },
     LONG_BREAK: { label: "Long Break", short: "Long" },
 };
+
+export type Category = {
+    id: string;
+    label: string;
+    emoji: string;
+    color: string; // HSL value
+};
+
+export const DEFAULT_CATEGORIES: Category[] = [
+    { id: "study", label: "Study", emoji: "\u{1F4DA}", color: "220 70% 55%" },
+    { id: "code", label: "Code", emoji: "\u{1F4BB}", color: "160 70% 45%" },
+    { id: "read", label: "Read", emoji: "\u{1F4D6}", color: "35 70% 55%" },
+    { id: "work", label: "Work", emoji: "\u{1F4BC}", color: "270 60% 55%" },
+    { id: "design", label: "Design", emoji: "\u{1F3A8}", color: "330 70% 55%" },
+    { id: "exercise", label: "Exercise", emoji: "\u{1F3C3}", color: "140 65% 45%" },
+];

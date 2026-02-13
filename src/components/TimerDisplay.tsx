@@ -31,8 +31,8 @@ export const TimerDisplay = memo(function TimerDisplay({
 
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            {/* Mode Tabs — pill segment control with equal-width tabs */}
-            <div className="inline-flex items-center rounded-full border border-foreground/8 p-1 mb-10">
+            {/* Mode Tabs */}
+            <div className="inline-flex items-center rounded-full bg-foreground/[0.03] p-1 mb-8">
                 {(["FOCUS", "SHORT_BREAK", "LONG_BREAK"] as const).map((m) => (
                     <button
                         key={m}
@@ -50,7 +50,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                         {mode === m && (
                             <motion.div
                                 layoutId="tab-pill"
-                                className="absolute inset-0 rounded-full bg-foreground/6"
+                                className="absolute inset-0 rounded-full bg-foreground/8 shadow-[0_0_12px_hsl(var(--mode-accent)/0.08)]"
                                 transition={{ type: "spring", stiffness: 400, damping: 35 }}
                             />
                         )}
@@ -62,7 +62,7 @@ export const TimerDisplay = memo(function TimerDisplay({
 
             {/* Timer Display with Progress Ring */}
             <div
-                className="relative flex items-center justify-center mb-12"
+                className="relative flex items-center justify-center mb-10"
                 role="timer"
                 aria-live="polite"
                 aria-label={`${pad(minutes)} minutes ${pad(seconds)} seconds remaining`}
@@ -70,16 +70,16 @@ export const TimerDisplay = memo(function TimerDisplay({
                 <ProgressRing progress={progress} />
 
                 <div className="relative flex flex-col items-center py-8 px-6">
-                    {/* Focus Counter — subtle dots above timer */}
-                    <div className="flex gap-2 items-center mb-4">
+                    {/* Focus Counter dots */}
+                    <div className="flex gap-2 items-center mb-3">
                         {[...Array(4)].map((_, i) => (
                             <div
                                 key={i}
                                 className={cn(
-                                    "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                    "w-1.5 h-1.5 rounded-full transition-all duration-500",
                                     i < (focusCount % 4)
-                                        ? "bg-foreground/25"
-                                        : "bg-foreground/8"
+                                        ? "bg-foreground/25 scale-100"
+                                        : "bg-foreground/6 scale-90"
                                 )}
                             />
                         ))}
@@ -87,20 +87,24 @@ export const TimerDisplay = memo(function TimerDisplay({
 
                     <div
                         className={cn(
-                            "font-display text-5xl md:text-6xl leading-none tracking-tight select-none transition-colors duration-700 tabular-nums",
+                            "font-display text-[3.5rem] md:text-[4rem] leading-none tracking-tight select-none transition-colors duration-700 tabular-nums",
                             isCompleted
                                 ? "text-foreground"
                                 : isRunning
-                                ? "text-foreground/85"
-                                : "text-foreground/25"
+                                ? "text-foreground/80"
+                                : "text-foreground/20"
                         )}
-                        style={{ fontWeight: 300 }}
+                        style={{ fontWeight: 200 }}
                     >
                         {pad(minutes)}
-                        <span className={cn(
-                            "inline-block mx-1 text-[0.45em] opacity-20",
-                            isRunning && "animate-pulse-slow"
-                        )}>:</span>
+                        <span
+                            className={cn(
+                                "inline-block mx-0.5 text-[0.4em] transition-opacity duration-1000",
+                                isRunning ? "opacity-40" : "opacity-15"
+                            )}
+                        >
+                            :
+                        </span>
                         {pad(seconds)}
                     </div>
                 </div>
@@ -109,17 +113,19 @@ export const TimerDisplay = memo(function TimerDisplay({
             {/* Controls */}
             <div className="flex items-center justify-center gap-3">
                 {isCompleted ? (
-                    <button
+                    <motion.button
                         onClick={onSkip}
-                        className="flex items-center justify-center gap-2.5 w-48 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all"
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all"
                     >
                         <SkipForward size={13} /> Next
-                    </button>
+                    </motion.button>
                 ) : !isRunning ? (
                     <button
                         onClick={onStart}
                         aria-label="Start timer"
-                        className="flex items-center justify-center gap-2.5 w-48 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all shadow-cozy"
+                        className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_2px_16px_hsl(var(--foreground)/0.08)]"
                     >
                         <Play size={13} fill="currentColor" /> Start
                     </button>
@@ -128,7 +134,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                         <button
                             onClick={onPause}
                             aria-label="Pause timer"
-                            className="flex items-center justify-center gap-2.5 w-40 py-3.5 border border-foreground/15 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/30 active:scale-[0.98] transition-all"
+                            className="flex items-center justify-center gap-2.5 w-36 py-3.5 border border-foreground/12 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/25 active:scale-[0.98] transition-all"
                         >
                             <Pause size={13} /> Pause
                         </button>
@@ -137,7 +143,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                             whileHover={{ rotate: -90 }}
                             whileTap={{ scale: 0.9 }}
                             aria-label="Reset timer"
-                            className="p-3 rounded-full border border-foreground/10 text-muted-foreground/40 hover:text-destructive hover:border-destructive/30 transition-all"
+                            className="p-3 rounded-full border border-foreground/8 text-muted-foreground/30 hover:text-destructive hover:border-destructive/30 transition-all"
                         >
                             <RotateCcw size={13} />
                         </motion.button>

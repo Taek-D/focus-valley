@@ -17,7 +17,7 @@ export default defineConfig({
         short_name: "FocusValley",
         description:
           "Stay focused and grow your pixel garden. A gamified Pomodoro timer with ambient soundscapes.",
-        theme_color: "#16a34a",
+        theme_color: "#0a0f1a",
         background_color: "#030712",
         display: "standalone",
         orientation: "portrait",
@@ -43,7 +43,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,woff2}"],
+        globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/landing\.html/, /^\/privacy\.html/, /^\/terms\.html/, /^\/offline\.html/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
@@ -53,10 +55,29 @@ export default defineConfig({
               expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
             },
           },
+          {
+            urlPattern: /\/(landing|privacy|terms|offline)\.html$/,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "static-pages",
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 7 },
+            },
+          },
         ],
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          sentry: ["@sentry/react"],
+          supabase: ["@supabase/supabase-js"],
+          "framer-motion": ["framer-motion"],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

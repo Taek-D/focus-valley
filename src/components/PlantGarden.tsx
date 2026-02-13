@@ -70,7 +70,7 @@ export const PlantGarden = memo(function PlantGarden({
             </div>
 
             {/* Stage label */}
-            <div className="font-body text-[9px] text-muted-foreground/40 tracking-[0.3em] uppercase mt-1 mb-3">
+            <div className="font-body text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase mt-1 mb-2">
                 {gardenType} &middot; {gardenStage}
             </div>
 

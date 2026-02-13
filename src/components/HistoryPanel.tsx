@@ -1,12 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import { motion } from "framer-motion";
-import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download } from "lucide-react";
+import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download, Share2 } from "lucide-react";
 import type { PlantType, FocusSession } from "../hooks/useGarden";
 import { useTimerSettings } from "../hooks/useTimerSettings";
-import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV } from "../lib/stats";
+import { useCategories } from "../hooks/useCategories";
+import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getCategoryBreakdown } from "../lib/stats";
 import { PLANT_ICONS } from "../lib/constants";
 import { getDayLabel, getLast7Days, groupByDate } from "../lib/date-utils";
+import { generateShareCard, shareOrDownload } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
+import { WaitlistBanner } from "./WaitlistBanner";
+import { trackShareCard, trackCsvExport } from "../lib/analytics";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -36,6 +40,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const totalHours = Math.floor(totalFocusMinutes / 60);
     const remainingMinutes = totalFocusMinutes % 60;
     const { dailyGoal } = useTimerSettings();
+    const { categories } = useCategories();
+    const [sharing, setSharing] = useState(false);
 
     const weekData = useMemo(() => {
         const days = getLast7Days();
@@ -52,12 +58,40 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 
     const weeklyStats = useMemo(() => getWeeklyStats(focusSessions), [focusSessions]);
 
+    const categoryBreakdown = useMemo(() => getCategoryBreakdown(focusSessions, categories), [focusSessions, categories]);
+
     const goalLinePercent = (dailyGoal / weekData.max) * 100;
 
     const handleExport = () => {
-        const csv = exportSessionsCSV(focusSessions);
+        const csv = exportSessionsCSV(focusSessions, categories);
         downloadCSV(csv, `focus-valley-${new Date().toISOString().slice(0, 10)}.csv`);
+        trackCsvExport();
     };
+
+    const handleShare = useCallback(async () => {
+        setSharing(true);
+        try {
+            const today = new Date().toLocaleDateString("en-US", {
+                weekday: "long", year: "numeric", month: "long", day: "numeric",
+            });
+            const todaySessions = focusSessions.filter((s) => s.date === new Date().toISOString().slice(0, 10));
+            const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
+            const todayBreakdown = getCategoryBreakdown(todaySessions, categories);
+
+            const blob = await generateShareCard({
+                date: today,
+                totalMinutes: todayMinutes,
+                streak: currentStreak,
+                categoryBreakdown: todayBreakdown,
+                plantCount: history.length,
+            });
+
+            await shareOrDownload(blob, `focus-valley-${new Date().toISOString().slice(0, 10)}.png`);
+            trackShareCard();
+        } finally {
+            setSharing(false);
+        }
+    }, [focusSessions, categories, currentStreak, history.length]);
 
     return (
         <BottomSheet
@@ -65,13 +99,23 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             onClose={onClose}
             title="Stats & History"
             headerActions={
-                <button
-                    onClick={handleExport}
-                    aria-label="Export data as CSV"
-                    className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
-                >
-                    <Download size={14} />
-                </button>
+                <>
+                    <button
+                        onClick={handleShare}
+                        disabled={sharing}
+                        aria-label="Share focus card"
+                        className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all disabled:opacity-30"
+                    >
+                        <Share2 size={14} />
+                    </button>
+                    <button
+                        onClick={handleExport}
+                        aria-label="Export data as CSV"
+                        className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
+                    >
+                        <Download size={14} />
+                    </button>
+                </>
             }
         >
             {/* Stats Grid */}
@@ -224,6 +268,59 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Category Breakdown */}
+            {categoryBreakdown.length > 0 && (
+                <div className="px-5 pb-4">
+                    <div className="rounded-2xl border border-foreground/5 p-4">
+                        <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-3">
+                            Category Breakdown
+                        </div>
+
+                        {/* Stacked bar */}
+                        <div className="flex h-2 rounded-full overflow-hidden mb-3">
+                            {categoryBreakdown.map((cat) => (
+                                <div
+                                    key={cat.id}
+                                    className="h-full first:rounded-l-full last:rounded-r-full"
+                                    style={{
+                                        width: `${cat.percent}%`,
+                                        backgroundColor: `hsl(${cat.color})`,
+                                        minWidth: cat.percent > 0 ? 4 : 0,
+                                    }}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Category rows */}
+                        <div className="space-y-2">
+                            {categoryBreakdown.map((cat) => (
+                                <div key={cat.id} className="flex items-center gap-2.5">
+                                    <div
+                                        className="w-2 h-2 rounded-full shrink-0"
+                                        style={{ backgroundColor: `hsl(${cat.color})` }}
+                                    />
+                                    <span className="text-sm leading-none">{cat.emoji}</span>
+                                    <span className="font-body text-[11px] text-foreground/70 flex-1">{cat.label}</span>
+                                    <span className="font-body text-[11px] text-foreground/50 tabular-nums">
+                                        {cat.minutes >= 60
+                                            ? `${Math.floor(cat.minutes / 60)}h ${cat.minutes % 60}m`
+                                            : `${cat.minutes}m`}
+                                    </span>
+                                    <span className="font-body text-[9px] text-muted-foreground/40 w-8 text-right tabular-nums">
+                                        {cat.percent}%
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Waitlist CTA */}
+            <div className="px-5 pb-4">
+                <WaitlistBanner source="history" />
             </div>
 
             {/* History List */}

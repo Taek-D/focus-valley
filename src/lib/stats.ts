@@ -1,4 +1,5 @@
 import type { FocusSession } from "../hooks/useGarden";
+import type { Category } from "./constants";
 
 function getWeekStart(date: Date): Date {
     const d = new Date(date);
@@ -122,15 +123,55 @@ export function getMonthlyHeatmap(sessions: FocusSession[], dailyGoal: number): 
     return weeks;
 }
 
-export function exportSessionsCSV(sessions: FocusSession[]): string {
-    const header = "Date,Minutes\n";
-    const byDate: Record<string, number> = {};
-    for (const s of sessions) {
-        byDate[s.date] = (byDate[s.date] || 0) + s.minutes;
+export type CategoryBreakdownItem = {
+    id: string;
+    label: string;
+    emoji: string;
+    color: string;
+    minutes: number;
+    percent: number;
+};
+
+export function getCategoryBreakdown(sessions: FocusSession[], categories: Category[]): CategoryBreakdownItem[] {
+    const minutesByCategory: Record<string, number> = {};
+    let totalMinutes = 0;
+
+    for (const session of sessions) {
+        const catId = session.categoryId ?? "uncategorized";
+        minutesByCategory[catId] = (minutesByCategory[catId] || 0) + session.minutes;
+        totalMinutes += session.minutes;
     }
-    const rows = Object.entries(byDate)
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([date, minutes]) => `${date},${minutes}`)
+
+    if (totalMinutes === 0) return [];
+
+    const result: CategoryBreakdownItem[] = [];
+    const categoryMap = new Map(categories.map((c) => [c.id, c]));
+
+    for (const [id, minutes] of Object.entries(minutesByCategory)) {
+        const cat = categoryMap.get(id);
+        result.push({
+            id,
+            label: cat?.label ?? "Other",
+            emoji: cat?.emoji ?? "\u{1F4CB}",
+            color: cat?.color ?? "220 10% 50%",
+            minutes,
+            percent: Math.round((minutes / totalMinutes) * 100),
+        });
+    }
+
+    return result.sort((a, b) => b.minutes - a.minutes);
+}
+
+export function exportSessionsCSV(sessions: FocusSession[], categories?: Category[]): string {
+    const categoryMap = categories ? new Map(categories.map((c) => [c.id, c.label])) : null;
+    const header = categoryMap ? "Date,Minutes,Category\n" : "Date,Minutes\n";
+    const rows = sessions
+        .slice()
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .map((s) => {
+            const catLabel = categoryMap?.get(s.categoryId ?? "") ?? "";
+            return categoryMap ? `${s.date},${s.minutes},${catLabel}` : `${s.date},${s.minutes}`;
+        })
         .join("\n");
     return header + rows;
 }

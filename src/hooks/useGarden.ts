@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 export type PlantStage = "SEED" | "SPROUT" | "BUD" | "FLOWER" | "TREE" | "DEAD";
 export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID";
 
-export type FocusSession = { date: string; minutes: number };
+export type FocusSession = { date: string; minutes: number; categoryId?: string };
 
 const BASE_PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"];
 
@@ -49,7 +49,7 @@ interface GardenState {
     plantSeed: () => void;
     killPlant: () => void;
     harvestPlant: () => void;
-    addFocusMinutes: (minutes: number) => void;
+    addFocusMinutes: (minutes: number, categoryId?: string) => void;
     clearPendingUnlock: () => void;
 }
 
@@ -77,9 +77,9 @@ const useGardenStore = create<GardenState>()(
                 type: randomPlantType(getAvailablePlants(state.unlockedPlants)),
                 history: [...state.history, { type: state.type, date: new Date().toISOString() }],
             })),
-            addFocusMinutes: (minutes) => set((state) => {
+            addFocusMinutes: (minutes, categoryId?) => set((state) => {
                 const today = getToday();
-                const newSessions = [...state.focusSessions, { date: today, minutes }];
+                const newSessions = [...state.focusSessions, { date: today, minutes, categoryId }];
 
                 let newStreak = state.currentStreak;
 

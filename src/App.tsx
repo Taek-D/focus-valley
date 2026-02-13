@@ -10,29 +10,56 @@ import { useDocumentTitle } from "./hooks/useDocumentTitle";
 import { useTimerSettings } from "./hooks/useTimerSettings";
 import { useTodos } from "./hooks/useTodos";
 import { usePlantParticles } from "./hooks/usePlantParticles";
+import { useCategoryStore } from "./hooks/useCategories";
 import { playCompletionSound } from "./lib/notification-sound";
 import { ANIMATION } from "./lib/constants";
+import {
+  trackSessionStart,
+  trackSessionComplete,
+  trackSessionAbandon,
+  trackPlantHarvested,
+  trackPlantDied,
+  trackSeedPlanted,
+} from "./lib/analytics";
+import { syncWithCloud } from "./lib/sync";
 import { TimerDisplay } from "./components/TimerDisplay";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
-import { HistoryPanel } from "./components/HistoryPanel";
-import { GardenCollection } from "./components/GardenCollection";
-import { TimerSettings } from "./components/TimerSettings";
-import { TodoPanel } from "./components/TodoPanel";
-import { ShortcutGuide } from "./components/ShortcutGuide";
+import { CategoryChips } from "./components/CategoryChips";
 import { Confetti } from "./components/Confetti";
 import { Fireflies } from "./components/Fireflies";
 import { AuroraBlob } from "./components/AuroraBlob";
 import { AppHeader } from "./components/AppHeader";
 import { PlantGarden } from "./components/PlantGarden";
-import { Volume2, ChevronDown, ChevronUp } from "lucide-react";
+import { AuthModal } from "./components/AuthModal";
+import { InstallBanner } from "./components/InstallBanner";
+import { useAuth } from "./hooks/useAuth";
+import { useInstallPrompt } from "./hooks/useInstallPrompt";
+import { Volume2, ChevronDown, ChevronUp, Heart } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
   import("./components/AudioMixer").then((m) => ({ default: m.AudioMixer }))
 );
+const HistoryPanel = lazy(() =>
+  import("./components/HistoryPanel").then((m) => ({ default: m.HistoryPanel }))
+);
+const GardenCollection = lazy(() =>
+  import("./components/GardenCollection").then((m) => ({ default: m.GardenCollection }))
+);
+const TimerSettings = lazy(() =>
+  import("./components/TimerSettings").then((m) => ({ default: m.TimerSettings }))
+);
+const TodoPanel = lazy(() =>
+  import("./components/TodoPanel").then((m) => ({ default: m.TodoPanel }))
+);
+const ShortcutGuide = lazy(() =>
+  import("./components/ShortcutGuide").then((m) => ({ default: m.ShortcutGuide }))
+);
 
-// Module-level Zustand selector — stable reference across renders
+// Module-level Zustand selectors — stable reference across renders
+const selectActiveCategoryId = (s: { activeCategoryId: string }) => s.activeCategoryId;
+
 const selectActiveTodo = (s: TodoState) => {
     if (!s.activeTodoId) return null;
     return s.todos.find((t) => t.id === s.activeTodoId && !t.completed) ?? null;
@@ -48,9 +75,13 @@ function App() {
   const { notify } = notification;
   const { autoAdvance } = useTimerSettings();
   const activeTodo = useTodos(selectActiveTodo);
+  const activeCategoryId = useCategoryStore(selectActiveCategoryId);
   const { advanceToNextMode } = timer;
+  const { user, initialize: initAuth } = useAuth();
+  const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
 
   const [showMixer, setShowMixer] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showGarden, setShowGarden] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -63,6 +94,21 @@ function App() {
 
   // Plant particles — extracted hook
   const { trigger: particleTrigger, type: particleType, stageTransition } = usePlantParticles(garden.stage);
+
+  useEffect(() => {
+    initAuth();
+  }, [initAuth]);
+
+  // Auto-sync on login
+  useEffect(() => {
+    if (user) {
+      syncWithCloud(user).then((result) => {
+        if (result === "pulled" || result === "merged") {
+          window.location.reload();
+        }
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", timer.mode);
@@ -105,16 +151,20 @@ function App() {
       setTimeout(() => setScreenFlash(false), ANIMATION.SCREEN_FLASH_MS);
 
       if (timer.mode === "FOCUS") {
-        addFocusMinutes(timer.focusDuration);
+        addFocusMinutes(timer.focusDuration, activeCategoryId);
         showToast("Focus complete! Your plant has grown.");
         notify("Focus Valley", "Focus session complete! Your plant has grown.");
         setConfettiTrigger((t) => t + 1);
+        trackSessionComplete("FOCUS", timer.focusDuration, activeCategoryId);
+        // Background cloud sync after focus completion
+        if (user) setTimeout(() => syncWithCloud(user), 1000);
       } else {
         showToast("Break is over! Ready to focus?");
         notify("Focus Valley", "Break is over! Time to focus.");
+        trackSessionComplete(timer.mode, 0);
       }
     });
-  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify]);
+  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId]);
 
   // Auto-advance to next mode after completion
   useEffect(() => {
@@ -137,7 +187,8 @@ function App() {
   const handleStart = useCallback(() => {
     notification.requestPermission();
     timer.start();
-  }, [notification, timer]);
+    trackSessionStart(timer.mode, timer.focusDuration, activeCategoryId);
+  }, [notification, timer, activeCategoryId]);
 
   const handleReset = () => {
     if (timer.isRunning && timer.mode === "FOCUS") {
@@ -148,6 +199,9 @@ function App() {
   };
 
   const confirmGiveUp = () => {
+    const elapsed = timer.totalDuration - timer.timeLeft;
+    trackSessionAbandon(timer.mode, elapsed);
+    trackPlantDied(garden.type);
     garden.killPlant();
     timer.reset();
     setConfirmModal(false);
@@ -156,10 +210,12 @@ function App() {
 
   const handlePlantClick = () => {
     if (garden.stage === "TREE" || garden.stage === "FLOWER") {
+      trackPlantHarvested(garden.type);
       garden.harvest();
       timer.reset();
       showToast("Harvested! +1 to your garden");
     } else if (garden.stage === "DEAD") {
+      trackSeedPlanted(garden.type);
       garden.plantSeed();
       showToast("New seed planted!");
     }
@@ -208,9 +264,12 @@ function App() {
   const handleShowTodo = useCallback(() => setShowTodo(true), []);
   const handleShowGarden = useCallback(() => setShowGarden(true), []);
   const handleShowHistory = useCallback(() => setShowHistory(true), []);
+  const handleShowAuth = useCallback(() => setShowAuth(true), []);
 
   return (
     <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700 dot-grid">
+      <InstallBanner canInstall={canInstall} onInstall={installPwa} onDismiss={dismissInstall} />
+
       {/* Grain */}
       <svg className="grain-overlay" aria-hidden="true">
         <filter id="grain">
@@ -246,11 +305,13 @@ function App() {
       <AppHeader
         isDark={isDark}
         currentStreak={garden.currentStreak}
+        user={user}
         onToggleDark={toggleDark}
         onShowSettings={handleShowSettings}
         onShowTodo={handleShowTodo}
         onShowGarden={handleShowGarden}
         onShowHistory={handleShowHistory}
+        onShowAuth={handleShowAuth}
       />
 
       {/* Main */}
@@ -267,6 +328,11 @@ function App() {
           particleTrigger={particleTrigger}
           particleType={particleType}
         />
+
+        {/* Category Chips */}
+        <div className="z-10 w-full mb-2">
+          <CategoryChips />
+        </div>
 
         {/* Timer */}
         <motion.div
@@ -292,12 +358,12 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full max-w-md z-10 px-4 sm:px-6 pb-6 pt-2">
+      <footer className="w-full max-w-lg z-10 px-4 sm:px-6 pb-4 pt-2">
         <motion.button
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
           aria-label={showMixer ? "Hide ambient sounds" : "Open ambient sounds"}
-          className="w-full py-3 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
+          className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
@@ -318,7 +384,7 @@ function App() {
             >
               <div className="pb-6 flex justify-center">
                 <Suspense fallback={
-                  <div className="h-48 w-full max-w-md flex items-center justify-center">
+                  <div className="h-48 w-full max-w-lg flex items-center justify-center">
                     <div className="flex flex-col items-center gap-2">
                       <div className="w-5 h-5 rounded-full border-2 border-foreground/10 border-t-foreground/30 animate-spin" />
                       <span className="font-body text-[10px] tracking-[0.1em] uppercase text-muted-foreground/30">Loading sounds</span>
@@ -331,6 +397,26 @@ function App() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <div className="flex items-center justify-center gap-3 py-2">
+          <a href="/privacy.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
+            Privacy
+          </a>
+          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+          <a href="/terms.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
+            Terms
+          </a>
+          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+          <a
+            href="https://ko-fi.com/castletaek"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-pink-400/60 transition-colors"
+          >
+            <Heart size={8} />
+            Support
+          </a>
+        </div>
       </footer>
 
       {/* Overlays */}
@@ -346,38 +432,55 @@ function App() {
         onCancel={() => setConfirmModal(false)}
       />
 
-      <HistoryPanel
-        isOpen={showHistory}
-        onClose={() => setShowHistory(false)}
-        history={garden.history}
-        totalFocusMinutes={garden.totalFocusMinutes}
-        focusSessions={garden.focusSessions}
-        currentStreak={garden.currentStreak}
-        bestStreak={garden.bestStreak}
-      />
+      <Suspense>
+        {showHistory && (
+          <HistoryPanel
+            isOpen={showHistory}
+            onClose={() => setShowHistory(false)}
+            history={garden.history}
+            totalFocusMinutes={garden.totalFocusMinutes}
+            focusSessions={garden.focusSessions}
+            currentStreak={garden.currentStreak}
+            bestStreak={garden.bestStreak}
+          />
+        )}
 
-      <GardenCollection
-        isOpen={showGarden}
-        onClose={() => setShowGarden(false)}
-        history={garden.history}
-        unlockedPlants={garden.unlockedPlants}
-        currentStreak={garden.currentStreak}
-        bestStreak={garden.bestStreak}
-      />
+        {showGarden && (
+          <GardenCollection
+            isOpen={showGarden}
+            onClose={() => setShowGarden(false)}
+            history={garden.history}
+            unlockedPlants={garden.unlockedPlants}
+            currentStreak={garden.currentStreak}
+            bestStreak={garden.bestStreak}
+          />
+        )}
 
-      <TimerSettings
-        isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
-      />
+        {showSettings && (
+          <TimerSettings
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
+          />
+        )}
 
-      <TodoPanel
-        isOpen={showTodo}
-        onClose={() => setShowTodo(false)}
-      />
+        {showTodo && (
+          <TodoPanel
+            isOpen={showTodo}
+            onClose={() => setShowTodo(false)}
+          />
+        )}
 
-      <ShortcutGuide
-        isOpen={showShortcuts}
-        onClose={() => setShowShortcuts(false)}
+        {showShortcuts && (
+          <ShortcutGuide
+            isOpen={showShortcuts}
+            onClose={() => setShowShortcuts(false)}
+          />
+        )}
+      </Suspense>
+
+      <AuthModal
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
       />
 
       <Confetti trigger={confettiTrigger} />

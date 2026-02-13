@@ -17,7 +17,7 @@ const tracks: { id: NoiseType; label: string; icon: string }[] = [
 
 export const AudioMixer: React.FC<AudioMixerProps> = React.memo(({ mixer }) => {
     return (
-        <div className="glass-strong rounded-2xl shadow-cozy p-5 space-y-4 w-full max-w-md">
+        <div className="glass rounded-2xl shadow-cozy p-5 space-y-4 w-full max-w-lg">
             <div className="flex items-center justify-between">
                 <h3 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground">Soundscape</h3>
                 <button

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Valley — Offline</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Sora', sans-serif;
+            background: #0a0f1a;
+            color: #f5f5f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .orb {
+            position: fixed;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+        .orb-1 { background: #06b6d4; top: 20%; left: 30%; }
+        .orb-2 { background: #a78bfa; top: 50%; left: 60%; animation-delay: -4s; }
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -20px) scale(1.1); }
+        }
+        .content { position: relative; z-index: 1; max-width: 20rem; }
+        .icon { font-size: 3rem; opacity: 0.4; margin-bottom: 1.5rem; }
+        h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+        p { font-size: 0.8rem; color: rgba(245,245,247,0.4); line-height: 1.6; margin-bottom: 2rem; }
+        button {
+            padding: 0.75rem 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(245,245,247,0.1);
+            background: rgba(245,245,247,0.05);
+            color: #f5f5f7;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: 'Sora', sans-serif;
+            transition: background 0.2s;
+        }
+        button:hover { background: rgba(245,245,247,0.1); }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="content">
+        <div class="icon">🌿</div>
+        <h1>You're Offline</h1>
+        <p>No worries — your garden and progress are saved locally. Reconnect to sync your data and continue growing.</p>
+        <button onclick="window.location.reload()">Try Again</button>
+    </div>
+</body>
+</html>

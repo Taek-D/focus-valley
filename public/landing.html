@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Valley — Grow Your Garden While Growing Your Focus</title>
+    <meta name="description" content="A beautiful Pomodoro timer where plants grow as you focus. Ambient soundscapes, streak tracking, and a pixel garden to keep you motivated. Free, no signup required." />
+    <meta name="keywords" content="pomodoro, timer, focus, productivity, garden, ambient sounds, streak, pixel art, gamification" />
+    <meta name="author" content="Focus Valley" />
+    <meta name="theme-color" content="#0a0f1a" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://focus-valley.vercel.app/landing.html" />
+    <meta property="og:title" content="Focus Valley — Grow Your Garden While Growing Your Focus" />
+    <meta property="og:description" content="A beautiful Pomodoro timer where plants grow as you focus. Free, no signup." />
+    <meta property="og:image" content="https://focus-valley.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Focus Valley" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Focus Valley — Grow Your Garden While Growing Your Focus" />
+    <meta name="twitter:description" content="A beautiful Pomodoro timer where plants grow as you focus. Free, no signup." />
+    <meta name="twitter:image" content="https://focus-valley.vercel.app/og-image.png" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://focus-valley.vercel.app/landing.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJGQRRNSTQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DJGQRRNSTQ');
+    </script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0a0f1a;
+            --fg: #f5f5f7;
+            --muted: rgba(245, 245, 247, 0.4);
+            --muted-dim: rgba(245, 245, 247, 0.15);
+            --muted-ultra: rgba(245, 245, 247, 0.06);
+            --aurora-1: #06b6d4;
+            --aurora-2: #a78bfa;
+            --aurora-3: #f472b6;
+            --aurora-4: #34d399;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Aurora Background ─────────────────── */
+
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .aurora-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+
+        .aurora-orb:nth-child(1) {
+            width: 600px; height: 600px;
+            background: var(--aurora-1);
+            top: -15%; left: -10%;
+            animation-delay: 0s;
+        }
+        .aurora-orb:nth-child(2) {
+            width: 500px; height: 500px;
+            background: var(--aurora-2);
+            top: 20%; right: -15%;
+            animation-delay: -5s;
+            animation-duration: 25s;
+        }
+        .aurora-orb:nth-child(3) {
+            width: 400px; height: 400px;
+            background: var(--aurora-3);
+            bottom: 10%; left: 20%;
+            animation-delay: -10s;
+            animation-duration: 22s;
+        }
+        .aurora-orb:nth-child(4) {
+            width: 350px; height: 350px;
+            background: var(--aurora-4);
+            bottom: -10%; right: 10%;
+            animation-delay: -15s;
+            animation-duration: 28s;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        /* ── Grain ─────────────────────────────── */
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.03;
+        }
+
+        /* ── Layout ────────────────────────────── */
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        section { padding: 5rem 0; }
+
+        /* ── Navigation ────────────────────────── */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 1.25rem 1.5rem;
+            backdrop-filter: blur(16px);
+            background: rgba(10, 15, 26, 0.6);
+            border-bottom: 1px solid var(--muted-ultra);
+        }
+
+        nav .inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            text-decoration: none;
+            color: var(--muted);
+        }
+
+        .logo svg { opacity: 0.6; }
+
+        .logo span {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            background: rgba(245, 245, 247, 0.06);
+            border: 1px solid rgba(245, 245, 247, 0.08);
+            color: var(--fg);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: rgba(245, 245, 247, 0.1);
+            border-color: rgba(245, 245, 247, 0.15);
+        }
+
+        /* ── Hero ──────────────────────────────── */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 6rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            background: var(--muted-ultra);
+            border: 1px solid rgba(245, 245, 247, 0.04);
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .hero-badge .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--aurora-4);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease 0.1s both;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 300;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.8s ease 0.2s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeUp 0.8s ease 0.3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.875rem 2rem;
+            border-radius: 1rem;
+            background: var(--fg);
+            color: var(--bg);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.25s;
+            box-shadow: 0 2px 20px rgba(245, 245, 247, 0.08);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 30px rgba(245, 245, 247, 0.12);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 1rem;
+            background: transparent;
+            border: 1px solid var(--muted-dim);
+            color: var(--muted);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--muted);
+            color: var(--fg);
+        }
+
+        .hero-visual {
+            margin-top: 4rem;
+            animation: fadeUp 0.8s ease 0.5s both;
+        }
+
+        .hero-visual .plant-svg {
+            opacity: 0.25;
+            filter: drop-shadow(0 0 40px rgba(6, 182, 212, 0.15));
+        }
+
+        .scroll-hint {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeUp 0.8s ease 0.7s both;
+        }
+
+        .scroll-hint span {
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.15);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(245,245,247,0.15), transparent);
+            animation: scroll-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* ── Features ──────────────────────────── */
+
+        .features {
+            padding: 6rem 0;
+        }
+
+        .section-label {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 4vw, 2.25rem);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 4rem;
+            letter-spacing: -0.01em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .features-grid { grid-template-columns: 1fr; }
+        }
+
+        .feature-card {
+            padding: 2rem 1.5rem;
+            border-radius: 1.25rem;
+            border: 1px solid var(--muted-ultra);
+            background: rgba(245, 245, 247, 0.015);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(245, 245, 247, 0.08);
+            background: rgba(245, 245, 247, 0.025);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .feature-card h3 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── How It Works ──────────────────────── */
+
+        .how-it-works {
+            padding: 6rem 0;
+        }
+
+        .steps {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 640px) {
+            .steps { flex-direction: column; align-items: center; }
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--muted-dim);
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .step-emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .step h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .step-connector {
+            align-self: center;
+            color: var(--muted-dim);
+            flex-shrink: 0;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .step-connector { transform: rotate(90deg); }
+        }
+
+        /* ── Waitlist CTA ──────────────────────── */
+
+        .waitlist-section {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .waitlist-card {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid var(--muted-ultra);
+            background: rgba(245, 245, 247, 0.015);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waitlist-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            top: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3), var(--aurora-4));
+        }
+
+        .waitlist-card h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .waitlist-card p {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .waitlist-form { flex-direction: column; }
+        }
+
+        .waitlist-form input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(245, 245, 247, 0.08);
+            background: rgba(245, 245, 247, 0.04);
+            color: var(--fg);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .waitlist-form input::placeholder { color: rgba(245, 245, 247, 0.2); }
+        .waitlist-form input:focus { border-color: rgba(245, 245, 247, 0.2); }
+
+        .waitlist-form button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            background: var(--fg);
+            color: var(--bg);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .waitlist-form button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .waitlist-success {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--aurora-4);
+        }
+
+        .form-note {
+            font-size: 0.65rem;
+            color: rgba(245, 245, 247, 0.2);
+            margin-top: 1rem;
+        }
+
+        /* ── Footer ────────────────────────────── */
+
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--muted-ultra);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: rgba(245, 245, 247, 0.5); }
+
+        .footer-links .kofi:hover { color: #ff5e5b; }
+
+        .footer-copy {
+            font-size: 0.6rem;
+            color: rgba(245, 245, 247, 0.12);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Animations ────────────────────────── */
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Aurora Background -->
+    <div class="aurora-bg">
+        <div class="aurora-orb"></div>
+        <div class="aurora-orb"></div>
+        <div class="aurora-orb"></div>
+        <div class="aurora-orb"></div>
+    </div>
+
+    <!-- Grain -->
+    <svg class="grain" aria-hidden="true">
+        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /></filter>
+        <rect width="100%" height="100%" filter="url(#grain)" />
+    </svg>
+
+    <!-- Nav -->
+    <nav>
+        <div class="inner">
+            <a href="/" class="logo">
+                <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+                    <rect x="14" y="20" width="4" height="8" fill="currentColor" opacity="0.4"/>
+                    <rect x="12" y="26" width="8" height="2" fill="currentColor" opacity="0.3"/>
+                    <rect x="10" y="16" width="12" height="4" fill="currentColor" opacity="0.5"/>
+                    <rect x="8" y="12" width="16" height="4" fill="currentColor" opacity="0.5"/>
+                    <rect x="10" y="8" width="12" height="4" fill="currentColor" opacity="0.5"/>
+                    <rect x="12" y="4" width="8" height="4" fill="currentColor" opacity="0.5"/>
+                </svg>
+                <span>Focus Valley</span>
+            </a>
+            <a href="/" class="nav-cta">Launch App &rarr;</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Free &middot; No signup required
+            </div>
+
+            <h1>
+                Grow your garden<br>
+                while growing your <span class="gradient">focus</span>
+            </h1>
+
+            <p>
+                A beautiful Pomodoro timer where plants grow as you focus.
+                Ambient soundscapes, streak tracking, and a pixel garden
+                to keep you motivated.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/" class="btn-primary">
+                    Start Focusing
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+                <a href="#waitlist" class="btn-secondary">Join Waitlist</a>
+            </div>
+
+            <div class="hero-visual">
+                <svg class="plant-svg" width="120" height="140" viewBox="0 0 32 36" fill="none">
+                    <rect x="14" y="22" width="4" height="10" fill="#92400e"/>
+                    <rect x="12" y="30" width="8" height="2" fill="#78350f"/>
+                    <rect x="10" y="18" width="12" height="4" fill="#16a34a"/>
+                    <rect x="8" y="14" width="16" height="4" fill="#22c55e"/>
+                    <rect x="10" y="10" width="12" height="4" fill="#16a34a"/>
+                    <rect x="12" y="6" width="8" height="4" fill="#22c55e"/>
+                    <rect x="14" y="2" width="4" height="4" fill="#16a34a"/>
+                </svg>
+            </div>
+
+            <div class="scroll-hint">
+                <span>Discover</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features" id="features">
+            <div class="section-label fade-in">Features</div>
+            <h2 class="section-title fade-in">Everything you need to stay focused</h2>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#9201;</div>
+                    <h3>Pomodoro Timer</h3>
+                    <p>Web Worker-powered timer that stays accurate even when your browser tab is in the background.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#127793;</div>
+                    <h3>Plant Growth</h3>
+                    <p>Watch your pixel plant grow from seed to tree as you focus. Give up and it withers away.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#127911;</div>
+                    <h3>Ambient Sounds</h3>
+                    <p>Mix rain, fire, cafe, stream, and white noise. Procedurally generated, no audio files needed.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#128200;</div>
+                    <h3>Focus Stats</h3>
+                    <p>Activity heatmap, weekly charts, category breakdowns, streaks, and detailed history.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#127795;</div>
+                    <h3>Garden Collection</h3>
+                    <p>Collect 6 unique plant types. Unlock rare plants by building focus streaks.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">&#128247;</div>
+                    <h3>Share Cards</h3>
+                    <p>Generate beautiful focus summary cards and share your progress on social media.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="section-label fade-in">How it works</div>
+            <h2 class="section-title fade-in">Three steps to better focus</h2>
+
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <span class="step-emoji">&#127919;</span>
+                    <h3>Focus</h3>
+                    <p>Start a 25-minute Pomodoro session. Pick a category and let the timer guide your deep work.</p>
+                </div>
+
+                <div class="step-connector fade-in">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <span class="step-emoji">&#127793;</span>
+                    <h3>Grow</h3>
+                    <p>Your pixel plant grows as you focus. Complete the session to let it bloom into a tree or flower.</p>
+                </div>
+
+                <div class="step-connector fade-in">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <span class="step-emoji">&#127981;</span>
+                    <h3>Collect</h3>
+                    <p>Harvest your plant, build streaks, unlock rare species, and grow your personal focus garden.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist -->
+        <section class="waitlist-section" id="waitlist">
+            <div class="waitlist-card fade-in">
+                <h2>Pro is coming soon</h2>
+                <p>Cloud sync across devices, premium plant skins, advanced stats, and more. Join the waitlist for early access.</p>
+
+                <form class="waitlist-form" id="waitlist-form" action="https://formspree.io/f/xykdeoyz" method="POST">
+                    <input type="email" name="email" placeholder="you@email.com" required />
+                    <input type="hidden" name="source" value="landing" />
+                    <button type="submit">Join Waitlist</button>
+                </form>
+
+                <div class="waitlist-success" id="waitlist-success">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    You're on the list! We'll notify you.
+                </div>
+
+                <p class="form-note">No spam. Unsubscribe anytime.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="/privacy.html">Privacy</a>
+                <a href="/terms.html">Terms</a>
+                <a href="https://ko-fi.com/castletaek" target="_blank" rel="noopener noreferrer" class="kofi">&#10084; Support</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 Focus Valley. Built with care.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll-triggered fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        // Waitlist form
+        const form = document.getElementById('waitlist-form');
+        const success = document.getElementById('waitlist-success');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(form);
+
+            try {
+                await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' },
+                });
+            } catch {}
+
+            form.style.display = 'none';
+            success.style.display = 'flex';
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'waitlist_signup', { source: 'landing' });
+            }
+        });
+    </script>
+
+</body>
+</html>

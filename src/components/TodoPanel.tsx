@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import { useTodos } from "../hooks/useTodos";
 import { ANIMATION } from "../lib/constants";
 import { BottomSheet } from "./ui/BottomSheet";
+import { trackTodoCreated, trackTodoCompleted } from "../lib/analytics";
 
 type TodoPanelProps = {
     isOpen: boolean;
@@ -29,6 +30,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
         const trimmed = input.trim();
         if (!trimmed) return;
         addTodo(trimmed);
+        trackTodoCreated();
         setInput("");
     };
 
@@ -76,7 +78,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                 )}
                             >
                                 <button
-                                    onClick={() => toggleTodo(todo.id)}
+                                    onClick={() => { if (!todo.completed) trackTodoCompleted(); toggleTodo(todo.id); }}
                                     aria-label={todo.completed ? "Mark as incomplete" : "Mark as complete"}
                                     className={cn(
                                         "flex-shrink-0 w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all",
