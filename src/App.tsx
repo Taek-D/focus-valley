@@ -11,8 +11,9 @@ import { Fireflies } from "./components/Fireflies";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { HistoryPanel } from "./components/HistoryPanel";
+import { TimerSettings } from "./components/TimerSettings";
 import { getPlantComponent } from "./components/ui/pixel-plants";
-import { TreePine, ScrollText, Moon, Sun, ChevronDown, ChevronUp } from "lucide-react";
+import { TreePine, ScrollText, Moon, Sun, ChevronDown, ChevronUp, Settings } from "lucide-react";
 
 const AudioMixer = lazy(() =>
   import("./components/AudioMixer").then((m) => ({ default: m.AudioMixer }))
@@ -26,6 +27,7 @@ function App() {
 
   const [showMixer, setShowMixer] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [toast, setToast] = useState({ message: "", visible: false });
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
@@ -41,12 +43,12 @@ function App() {
   // Sync Timer with Garden
   useEffect(() => {
     if (timer.isRunning && timer.mode === "FOCUS") {
-      const totalTime = 25 * 60;
+      const totalTime = timer.focusDuration * 60;
       const elapsed = totalTime - timer.timeLeft;
       const progress = (elapsed / totalTime) * 100;
       garden.grow(progress);
     }
-  }, [timer.timeLeft, timer.isRunning, timer.mode, garden]);
+  }, [timer.timeLeft, timer.isRunning, timer.mode, timer.focusDuration, garden]);
 
   // Completion notification + focus time tracking
   useEffect(() => {
@@ -56,7 +58,7 @@ function App() {
       setTimeout(() => setScreenFlash(false), 600);
 
       if (timer.mode === "FOCUS") {
-        garden.addFocusMinutes(25);
+        garden.addFocusMinutes(timer.focusDuration);
         showToast("Focus complete! Your plant has grown.");
       } else {
         showToast("Break is over! Ready to focus?");
@@ -146,6 +148,13 @@ function App() {
             aria-label="Toggle dark mode"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <button
+            onClick={() => setShowSettings(true)}
+            className="p-2.5 border-2 border-border bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 text-muted-foreground hover:text-primary transition-all"
+            aria-label="Timer settings"
+          >
+            <Settings size={16} />
           </button>
           <button
             onClick={() => setShowHistory(true)}
@@ -324,6 +333,11 @@ function App() {
         onClose={() => setShowHistory(false)}
         history={garden.history}
         totalFocusMinutes={garden.totalFocusMinutes}
+      />
+
+      <TimerSettings
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
       />
     </div>
   );

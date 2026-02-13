@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import TimerWorker from "../workers/timer.worker?worker";
+import { useTimerSettings } from "./useTimerSettings";
 
 export type TimerMode = "FOCUS" | "SHORT_BREAK" | "LONG_BREAK";
 
-const MODES = {
-    FOCUS: 25 * 60,
-    SHORT_BREAK: 5 * 60,
-    LONG_BREAK: 15 * 60,
-};
+function getDuration(mode: TimerMode, focus: number, shortBreak: number, longBreak: number) {
+    if (mode === "FOCUS") return focus * 60;
+    if (mode === "SHORT_BREAK") return shortBreak * 60;
+    return longBreak * 60;
+}
 
 export function useTimer() {
+    const { focus, shortBreak, longBreak } = useTimerSettings();
     const [mode, setMode] = useState<TimerMode>("FOCUS");
-    const [timeLeft, setTimeLeft] = useState(MODES.FOCUS);
+    const [timeLeft, setTimeLeft] = useState(focus * 60);
     const [isRunning, setIsRunning] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
     const [focusCount, setFocusCount] = useState(0);
@@ -56,16 +58,16 @@ export function useTimer() {
         setIsRunning(false);
         setIsCompleted(false);
         workerRef.current?.postMessage({ command: "STOP" });
-        setTimeLeft(MODES[mode]);
-    }, [mode]);
+        setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+    }, [mode, focus, shortBreak, longBreak]);
 
     const switchMode = useCallback((newMode: TimerMode) => {
         setMode(newMode);
         setIsRunning(false);
         setIsCompleted(false);
         workerRef.current?.postMessage({ command: "STOP" });
-        setTimeLeft(MODES[newMode]);
-    }, []);
+        setTimeLeft(getDuration(newMode, focus, shortBreak, longBreak));
+    }, [focus, shortBreak, longBreak]);
 
     const advanceToNextMode = useCallback(() => {
         if (mode === "FOCUS") {
@@ -85,6 +87,7 @@ export function useTimer() {
         isRunning,
         isCompleted,
         focusCount,
+        focusDuration: focus,
         start,
         pause,
         reset,
