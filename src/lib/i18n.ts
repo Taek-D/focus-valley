@@ -272,6 +272,14 @@ const translations = {
     // Plant types — new
     "plantType.LOTUS": { en: "Lotus", ko: "연꽃", ja: "ハス" },
     "plantType.CRYSTAL": { en: "Crystal", ko: "크리스탈", ja: "クリスタル" },
+
+    // Pro tier
+    "pro.badge": { en: "PRO", ko: "PRO", ja: "PRO" },
+    "pro.upgrade": { en: "Upgrade to Pro", ko: "Pro로 업그레이드", ja: "Proにアップグレード" },
+    "pro.comingSoon": { en: "Coming Soon", ko: "곧 출시", ja: "近日公開" },
+    "pro.unlockWith": { en: "Unlock with Pro", ko: "Pro로 잠금 해제", ja: "Proでアンロック" },
+    "pro.customCategoryLimit": { en: "Pro unlocks unlimited categories", ko: "Pro로 무제한 카테고리 사용", ja: "Proで無制限カテゴリー" },
+    "pro.fullExport": { en: "Export all data with Pro", ko: "Pro로 전체 데이터 내보내기", ja: "Proで全データエクスポート" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

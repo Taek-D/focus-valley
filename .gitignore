@@ -32,6 +32,10 @@ dist-ssr
 docs/.pdca-snapshots/
 .claude/agent-memory/
 
+# Environment variables
+.env
+.env.local
+
 # OAuth credentials
 Focus-Valley-OAuth.txt
 

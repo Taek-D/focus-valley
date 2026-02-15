@@ -493,6 +493,95 @@
             .step-connector { transform: rotate(90deg); }
         }
 
+        /* ── Pricing Table ────────────────────── */
+
+        .pricing { padding: 6rem 0; }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 640px) {
+            .pricing-grid { grid-template-columns: 1fr; }
+        }
+
+        .plan-card {
+            padding: 2.5rem 2rem;
+            border-radius: 1.25rem;
+            border: 1px solid var(--muted-ultra);
+            background: rgba(245, 245, 247, 0.015);
+        }
+
+        .plan-card.pro {
+            border-color: rgba(167, 139, 250, 0.3);
+            position: relative;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 2rem;
+            background: linear-gradient(135deg, var(--aurora-2), var(--aurora-3));
+            color: #fff;
+        }
+
+        .plan-card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 200;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-price span {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .plan-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .plan-features li {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .plan-features li .check {
+            font-size: 0.7rem;
+            color: var(--aurora-4);
+            flex-shrink: 0;
+        }
+
+        .plan-features li.disabled {
+            opacity: 0.3;
+        }
+
+        .plan-features li.disabled .check {
+            color: var(--muted);
+        }
+
         /* ── Waitlist CTA ──────────────────────── */
 
         .waitlist-section {
@@ -705,7 +794,7 @@
                     Start Focusing
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
-                <a href="#waitlist" class="btn-secondary">Join Waitlist</a>
+                <a href="#pricing" class="btn-secondary">See Plans</a>
             </div>
 
             <div class="hero-visual">
@@ -733,34 +822,34 @@
 
             <div class="features-grid">
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">&#9201;</div>
-                    <h3>Pomodoro Timer</h3>
-                    <p>Web Worker-powered timer that stays accurate even when your browser tab is in the background.</p>
+                    <div class="feature-icon">🌈</div>
+                    <h3>Aurora Reactive</h3>
+                    <p>The aurora orb shifts colors based on your timer mode, weather, and focus depth. Each session feels unique.</p>
                 </div>
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">&#127793;</div>
-                    <h3>Plant Growth</h3>
-                    <p>Watch your pixel plant grow from seed to tree as you focus. Give up and it withers away.</p>
+                    <div class="feature-icon">🫁</div>
+                    <h3>Breathing Guide</h3>
+                    <p>4-7-8 breathing circle syncs with the aurora to help you settle into deep focus before each session.</p>
                 </div>
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">&#127911;</div>
+                    <div class="feature-icon">🧘</div>
+                    <h3>Deep Focus Mode</h3>
+                    <p>Consecutive sessions unlock golden aurora and rare plants. The longer you stay focused, the greater the reward.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌦️</div>
+                    <h3>Weather Sync</h3>
+                    <p>Aurora and ambient sounds adapt to your local weather — rain, snow, clouds, or sunshine.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎧</div>
                     <h3>Ambient Sounds</h3>
                     <p>Mix rain, fire, cafe, stream, and white noise. Procedurally generated, no audio files needed.</p>
                 </div>
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">&#128200;</div>
-                    <h3>Focus Stats</h3>
-                    <p>Activity heatmap, weekly charts, category breakdowns, streaks, and detailed history.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">&#127795;</div>
+                    <div class="feature-icon">🌱</div>
                     <h3>Garden Collection</h3>
-                    <p>Collect 6 unique plant types. Unlock rare plants by building focus streaks.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">&#128247;</div>
-                    <h3>Share Cards</h3>
-                    <p>Generate beautiful focus summary cards and share your progress on social media.</p>
+                    <p>Collect 8 unique plant types. Unlock rare plants through streaks and deep focus milestones.</p>
                 </div>
             </div>
         </section>
@@ -798,6 +887,48 @@
                     <span class="step-emoji">&#127981;</span>
                     <h3>Collect</h3>
                     <p>Harvest your plant, build streaks, unlock rare species, and grow your personal focus garden.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="pricing" id="pricing">
+            <div class="section-label fade-in">Plans</div>
+            <h2 class="section-title fade-in">Simple, fair pricing</h2>
+
+            <div class="pricing-grid">
+                <div class="plan-card fade-in">
+                    <h3>Free</h3>
+                    <div class="plan-price">$0 <span>forever</span></div>
+                    <ul class="plan-features">
+                        <li><span class="check">&#10003;</span> Pomodoro timer</li>
+                        <li><span class="check">&#10003;</span> 4 base plant types</li>
+                        <li><span class="check">&#10003;</span> 5 ambient sounds</li>
+                        <li><span class="check">&#10003;</span> 6 preset categories</li>
+                        <li><span class="check">&#10003;</span> Basic weekly stats</li>
+                        <li><span class="check">&#10003;</span> Cloud sync (1 device)</li>
+                        <li><span class="check">&#10003;</span> Dark mode</li>
+                        <li class="disabled"><span class="check">&mdash;</span> Rare plants (8+ types)</li>
+                        <li class="disabled"><span class="check">&mdash;</span> Unlimited categories</li>
+                        <li class="disabled"><span class="check">&mdash;</span> Full data export</li>
+                    </ul>
+                </div>
+                <div class="plan-card pro fade-in">
+                    <span class="plan-badge">Coming Soon</span>
+                    <h3>Pro</h3>
+                    <div class="plan-price">$4.99 <span>/month</span></div>
+                    <ul class="plan-features">
+                        <li><span class="check">&#10003;</span> Everything in Free</li>
+                        <li><span class="check">&#10003;</span> 8+ rare plant types</li>
+                        <li><span class="check">&#10003;</span> 15+ ambient sounds</li>
+                        <li><span class="check">&#10003;</span> Unlimited categories</li>
+                        <li><span class="check">&#10003;</span> Advanced stats &amp; heatmap</li>
+                        <li><span class="check">&#10003;</span> Unlimited device sync</li>
+                        <li><span class="check">&#10003;</span> Full CSV export (all time)</li>
+                        <li><span class="check">&#10003;</span> Custom share card themes</li>
+                        <li><span class="check">&#10003;</span> Focus insights (AI)</li>
+                        <li><span class="check">&#10003;</span> Priority support</li>
+                    </ul>
                 </div>
             </div>
         </section>

@@ -48,6 +48,11 @@ export type Category = {
     color: string; // HSL value
 };
 
+export const FREE_TIER = {
+    CUSTOM_CATEGORY_LIMIT: 1,
+    EXPORT_DAYS: 7,
+} as const;
+
 export const DEFAULT_CATEGORIES: Category[] = [
     { id: "study", label: "Study", emoji: "\u{1F4DA}", color: "220 70% 55%" },
     { id: "code", label: "Code", emoji: "\u{1F4BB}", color: "160 70% 45%" },

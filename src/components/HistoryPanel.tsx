@@ -7,11 +7,14 @@ import { useCategories } from "../hooks/useCategories";
 import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getCategoryBreakdown } from "../lib/stats";
 import { PLANT_ICONS } from "../lib/constants";
 import { getDayLabel, getLast7Days, groupByDate } from "../lib/date-utils";
+import { FREE_TIER } from "@/lib/constants";
 import { generateShareCard, shareOrDownload } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
 import { WaitlistBanner } from "./WaitlistBanner";
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
 import { useTranslation } from "../lib/i18n";
+import { useIsPro } from "@/hooks/useSubscription";
+import { ProBadge } from "./ProGate";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -37,6 +40,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     isOpen, onClose, history, totalFocusMinutes, focusSessions, currentStreak, bestStreak,
 }) => {
     const { t } = useTranslation();
+    const isPro = useIsPro();
     const grouped = groupByDate(history);
     const sortedDates = Object.keys(grouped).reverse();
     const totalHours = Math.floor(totalFocusMinutes / 60);
@@ -65,7 +69,15 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const goalLinePercent = (dailyGoal / weekData.max) * 100;
 
     const handleExport = () => {
-        const csv = exportSessionsCSV(focusSessions, categories);
+        const sessions = isPro
+            ? focusSessions
+            : (() => {
+                  const cutoff = new Date();
+                  cutoff.setDate(cutoff.getDate() - FREE_TIER.EXPORT_DAYS);
+                  const cutoffStr = cutoff.toISOString().slice(0, 10);
+                  return focusSessions.filter((s) => s.date >= cutoffStr);
+              })();
+        const csv = exportSessionsCSV(sessions, categories);
         downloadCSV(csv, `focus-valley-${new Date().toISOString().slice(0, 10)}.csv`);
         trackCsvExport();
     };
@@ -113,9 +125,10 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                     <button
                         onClick={handleExport}
                         aria-label={t("stats.exportCsv")}
-                        className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
+                        className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all flex items-center gap-1"
                     >
                         <Download size={14} />
+                        {!isPro && <ProBadge />}
                     </button>
                 </>
             }

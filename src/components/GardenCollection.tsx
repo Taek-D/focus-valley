@@ -5,6 +5,8 @@ import { type PlantType, type PlantStage, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } f
 import { getPlantComponent } from "./ui/pixel-plants";
 import { BottomSheet } from "./ui/BottomSheet";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
+import { ProBadge } from "./ProGate";
+import { useIsPro } from "@/hooks/useSubscription";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -25,6 +27,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
     isOpen, onClose, history, unlockedPlants, currentStreak, bestStreak, deepFocusStreak = 0,
 }) => {
     const { t } = useTranslation();
+    const isPro = useIsPro();
     const typeCounts = useMemo(() => {
         const counts: Partial<Record<PlantType, number>> = {};
         for (const entry of history) {
@@ -87,7 +90,10 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         <PlantSvg />
                                     </div>
                                 </div>
-                                <div className="font-body text-[10px] font-medium text-foreground/70">{t(`plantType.${type}` as TranslationKey)}</div>
+                                <div className="font-body text-[10px] font-medium text-foreground/70 flex items-center gap-1">
+                                    {t(`plantType.${type}` as TranslationKey)}
+                                    {!isBase && !streakInfo && !deepInfo && !isPro && <ProBadge />}
+                                </div>
                                 {isUnlocked && (
                                     <>
                                         <div className="font-body text-[9px] text-muted-foreground/30">

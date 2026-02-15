@@ -3,8 +3,11 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useCategories } from "@/hooks/useCategories";
+import { FREE_TIER } from "@/lib/constants";
 import { trackCategoryAdded, trackCategoryRemoved } from "@/lib/analytics";
 import { useTranslation, type TranslationKey } from "@/lib/i18n";
+import { useIsPro } from "@/hooks/useSubscription";
+import { ProBadge } from "./ProGate";
 
 const PRESET_IDS = new Set(["study", "code", "read", "work", "design", "exercise"]);
 
@@ -31,6 +34,7 @@ const LONG_PRESS_MOVE_TOLERANCE = 5;
 export const CategoryChips: React.FC = React.memo(() => {
     const { categories, activeCategoryId, setActiveCategory, addCategory, addCategoryAt, removeCategory, reorderCategories } = useCategories();
     const { t } = useTranslation();
+    const isPro = useIsPro();
     const [showAddModal, setShowAddModal] = useState(false);
     const [newLabel, setNewLabel] = useState("");
     const [newEmoji, setNewEmoji] = useState(PRESET_EMOJIS[0]);
@@ -242,13 +246,21 @@ export const CategoryChips: React.FC = React.memo(() => {
                         );
                     })}
 
-                    <button
-                        onClick={() => setShowAddModal(true)}
-                        className="flex items-center justify-center w-7 h-7 rounded-full text-muted-foreground/30 hover:text-muted-foreground/60 hover:bg-foreground/5 transition-all"
-                        aria-label={t("category.addCustom")}
-                    >
-                        <Plus size={13} />
-                    </button>
+                    {(() => {
+                        const customCount = categories.filter((c) => !PRESET_IDS.has(c.id)).length;
+                        const atLimit = !isPro && customCount >= FREE_TIER.CUSTOM_CATEGORY_LIMIT;
+                        return (
+                            <button
+                                onClick={() => !atLimit && setShowAddModal(true)}
+                                className={`flex items-center justify-center gap-1 h-7 rounded-full text-muted-foreground/30 hover:text-muted-foreground/60 hover:bg-foreground/5 transition-all ${atLimit ? "px-2 opacity-50 cursor-default" : "w-7"}`}
+                                aria-label={t("category.addCustom")}
+                                disabled={atLimit}
+                            >
+                                <Plus size={13} />
+                                {atLimit && <ProBadge />}
+                            </button>
+                        );
+                    })()}
                 </div>
                 </div>
             </div>
