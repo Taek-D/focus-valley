@@ -75,6 +75,15 @@ export default {
             "0%": { opacity: "0", transform: "translateY(10px)" },
             "100%": { opacity: "1", transform: "translateY(0)" },
           },
+          "breathe": {
+            "0%, 100%": { transform: "scale(1)" },
+            "50%": { transform: "scale(1.02)" },
+          },
+          "sway-gentle": {
+            "0%, 100%": { transform: "rotate(0deg)" },
+            "25%": { transform: "rotate(1deg)" },
+            "75%": { transform: "rotate(-1deg)" },
+          },
         },
         animation: {
           "aurora-1": "aurora-drift-1 12s ease-in-out infinite",
@@ -82,6 +91,8 @@ export default {
           "aurora-3": "aurora-drift-3 18s ease-in-out infinite",
           "pulse-slow": "pulse-slow 3s ease-in-out infinite",
           "fade-in-up": "fade-in-up 0.5s ease-out both",
+          "breathe": "breathe 4s ease-in-out infinite",
+          "sway-gentle": "sway-gentle 6s ease-in-out infinite",
         },
       },
     },

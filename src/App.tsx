@@ -564,6 +564,7 @@ function App() {
             unlockedPlants={garden.unlockedPlants}
             currentStreak={garden.currentStreak}
             bestStreak={garden.bestStreak}
+            deepFocusStreak={garden.deepFocusStreak}
           />
         )}
 

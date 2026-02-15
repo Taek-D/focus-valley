@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
-import { type PlantType, type PlantStage, STREAK_UNLOCKS } from "../hooks/useGarden";
+import { type PlantType, type PlantStage, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } from "../hooks/useGarden";
 import { getPlantComponent } from "./ui/pixel-plants";
 import { BottomSheet } from "./ui/BottomSheet";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
@@ -15,13 +15,14 @@ type GardenCollectionProps = {
     unlockedPlants: PlantType[];
     currentStreak: number;
     bestStreak: number;
+    deepFocusStreak?: number;
 };
 
-const ALL_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE", "ROSE", "ORCHID"];
+const ALL_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE", "ROSE", "ORCHID", "LOTUS", "CRYSTAL"];
 const GROWTH_STAGES: PlantStage[] = ["SEED", "SPROUT", "BUD", "FLOWER", "TREE"];
 
 export const GardenCollection: React.FC<GardenCollectionProps> = ({
-    isOpen, onClose, history, unlockedPlants, currentStreak, bestStreak,
+    isOpen, onClose, history, unlockedPlants, currentStreak, bestStreak, deepFocusStreak = 0,
 }) => {
     const { t } = useTranslation();
     const typeCounts = useMemo(() => {
@@ -56,6 +57,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                         const isBase = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"].includes(type);
                         const isUnlocked = isBase || unlockedPlants.includes(type);
                         const streakInfo = STREAK_UNLOCKS.find((u) => u.plant === type);
+                        const deepInfo = DEEP_FOCUS_UNLOCKS.find((u) => u.plant === type);
                         const PlantSvg = getPlantComponent(type, "TREE");
 
                         return (
@@ -75,7 +77,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         <div className="text-center">
                                             <Lock size={14} className="mx-auto mb-1 text-muted-foreground/40" />
                                             <div className="font-body text-[9px] text-muted-foreground/40">
-                                                {streakInfo ? `${streakInfo.streak} ${t("garden.dayStreakUnlock")}` : t("garden.locked")}
+                                                {streakInfo ? `${streakInfo.streak} ${t("garden.dayStreakUnlock")}` : deepInfo ? `${t("deepFocus.badge")} x${deepInfo.depth}` : t("garden.locked")}
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +113,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                 </div>
 
                 {/* Unlock Progress */}
-                {STREAK_UNLOCKS.some((u) => !unlockedPlants.includes(u.plant)) && (
+                {(STREAK_UNLOCKS.some((u) => !unlockedPlants.includes(u.plant)) || DEEP_FOCUS_UNLOCKS.some((u) => !unlockedPlants.includes(u.plant))) && (
                     <div className="mt-5 space-y-2">
                         <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase">{t("garden.unlockProgress")}</div>
                         {STREAK_UNLOCKS.filter((u) => !unlockedPlants.includes(u.plant)).map((unlock) => {
@@ -129,6 +131,25 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                     </div>
                                     <div className="font-body text-[9px] text-muted-foreground/30 w-12 text-right">
                                         {currentStreak}/{unlock.streak} {t("garden.days")}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                        {DEEP_FOCUS_UNLOCKS.filter((u) => !unlockedPlants.includes(u.plant)).map((unlock) => {
+                            const progress = Math.min(deepFocusStreak / unlock.depth, 1);
+                            return (
+                                <div key={unlock.plant} className="flex items-center gap-3">
+                                    <div className="font-body text-[10px] flex-1 text-foreground/50">{t(`plantType.${unlock.plant}` as TranslationKey)}</div>
+                                    <div className="flex-[2] h-1 bg-foreground/5 rounded-full overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-amber-500/30 rounded-full"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${progress * 100}%` }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                        />
+                                    </div>
+                                    <div className="font-body text-[9px] text-muted-foreground/30 w-14 text-right">
+                                        {t("deepFocus.badge")} x{unlock.depth}
                                     </div>
                                 </div>
                             );
