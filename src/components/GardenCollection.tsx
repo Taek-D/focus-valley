@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
 import { type PlantType, type PlantStage, STREAK_UNLOCKS } from "../hooks/useGarden";
 import { getPlantComponent } from "./ui/pixel-plants";
-import { PLANT_LABELS } from "../lib/constants";
 import { BottomSheet } from "./ui/BottomSheet";
+import { useTranslation, type TranslationKey } from "../lib/i18n";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -23,6 +23,7 @@ const GROWTH_STAGES: PlantStage[] = ["SEED", "SPROUT", "BUD", "FLOWER", "TREE"];
 export const GardenCollection: React.FC<GardenCollectionProps> = ({
     isOpen, onClose, history, unlockedPlants, currentStreak, bestStreak,
 }) => {
+    const { t } = useTranslation();
     const typeCounts = useMemo(() => {
         const counts: Partial<Record<PlantType, number>> = {};
         for (const entry of history) {
@@ -32,13 +33,13 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
     }, [history]);
 
     return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title="My Garden">
+        <BottomSheet isOpen={isOpen} onClose={onClose} title={t("garden.title")}>
             {/* Stats */}
             <div className="flex gap-3 px-5 pb-4">
                 {[
-                    { value: currentStreak, label: "Day Streak" },
-                    { value: bestStreak, label: "Best Streak" },
-                    { value: history.length, label: "Harvested" },
+                    { value: currentStreak, label: t("garden.dayStreak") },
+                    { value: bestStreak, label: t("garden.bestStreak") },
+                    { value: history.length, label: t("garden.harvested") },
                 ].map((stat, i) => (
                     <div key={i} className="flex-1 rounded-2xl border border-foreground/5 p-3 text-center">
                         <div className="font-display text-xl text-foreground" style={{ fontWeight: 300 }}>{stat.value}</div>
@@ -74,7 +75,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         <div className="text-center">
                                             <Lock size={14} className="mx-auto mb-1 text-muted-foreground/40" />
                                             <div className="font-body text-[9px] text-muted-foreground/40">
-                                                {streakInfo ? `${streakInfo.streak}-day streak` : "Locked"}
+                                                {streakInfo ? `${streakInfo.streak} ${t("garden.dayStreakUnlock")}` : t("garden.locked")}
                                             </div>
                                         </div>
                                     </div>
@@ -84,11 +85,11 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         <PlantSvg />
                                     </div>
                                 </div>
-                                <div className="font-body text-[10px] font-medium text-foreground/70">{PLANT_LABELS[type]}</div>
+                                <div className="font-body text-[10px] font-medium text-foreground/70">{t(`plantType.${type}` as TranslationKey)}</div>
                                 {isUnlocked && (
                                     <>
                                         <div className="font-body text-[9px] text-muted-foreground/30">
-                                            {count > 0 ? `${count} grown` : "Not yet grown"}
+                                            {count > 0 ? `${count} ${t("garden.grown")}` : t("garden.notYetGrown")}
                                         </div>
                                         <div className="flex items-end gap-0.5 mt-1">
                                             {GROWTH_STAGES.map((stage) => {
@@ -112,12 +113,12 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                 {/* Unlock Progress */}
                 {STREAK_UNLOCKS.some((u) => !unlockedPlants.includes(u.plant)) && (
                     <div className="mt-5 space-y-2">
-                        <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase">Unlock Progress</div>
+                        <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase">{t("garden.unlockProgress")}</div>
                         {STREAK_UNLOCKS.filter((u) => !unlockedPlants.includes(u.plant)).map((unlock) => {
                             const progress = Math.min(currentStreak / unlock.streak, 1);
                             return (
                                 <div key={unlock.plant} className="flex items-center gap-3">
-                                    <div className="font-body text-[10px] flex-1 text-foreground/50">{unlock.label}</div>
+                                    <div className="font-body text-[10px] flex-1 text-foreground/50">{t(`plantType.${unlock.plant}` as TranslationKey)}</div>
                                     <div className="flex-[2] h-1 bg-foreground/5 rounded-full overflow-hidden">
                                         <motion.div
                                             className="h-full bg-foreground/20 rounded-full"
@@ -127,7 +128,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         />
                                     </div>
                                     <div className="font-body text-[9px] text-muted-foreground/30 w-12 text-right">
-                                        {currentStreak}/{unlock.streak} days
+                                        {currentStreak}/{unlock.streak} {t("garden.days")}
                                     </div>
                                 </div>
                             );

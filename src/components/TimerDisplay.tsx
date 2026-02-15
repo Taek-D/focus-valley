@@ -48,7 +48,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                         aria-pressed={mode === m}
                         aria-label={`Switch to ${t(MODE_KEYS[m].label)} mode`}
                         className={cn(
-                            "relative px-5 py-2 font-body text-[10px] tracking-[0.08em] uppercase rounded-full transition-all",
+                            "relative px-3 sm:px-5 py-2 font-body text-[10px] tracking-[0.08em] uppercase rounded-full transition-all",
                             mode === m
                                 ? "text-foreground font-medium"
                                 : "text-muted-foreground/40 hover:text-muted-foreground/60 disabled:opacity-30"

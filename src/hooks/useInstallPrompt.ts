@@ -5,9 +5,14 @@ type BeforeInstallPromptEvent = Event & {
     userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
+const DISMISS_KEY = "focus-valley-install-dismissed";
+
 export function useInstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
     const [isInstalled, setIsInstalled] = useState(false);
+    const [isDismissed, setIsDismissed] = useState(() => {
+        try { return localStorage.getItem(DISMISS_KEY) === "1"; } catch { return false; }
+    });
 
     useEffect(() => {
         // Check if already installed (standalone mode)
@@ -45,10 +50,12 @@ export function useInstallPrompt() {
 
     const dismiss = useCallback(() => {
         setDeferredPrompt(null);
+        setIsDismissed(true);
+        try { localStorage.setItem(DISMISS_KEY, "1"); } catch { /* noop */ }
     }, []);
 
     return {
-        canInstall: !!deferredPrompt && !isInstalled,
+        canInstall: !!deferredPrompt && !isInstalled && !isDismissed,
         isInstalled,
         install,
         dismiss,

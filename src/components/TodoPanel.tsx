@@ -6,6 +6,7 @@ import { useTodos } from "../hooks/useTodos";
 import { ANIMATION } from "../lib/constants";
 import { BottomSheet } from "./ui/BottomSheet";
 import { trackTodoCreated, trackTodoCompleted } from "../lib/analytics";
+import { useTranslation } from "../lib/i18n";
 
 type TodoPanelProps = {
     isOpen: boolean;
@@ -14,6 +15,7 @@ type TodoPanelProps = {
 
 export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
     const { todos, activeTodoId, addTodo, toggleTodo, removeTodo, clearCompleted, setActiveTodo } = useTodos();
+    const { t } = useTranslation();
     const [input, setInput] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +37,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
     };
 
     return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title="To-do">
+        <BottomSheet isOpen={isOpen} onClose={onClose} title={t("todo.title")}>
             {/* Input */}
             <form onSubmit={handleSubmit} className="px-5 pb-3">
                 <input
@@ -43,7 +45,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="What are you working on?"
+                    placeholder={t("todo.placeholder")}
                     className="w-full px-4 py-3 rounded-2xl bg-foreground/5 border border-foreground/8 text-foreground font-body text-xs placeholder:text-muted-foreground/30 focus:outline-none focus:border-foreground/20 transition-colors"
                 />
             </form>
@@ -54,10 +56,10 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                     <div className="text-center py-10 space-y-3">
                         <div className="text-3xl opacity-40">{"\u2705"}</div>
                         <p className="font-body text-xs font-medium text-muted-foreground/50">
-                            No tasks yet
+                            {t("todo.noTasks")}
                         </p>
                         <p className="font-body text-xs text-muted-foreground/30">
-                            Add a task to stay focused
+                            {t("todo.addPrompt")}
                         </p>
                     </div>
                 ) : (
@@ -79,7 +81,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                             >
                                 <button
                                     onClick={() => { if (!todo.completed) trackTodoCompleted(); toggleTodo(todo.id); }}
-                                    aria-label={todo.completed ? "Mark as incomplete" : "Mark as complete"}
+                                    aria-label={todo.completed ? t("todo.markIncomplete") : t("todo.markComplete")}
                                     className={cn(
                                         "flex-shrink-0 w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all",
                                         todo.completed
@@ -102,7 +104,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                 {!todo.completed && (
                                     <button
                                         onClick={() => setActiveTodo(activeTodoId === todo.id ? null : todo.id)}
-                                        aria-label={activeTodoId === todo.id ? "Unpin task" : "Pin as focus task"}
+                                        aria-label={activeTodoId === todo.id ? t("todo.unpinTask") : t("todo.pinTask")}
                                         className={cn(
                                             "flex-shrink-0 p-1 rounded-lg transition-all",
                                             activeTodoId === todo.id
@@ -115,7 +117,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                 )}
                                 <button
                                     onClick={() => removeTodo(todo.id)}
-                                    aria-label="Remove task"
+                                    aria-label={t("todo.removeTask")}
                                     className="flex-shrink-0 p-1 rounded-lg text-muted-foreground/20 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all"
                                 >
                                     <Trash2 size={12} />
@@ -133,7 +135,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                         onClick={clearCompleted}
                         className="w-full py-2.5 font-body text-[10px] font-medium tracking-[0.1em] uppercase text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
                     >
-                        Clear completed
+                        {t("todo.clearCompleted")}
                     </button>
                 </div>
             )}

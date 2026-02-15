@@ -29,12 +29,35 @@ const LONG_PRESS_MS = 300;
 const LONG_PRESS_MOVE_TOLERANCE = 5;
 
 export const CategoryChips: React.FC = React.memo(() => {
-    const { categories, activeCategoryId, setActiveCategory, addCategory, removeCategory, reorderCategories } = useCategories();
+    const { categories, activeCategoryId, setActiveCategory, addCategory, addCategoryAt, removeCategory, reorderCategories } = useCategories();
     const { t } = useTranslation();
     const [showAddModal, setShowAddModal] = useState(false);
     const [newLabel, setNewLabel] = useState("");
     const [newEmoji, setNewEmoji] = useState(PRESET_EMOJIS[0]);
     const [newColor, setNewColor] = useState(PRESET_COLORS[0]);
+
+    // Undo state for category removal
+    const [undoInfo, setUndoInfo] = useState<{ cat: { id: string; label: string; emoji: string; color: string }; index: number } | null>(null);
+    const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleRemove = useCallback((catId: string) => {
+        const index = categories.findIndex((c) => c.id === catId);
+        const cat = categories[index];
+        if (!cat) return;
+        trackCategoryRemoved(cat.label);
+        removeCategory(catId);
+        // Clear previous undo timer
+        if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+        setUndoInfo({ cat, index });
+        undoTimerRef.current = setTimeout(() => setUndoInfo(null), 4000);
+    }, [categories, removeCategory]);
+
+    const handleUndo = useCallback(() => {
+        if (!undoInfo) return;
+        addCategoryAt(undoInfo.cat, undoInfo.index);
+        if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+        setUndoInfo(null);
+    }, [undoInfo, addCategoryAt]);
 
     // Drag state — all refs to avoid stale closures
     const [, forceRender] = useState(0);
@@ -159,8 +182,11 @@ export const CategoryChips: React.FC = React.memo(() => {
 
     return (
         <>
-            <div className="w-full overflow-x-auto scrollbar-hide">
-                <div className="flex items-center gap-1.5 w-max mx-auto px-1">
+            <div className="relative w-full">
+                <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none z-10 sm:hidden" />
+                <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none z-10 sm:hidden" />
+                <div className="overflow-x-auto scrollbar-hide">
+                <div className="flex items-center gap-1.5 w-max mx-auto px-4 sm:px-1">
                     {displayCategories.map((cat, i) => {
                         const isActive = cat.id === activeCategoryId;
                         const isBeingDragged = dragIndex !== null && categories[dragIndex]?.id === cat.id;
@@ -202,9 +228,9 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 </button>
                                 {!isActive && categories.length > 1 && (
                                     <button
-                                        onClick={() => { trackCategoryRemoved(cat.label); removeCategory(cat.id); }}
+                                        onClick={() => handleRemove(cat.id)}
                                         className="opacity-0 group-hover:opacity-100 -ml-1 p-0.5 rounded-full hover:bg-foreground/10 transition-opacity"
-                                        aria-label={`Remove ${cat.label}`}
+                                        aria-label={`${t("category.removeLabel")} ${PRESET_IDS.has(cat.id) ? t(`category.${cat.id}` as TranslationKey) : cat.label}`}
                                     >
                                         <X size={8} />
                                     </button>
@@ -224,7 +250,33 @@ export const CategoryChips: React.FC = React.memo(() => {
                         <Plus size={13} />
                     </button>
                 </div>
+                </div>
             </div>
+
+            {/* Undo toast — portaled to body */}
+            {createPortal(
+                <AnimatePresence>
+                    {undoInfo && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-card border border-foreground/[0.06] shadow-cozy-lg"
+                        >
+                            <span className="font-body text-xs text-muted-foreground">
+                                {undoInfo.cat.emoji} {PRESET_IDS.has(undoInfo.cat.id) ? t(`category.${undoInfo.cat.id}` as TranslationKey) : undoInfo.cat.label} {t("category.undoRemove")}
+                            </span>
+                            <button
+                                onClick={handleUndo}
+                                className="font-body text-[11px] font-medium text-foreground hover:text-foreground/70 transition-colors"
+                            >
+                                {t("category.undo")}
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
 
             {/* Add Category Modal — portaled to body to escape stacking context */}
             {createPortal(
@@ -235,14 +287,14 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="fixed inset-0 bg-background/50 backdrop-blur-sm z-50"
+                                className="fixed inset-0 bg-background/60 z-50 will-change-[opacity]"
                                 onClick={() => setShowAddModal(false)}
                             />
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95, y: 10 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[min(320px,90vw)] glass-strong rounded-3xl p-5 shadow-cozy-lg"
+                                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[min(320px,90vw)] bg-card border border-foreground/[0.06] rounded-3xl p-5 shadow-cozy-lg will-change-transform"
                             >
                                 <h3 className="font-body text-[10px] font-medium tracking-[0.15em] uppercase text-muted-foreground mb-4">
                                     {t("category.newCategory")}

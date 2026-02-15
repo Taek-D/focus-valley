@@ -11,6 +11,7 @@ import { generateShareCard, shareOrDownload } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
 import { WaitlistBanner } from "./WaitlistBanner";
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
+import { useTranslation } from "../lib/i18n";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -35,6 +36,7 @@ const HEATMAP_COLORS = [
 export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     isOpen, onClose, history, totalFocusMinutes, focusSessions, currentStreak, bestStreak,
 }) => {
+    const { t } = useTranslation();
     const grouped = groupByDate(history);
     const sortedDates = Object.keys(grouped).reverse();
     const totalHours = Math.floor(totalFocusMinutes / 60);
@@ -97,20 +99,20 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
         <BottomSheet
             isOpen={isOpen}
             onClose={onClose}
-            title="Stats & History"
+            title={t("stats.title")}
             headerActions={
                 <>
                     <button
                         onClick={handleShare}
                         disabled={sharing}
-                        aria-label="Share focus card"
+                        aria-label={t("stats.shareCard")}
                         className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all disabled:opacity-30"
                     >
                         <Share2 size={14} />
                     </button>
                     <button
                         onClick={handleExport}
-                        aria-label="Export data as CSV"
+                        aria-label={t("stats.exportCsv")}
                         className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all"
                     >
                         <Download size={14} />
@@ -121,10 +123,10 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             {/* Stats Grid */}
             <div className="grid grid-cols-4 gap-2 px-5 pb-4">
                 {[
-                    { icon: <Trophy size={12} />, value: history.length, label: "Harvested", color: "text-foreground" },
-                    { icon: <Clock size={12} />, value: totalHours > 0 ? `${totalHours}h` : `${remainingMinutes}m`, label: "Focus", color: "text-foreground" },
-                    { icon: <Flame size={12} />, value: currentStreak, label: "Streak", color: "text-foreground" },
-                    { icon: <TrendingUp size={12} />, value: bestStreak, label: "Best", color: "text-foreground" },
+                    { icon: <Trophy size={12} />, value: history.length, label: t("stats.harvested"), color: "text-foreground" },
+                    { icon: <Clock size={12} />, value: totalHours > 0 ? `${totalHours}h` : `${remainingMinutes}m`, label: t("stats.focus"), color: "text-foreground" },
+                    { icon: <Flame size={12} />, value: currentStreak, label: t("stats.streak"), color: "text-foreground" },
+                    { icon: <TrendingUp size={12} />, value: bestStreak, label: t("stats.best"), color: "text-foreground" },
                 ].map((stat, i) => (
                     <div key={i} className="rounded-2xl border border-foreground/5 p-3 text-center">
                         <div className="text-muted-foreground/40 mx-auto mb-1.5 flex justify-center">{stat.icon}</div>
@@ -136,7 +138,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 
             {/* 7-Day Focus Chart */}
             <div className="px-5 pb-4">
-                <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-2">This Week</div>
+                <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-2">{t("stats.thisWeek")}</div>
                 <div className="relative flex items-end gap-1.5 h-24">
                     {/* Goal line */}
                     <div
@@ -144,7 +146,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                         style={{ bottom: `${Math.min(goalLinePercent, 100) * 0.7}%` }}
                     >
                         <span className="absolute -top-3 right-0 font-body text-[8px] text-muted-foreground/25">
-                            {dailyGoal}m goal
+                            {dailyGoal}m {t("stats.goal")}
                         </span>
                     </div>
 
@@ -183,7 +185,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             {/* Activity Heatmap — 13 weeks */}
             <div className="px-5 pb-4">
                 <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-2">
-                    Activity · Last 3 Months
+                    {t("stats.activity")}
                 </div>
                 <div className="flex gap-[2px] justify-center">
                     {heatmapWeeks.map((week, wi) => (
@@ -203,18 +205,18 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                     ))}
                 </div>
                 <div className="flex items-center justify-end gap-1 mt-1.5">
-                    <span className="font-body text-[8px] text-muted-foreground/25">Less</span>
+                    <span className="font-body text-[8px] text-muted-foreground/25">{t("stats.less")}</span>
                     {HEATMAP_COLORS.map((color, i) => (
                         <div key={i} className={`w-[8px] h-[8px] rounded-[1px] ${color}`} />
                     ))}
-                    <span className="font-body text-[8px] text-muted-foreground/25">More</span>
+                    <span className="font-body text-[8px] text-muted-foreground/25">{t("stats.more")}</span>
                 </div>
             </div>
 
             {/* Weekly Summary Card */}
             <div className="px-5 pb-4">
                 <div className="rounded-2xl border border-foreground/5 p-4">
-                    <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-3">Weekly Summary</div>
+                    <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-3">{t("stats.weeklySummary")}</div>
                     <div className="grid grid-cols-2 gap-3">
                         <div className="flex items-center gap-2.5">
                             <div className="p-1.5 rounded-lg bg-foreground/5">
@@ -226,7 +228,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                         ? `${Math.floor(weeklyStats.totalMinutes / 60)}h ${weeklyStats.totalMinutes % 60}m`
                                         : `${weeklyStats.totalMinutes}m`}
                                 </div>
-                                <div className="font-body text-[9px] text-muted-foreground/40">Total this week</div>
+                                <div className="font-body text-[9px] text-muted-foreground/40">{t("stats.totalThisWeek")}</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2.5">
@@ -239,7 +241,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                         ? `${Math.floor(weeklyStats.avgMinutes / 60)}h ${weeklyStats.avgMinutes % 60}m`
                                         : `${weeklyStats.avgMinutes}m`}
                                 </div>
-                                <div className="font-body text-[9px] text-muted-foreground/40">Daily average</div>
+                                <div className="font-body text-[9px] text-muted-foreground/40">{t("stats.dailyAverage")}</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2.5">
@@ -250,7 +252,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                 <div className="font-display text-sm text-foreground" style={{ fontWeight: 400 }}>
                                     {weeklyStats.bestDay}
                                 </div>
-                                <div className="font-body text-[9px] text-muted-foreground/40">Most focused</div>
+                                <div className="font-body text-[9px] text-muted-foreground/40">{t("stats.mostFocused")}</div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2.5">
@@ -263,7 +265,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                 <div className="font-display text-sm text-foreground" style={{ fontWeight: 400 }}>
                                     {weeklyStats.changePercent >= 0 ? "+" : ""}{weeklyStats.changePercent}%
                                 </div>
-                                <div className="font-body text-[9px] text-muted-foreground/40">vs last week</div>
+                                <div className="font-body text-[9px] text-muted-foreground/40">{t("stats.vsLastWeek")}</div>
                             </div>
                         </div>
                     </div>
@@ -275,7 +277,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 <div className="px-5 pb-4">
                     <div className="rounded-2xl border border-foreground/5 p-4">
                         <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-3">
-                            Category Breakdown
+                            {t("stats.categoryBreakdown")}
                         </div>
 
                         {/* Stacked bar */}
@@ -328,9 +330,9 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 {history.length === 0 ? (
                     <div className="text-center py-10 space-y-3">
                         <div className="text-3xl opacity-40">{"\u{1F331}"}</div>
-                        <p className="font-body text-xs font-medium text-muted-foreground/50">No harvests yet</p>
-                        <p className="font-body text-xs text-muted-foreground/30">
-                            Complete a focus session<br />to grow your first plant!
+                        <p className="font-body text-xs font-medium text-muted-foreground/50">{t("stats.noHarvests")}</p>
+                        <p className="font-body text-xs text-muted-foreground/30 whitespace-pre-line">
+                            {t("stats.completeSession")}
                         </p>
                     </div>
                 ) : (

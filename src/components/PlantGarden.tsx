@@ -4,6 +4,7 @@ import { Pin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getPlantComponent } from "./ui/pixel-plants";
 import { PlantParticles } from "./PlantParticles";
+import { useTranslation, type TranslationKey } from "@/lib/i18n";
 import type { PlantType, PlantStage } from "@/hooks/useGarden";
 import type { StageTransition } from "@/hooks/usePlantParticles";
 
@@ -22,6 +23,7 @@ export const PlantGarden = memo(function PlantGarden({
     gardenType, gardenStage, canInteract, onPlantClick,
     activeTodo, stageTransition, particleTrigger, particleType,
 }: PlantGardenProps) {
+    const { t } = useTranslation();
     const PlantComponent = useMemo(
         () => getPlantComponent(gardenType, gardenStage),
         [gardenType, gardenStage],
@@ -44,10 +46,10 @@ export const PlantGarden = memo(function PlantGarden({
                     onClick={onPlantClick}
                     aria-label={
                         gardenStage === "TREE" || gardenStage === "FLOWER"
-                            ? "Harvest your plant"
+                            ? t("plant.harvestLabel")
                             : gardenStage === "DEAD"
-                            ? "Plant a new seed"
-                            : `${gardenType} plant - ${gardenStage} stage`
+                            ? t("plant.plantSeedLabel")
+                            : `${t(`plantType.${gardenType}` as TranslationKey)} - ${t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}`
                     }
                 >
                     <AnimatePresence mode="wait">
@@ -71,7 +73,7 @@ export const PlantGarden = memo(function PlantGarden({
 
             {/* Stage label */}
             <div className="font-body text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase mt-1 mb-2">
-                {gardenType} &middot; {gardenStage}
+                {t(`plantType.${gardenType}` as TranslationKey)} &middot; {t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}
             </div>
 
             {canInteract && (
@@ -80,7 +82,7 @@ export const PlantGarden = memo(function PlantGarden({
                     animate={{ opacity: 1 }}
                     className="font-body text-[11px] text-muted-foreground/50 tracking-wide -mt-1 mb-2"
                 >
-                    {gardenStage === "DEAD" ? "Tap to plant a new seed" : "Tap to harvest"}
+                    {gardenStage === "DEAD" ? t("plant.tapToPlant") : t("plant.tapToHarvest")}
                 </motion.div>
             )}
 

@@ -7,6 +7,7 @@ type CategoryState = {
     categories: Category[];
     activeCategoryId: string;
     addCategory: (label: string, emoji: string, color: string) => void;
+    addCategoryAt: (cat: Category, index: number) => void;
     removeCategory: (id: string) => void;
     reorderCategories: (fromIndex: number, toIndex: number) => void;
     setActiveCategory: (id: string) => void;
@@ -22,6 +23,11 @@ export const useCategoryStore = create<CategoryState>()(
                 return {
                     categories: [...state.categories, { id, label, emoji, color }],
                 };
+            }),
+            addCategoryAt: (cat, index) => set((state) => {
+                const next = [...state.categories];
+                next.splice(index, 0, cat);
+                return { categories: next };
             }),
             removeCategory: (id) => set((state) => {
                 if (state.categories.length <= 1) return state;

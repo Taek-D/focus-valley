@@ -184,6 +184,77 @@ const translations = {
     // Notifications
     "notification.focusComplete": { en: "Focus session complete! Your plant has grown.", ko: "집중 세션 완료! 식물이 자랐어요.", ja: "集中セッション完了！植物が育ちました。" },
     "notification.breakOver": { en: "Break is over! Time to focus.", ko: "휴식이 끝났어요! 집중할 시간이에요.", ja: "休憩終了！集中する時間です。" },
+
+    // Plant Garden
+    "plant.tapToPlant": { en: "Tap to plant a new seed", ko: "탭하여 새 씨앗 심기", ja: "タップして新しい種を植える" },
+    "plant.tapToHarvest": { en: "Tap to harvest", ko: "탭하여 수확하기", ja: "タップして収穫" },
+    "plant.harvestLabel": { en: "Harvest your plant", ko: "식물 수확하기", ja: "植物を収穫" },
+    "plant.plantSeedLabel": { en: "Plant a new seed", ko: "새 씨앗 심기", ja: "新しい種を植える" },
+
+    // Plant type names
+    "plantType.DEFAULT": { en: "Fern", ko: "고사리", ja: "シダ" },
+    "plantType.CACTUS": { en: "Cactus", ko: "선인장", ja: "サボテン" },
+    "plantType.SUNFLOWER": { en: "Sunflower", ko: "해바라기", ja: "ひまわり" },
+    "plantType.PINE": { en: "Bonsai", ko: "분재", ja: "盆栽" },
+    "plantType.ROSE": { en: "Rose", ko: "장미", ja: "バラ" },
+    "plantType.ORCHID": { en: "Orchid", ko: "난초", ja: "ラン" },
+
+    // Garden Collection
+    "garden.dayStreak": { en: "Day Streak", ko: "연속 일수", ja: "連続日数" },
+    "garden.bestStreak": { en: "Best Streak", ko: "최고 연속", ja: "最高連続" },
+    "garden.harvested": { en: "Harvested", ko: "수확", ja: "収穫" },
+    "garden.grown": { en: "grown", ko: "재배", ja: "栽培" },
+    "garden.notYetGrown": { en: "Not yet grown", ko: "아직 재배 전", ja: "まだ栽培なし" },
+    "garden.unlockProgress": { en: "Unlock Progress", ko: "잠금 해제 진행", ja: "アンロック進捗" },
+    "garden.dayStreakUnlock": { en: "day streak", ko: "일 연속", ja: "日連続" },
+    "garden.days": { en: "days", ko: "일", ja: "日" },
+
+    // Todo Panel
+    "todo.placeholder": { en: "What are you working on?", ko: "무슨 작업을 하시나요?", ja: "何に取り組んでいますか？" },
+    "todo.noTasks": { en: "No tasks yet", ko: "아직 할 일이 없어요", ja: "まだタスクがありません" },
+    "todo.addPrompt": { en: "Add a task to stay focused", ko: "할 일을 추가하여 집중하세요", ja: "タスクを追加して集中しましょう" },
+    "todo.markComplete": { en: "Mark as complete", ko: "완료로 표시", ja: "完了にする" },
+    "todo.markIncomplete": { en: "Mark as incomplete", ko: "미완료로 표시", ja: "未完了にする" },
+    "todo.pinTask": { en: "Pin as focus task", ko: "집중 과제로 고정", ja: "集中タスクに固定" },
+    "todo.unpinTask": { en: "Unpin task", ko: "고정 해제", ja: "固定解除" },
+    "todo.removeTask": { en: "Remove task", ko: "할 일 삭제", ja: "タスク削除" },
+
+    // Audio Mixer
+    "audio.soundscape": { en: "Soundscape", ko: "사운드스케이프", ja: "サウンドスケープ" },
+    "audio.muteAll": { en: "Mute all sounds", ko: "전체 음소거", ja: "全てミュート" },
+    "audio.unmuteAll": { en: "Unmute all sounds", ko: "음소거 해제", ja: "ミュート解除" },
+    "audio.rain": { en: "Rain", ko: "비", ja: "雨" },
+    "audio.fire": { en: "Fire", ko: "불", ja: "焚き火" },
+    "audio.cafe": { en: "Cafe", ko: "카페", ja: "カフェ" },
+    "audio.stream": { en: "Stream", ko: "시냇물", ja: "小川" },
+    "audio.white": { en: "White", ko: "화이트", ja: "ホワイト" },
+
+    // History / Stats Panel
+    "stats.title": { en: "Stats & History", ko: "통계 & 기록", ja: "統計 & 履歴" },
+    "stats.harvested": { en: "Harvested", ko: "수확", ja: "収穫" },
+    "stats.focus": { en: "Focus", ko: "집중", ja: "集中" },
+    "stats.streak": { en: "Streak", ko: "연속", ja: "連続" },
+    "stats.best": { en: "Best", ko: "최고", ja: "最高" },
+    "stats.thisWeek": { en: "This Week", ko: "이번 주", ja: "今週" },
+    "stats.activity": { en: "Activity · Last 3 Months", ko: "활동 · 최근 3개월", ja: "アクティビティ · 過去3ヶ月" },
+    "stats.less": { en: "Less", ko: "적음", ja: "少" },
+    "stats.more": { en: "More", ko: "많음", ja: "多" },
+    "stats.weeklySummary": { en: "Weekly Summary", ko: "주간 요약", ja: "週間サマリー" },
+    "stats.totalThisWeek": { en: "Total this week", ko: "이번 주 합계", ja: "今週の合計" },
+    "stats.dailyAverage": { en: "Daily average", ko: "일 평균", ja: "1日平均" },
+    "stats.mostFocused": { en: "Most focused", ko: "최다 집중", ja: "最も集中" },
+    "stats.vsLastWeek": { en: "vs last week", ko: "지난주 대비", ja: "先週比" },
+    "stats.categoryBreakdown": { en: "Category Breakdown", ko: "카테고리별 분석", ja: "カテゴリー内訳" },
+    "stats.noHarvests": { en: "No harvests yet", ko: "아직 수확이 없어요", ja: "まだ収穫がありません" },
+    "stats.completeSession": { en: "Complete a focus session\nto grow your first plant!", ko: "집중 세션을 완료하여\n첫 식물을 키워보세요!", ja: "集中セッションを完了して\n最初の植物を育てましょう！" },
+    "stats.shareCard": { en: "Share focus card", ko: "집중 카드 공유", ja: "集中カードを共有" },
+    "stats.exportCsv": { en: "Export data as CSV", ko: "CSV로 내보내기", ja: "CSVでエクスポート" },
+    "stats.goal": { en: "goal", ko: "목표", ja: "目標" },
+
+    // Category removal
+    "category.removeLabel": { en: "Remove", ko: "삭제", ja: "削除" },
+    "category.undoRemove": { en: "removed. Undo?", ko: "삭제됨. 되돌리기?", ja: "削除しました。元に戻す？" },
+    "category.undo": { en: "Undo", ko: "되돌리기", ja: "元に戻す" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
