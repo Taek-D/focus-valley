@@ -1,24 +1,29 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-12T18:09:15.742Z",
+  "lastUpdated": "2026-02-15T06:22:49.728Z",
   "activeFeatures": [
     "focus-valley",
-    "ui"
+    "ui",
+    "remotion"
   ],
   "primaryFeature": "focus-valley",
   "features": {
     "focus-valley": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
+      "phase": "completed",
+      "phaseNumber": 6,
+      "matchRate": 98,
+      "iterationCount": 1,
       "requirements": [],
-      "documents": {},
+      "documents": {
+        "plan": "docs/01-plan/plan.md",
+        "analysis": "docs/03-analysis/gap-analysis.md",
+        "report": "docs/04-report/focus-valley.report.md"
+      },
       "timestamps": {
         "started": "2026-02-12T17:54:13.855Z",
-        "lastUpdated": "2026-02-12T18:09:15.742Z"
+        "lastUpdated": "2026-02-15T15:30:00.000Z"
       },
-      "lastFile": "E:\\프로젝트\\focus-valley\\src\\App.tsx"
+      "lastFile": "docs/04-report/focus-valley.report.md"
     },
     "ui": {
       "phase": "do",
@@ -29,9 +34,22 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-12T18:01:07.896Z",
-        "lastUpdated": "2026-02-12T18:04:17.894Z"
+        "lastUpdated": "2026-02-15T06:07:01.706Z"
       },
       "lastFile": "E:\\프로젝트\\focus-valley\\src\\components\\ui\\pixel-plants.tsx"
+    },
+    "remotion": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T19:23:24.011Z",
+        "lastUpdated": "2026-02-13T19:25:31.784Z"
+      },
+      "lastFile": "E:\\프로젝트\\focus-valley\\remotion\\FocusValleyIntro.tsx"
     }
   },
   "pipeline": {
@@ -42,7 +60,7 @@
   "session": {
     "startedAt": "2026-02-12T17:17:55.937Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-02-12T18:09:15.742Z"
+    "lastActivity": "2026-02-15T06:22:49.728Z"
   },
   "history": [
     {
@@ -239,6 +257,1932 @@
     },
     {
       "timestamp": "2026-02-12T18:09:15.742Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:23:48.529Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:23:52.492Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:23:59.177Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:24:01.573Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:24:03.424Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:24:07.083Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:24:24.858Z",
+      "feature": "ui",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:25:14.016Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:25:35.442Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:25:52.966Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:26:13.685Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:26:18.650Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:26:28.804Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:26:44.055Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:27:37.723Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:27:51.426Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:27:57.361Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:17.722Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:19.223Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:20.467Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:28.487Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:29.542Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:33.779Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:28:55.939Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:29:45.520Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:29:50.749Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:29:55.858Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:29:57.986Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:30:00.466Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:39:12.057Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:39:25.336Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:39:35.365Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:39:40.292Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:39:44.649Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:23.126Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:34.744Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:38.869Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:44.733Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:48.907Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:40:58.141Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:41:05.184Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:41:14.110Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:41:26.073Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:05.956Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:19.646Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:26.518Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:36.306Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:43.495Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:42:55.358Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:03:55.272Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:04:16.506Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:05:19.310Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:21:13.848Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:24:51.532Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:25:47.046Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:35:35.052Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:42:03.255Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:42:07.468Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:47:15.075Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:47:43.499Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:47:49.470Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:47:55.639Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:02.359Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:08.623Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:14.687Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:22.471Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:28.566Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T13:48:39.205Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:08:41.740Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:08:56.340Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:08.676Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:13.865Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:20.963Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:26.753Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:32.989Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:37.316Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:42.682Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:47.896Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:52.775Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:09:58.437Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:03.275Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:12.061Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:16.195Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:20.606Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:52.468Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:10:57.962Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:11:03.920Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:24:42.168Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:24:46.280Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:25:00.560Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:25:06.774Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:33:30.054Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:33:36.865Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:45:56.261Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:46:16.427Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:46:24.327Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:46:52.036Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:08:14.434Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:08:35.526Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:09:22.301Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:09:41.543Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:09:51.786Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:10:00.831Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:10:10.277Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:12:00.618Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:12:04.693Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:12:10.310Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:12:14.756Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:49:29.079Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:49:56.354Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:50:07.430Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:50:16.443Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:50:24.252Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:50:33.302Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:50:41.630Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:51:23.038Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:52:16.269Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:52:27.597Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:52:33.170Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:52:47.344Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:53:02.839Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:53:20.944Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:53:27.596Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:53:34.152Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:53:53.367Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:34:10.894Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:34:17.243Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:34:22.548Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:34:32.303Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:36:18.154Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:10.513Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:20.012Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:23.465Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:25.765Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:37.854Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:46.727Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:48.785Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:40:55.026Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:03.094Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:05.397Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:11.998Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:21.255Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:24.171Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:26.748Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:30.800Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:32.110Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:43.136Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:43.911Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:47.234Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:51.002Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:56.580Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:41:58.442Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:04.306Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:06.209Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:08.034Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:10.779Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:13.745Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:18.402Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:20.213Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:27.071Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:34.673Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:36.771Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:38.613Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:41.611Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:44.515Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:46.336Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:47.832Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:52.428Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:54.186Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:55.405Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:42:59.319Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:07.304Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:09.237Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:12.942Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:17.005Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:18.132Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:20.994Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:22.699Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:24.091Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:25.716Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:27.252Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:30.121Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:32.105Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:32.878Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:34.511Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:35.606Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:36.836Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:38.619Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:43:41.978Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:44:42.961Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:44:44.914Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:44:49.663Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:44:50.935Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T16:44:52.052Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T19:23:24.011Z",
+      "feature": "remotion",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T19:23:25.833Z",
+      "feature": "remotion",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T19:24:46.674Z",
+      "feature": "remotion",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T19:25:31.784Z",
+      "feature": "remotion",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:50:16.336Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:53:23.229Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:53:48.265Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:54:32.732Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:54:41.399Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:54:46.132Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:54:53.265Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:01.911Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:08.989Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:13.304Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:20.599Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:27.554Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:33.011Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:37.811Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:43.382Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:48.378Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:55:53.307Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:00.651Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:05.841Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:11.867Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:17.820Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:22.706Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:28.671Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:34.087Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:38.655Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:56:51.922Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:00.710Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:05.337Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:17.222Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:22.532Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:36.232Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:41.627Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:46.332Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:51.132Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:57:58.079Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:58:03.295Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:58:19.585Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:58:25.566Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:58:32.185Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:58:40.310Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:59:13.819Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:59:20.229Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:59:35.755Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T02:59:43.073Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:01:30.732Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:02:03.926Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:02:18.354Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:02:25.986Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:04:35.066Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:18:11.997Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:36:06.392Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:41:21.898Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:51:34.617Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T03:51:39.587Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T04:06:44.469Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T04:06:58.578Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T04:07:08.612Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T04:07:22.606Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:17.412Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:18.676Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:20.229Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:22.118Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:27.721Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:29.376Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:34.235Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:36.769Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:42.490Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:49.922Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:27:56.479Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:28:02.990Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:28:12.674Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:28:17.383Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:28:49.884Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T05:28:50.485Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:05.450Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:11.843Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:15.590Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:24.356Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:35.219Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:49.601Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:04:54.158Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:08.720Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:20.110Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:26.447Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:34.748Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:38.135Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:42.308Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:05:56.494Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:06:04.411Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:06:55.307Z",
+      "feature": "ui",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:07:01.706Z",
+      "feature": "ui",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:07:28.955Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:07:49.968Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:08:29.079Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:08:37.182Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:08:56.153Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:02.033Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:06.816Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:16.743Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:25.285Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:34.480Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:38.588Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:44.547Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:09:55.031Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:10:00.772Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:10:13.590Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:11:16.577Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:11:38.742Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:11:47.008Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:11:52.619Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:12:31.681Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:12:37.023Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:13:13.450Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:13:18.897Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:21:49.487Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:21:55.826Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:00.623Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:06.282Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:13.025Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:18.857Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:34.200Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:40.221Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-15T06:22:49.728Z",
       "feature": "focus-valley",
       "phase": "do",
       "action": "updated"
