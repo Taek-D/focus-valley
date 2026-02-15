@@ -12,15 +12,75 @@ function getDuration(mode: TimerMode, focus: number, shortBreak: number, longBre
 
 type SettingsSnapshot = { focus: number; shortBreak: number; longBreak: number; mode: TimerMode };
 
+const STORAGE_KEY = "focus-valley-timer-state";
+
+type PersistedTimerState = {
+    mode: TimerMode;
+    isRunning: boolean;
+    focusCount: number;
+    startedAt: number;       // Unix ms when the timer was last started/resumed
+    pausedTimeLeft: number;  // seconds remaining when saved
+};
+
+function saveTimerState(state: PersistedTimerState) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch { /* quota exceeded — ignore */ }
+}
+
+function loadTimerState(): PersistedTimerState | null {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw) as PersistedTimerState;
+    } catch {
+        return null;
+    }
+}
+
+function clearTimerState() {
+    localStorage.removeItem(STORAGE_KEY);
+}
+
+function resolveInitialState(
+    saved: PersistedTimerState | null,
+    focusMinutes: number,
+): { mode: TimerMode; timeLeft: number; isRunning: boolean; isCompleted: boolean; focusCount: number; shouldStartWorker: boolean } {
+    if (!saved) {
+        return { mode: "FOCUS", timeLeft: focusMinutes * 60, isRunning: false, isCompleted: false, focusCount: 0, shouldStartWorker: false };
+    }
+
+    if (saved.isRunning) {
+        const elapsed = (Date.now() - saved.startedAt) / 1000;
+        const remaining = saved.pausedTimeLeft - elapsed;
+        if (remaining > 0) {
+            return { mode: saved.mode, timeLeft: Math.ceil(remaining), isRunning: true, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: true };
+        }
+        // Timer expired while away
+        return { mode: saved.mode, timeLeft: 0, isRunning: false, isCompleted: true, focusCount: saved.focusCount, shouldStartWorker: false };
+    }
+
+    // Was paused
+    return { mode: saved.mode, timeLeft: saved.pausedTimeLeft, isRunning: false, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: false };
+}
+
 export function useTimer() {
     const { focus, shortBreak, longBreak } = useTimerSettings();
-    const [mode, setMode] = useState<TimerMode>("FOCUS");
-    const [timeLeft, setTimeLeft] = useState(focus * 60);
-    const [isRunning, setIsRunning] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(false);
-    const [focusCount, setFocusCount] = useState(0);
+
+    const savedRef = useRef(loadTimerState());
+    const initialRef = useRef(resolveInitialState(savedRef.current, focus));
+    const init = initialRef.current;
+
+    const [mode, setMode] = useState<TimerMode>(init.mode);
+    const [timeLeft, setTimeLeft] = useState(init.timeLeft);
+    const [isRunning, setIsRunning] = useState(init.isRunning);
+    const [isCompleted, setIsCompleted] = useState(init.isCompleted);
+    const [focusCount, setFocusCount] = useState(init.focusCount);
 
     const workerRef = useRef<Worker | null>(null);
+    const startedAtRef = useRef<number>(
+        init.shouldStartWorker && savedRef.current ? savedRef.current.startedAt : 0,
+    );
 
     // Render-time state adjustment: sync timeLeft when settings change while idle
     const [prevSettings, setPrevSettings] = useState<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
@@ -31,6 +91,19 @@ export function useTimer() {
         setPrevSettings({ focus, shortBreak, longBreak, mode });
         setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
     }
+
+    // Persist timer state on every meaningful change
+    useEffect(() => {
+        if (isRunning) {
+            saveTimerState({ mode, isRunning: true, focusCount, startedAt: startedAtRef.current, pausedTimeLeft: timeLeft });
+        } else if (isCompleted || timeLeft !== getDuration(mode, focus, shortBreak, longBreak)) {
+            // Save paused/completed state only if it differs from default idle
+            saveTimerState({ mode, isRunning: false, focusCount, startedAt: 0, pausedTimeLeft: timeLeft });
+        } else {
+            // Idle at full duration — no need to persist
+            clearTimerState();
+        }
+    }, [mode, isRunning, isCompleted, timeLeft, focusCount, focus, shortBreak, longBreak]);
 
     useEffect(() => {
         workerRef.current = new TimerWorker();
@@ -49,13 +122,20 @@ export function useTimer() {
             }
         };
 
+        // Resume worker if we restored a running timer
+        if (init.shouldStartWorker) {
+            workerRef.current.postMessage({ command: "START" });
+        }
+
         return () => {
             workerRef.current?.terminate();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const start = useCallback(() => {
         if (timeLeft === 0) return;
+        startedAtRef.current = Date.now();
         setIsRunning(true);
         setIsCompleted(false);
         workerRef.current?.postMessage({ command: "START" });
@@ -69,16 +149,20 @@ export function useTimer() {
     const reset = useCallback(() => {
         setIsRunning(false);
         setIsCompleted(false);
+        startedAtRef.current = 0;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+        clearTimerState();
     }, [mode, focus, shortBreak, longBreak]);
 
     const switchMode = useCallback((newMode: TimerMode) => {
         setMode(newMode);
         setIsRunning(false);
         setIsCompleted(false);
+        startedAtRef.current = 0;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(newMode, focus, shortBreak, longBreak));
+        clearTimerState();
     }, [focus, shortBreak, longBreak]);
 
     const advanceToNextMode = useCallback(() => {

@@ -20,6 +20,8 @@ export const PLANT_LABELS: Record<PlantType, string> = {
     PINE: "Bonsai",
     ROSE: "Rose",
     ORCHID: "Orchid",
+    LOTUS: "Lotus",
+    CRYSTAL: "Crystal",
 };
 
 export const PLANT_ICONS: Record<PlantType, string> = {
@@ -29,6 +31,8 @@ export const PLANT_ICONS: Record<PlantType, string> = {
     PINE: "\u{1F332}",
     ROSE: "\u{1F339}",
     ORCHID: "\u{1F33A}",
+    LOTUS: "\u{1F33C}",
+    CRYSTAL: "\u{1F48E}",
 };
 
 export const MODE_CONFIG: Record<TimerMode, { label: string; short: string }> = {

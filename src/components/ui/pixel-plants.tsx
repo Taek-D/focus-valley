@@ -534,6 +534,223 @@ const OrchidTree = () => (
 );
 
 /* ═══════════════════════════════
+   LOTUS — Deep Focus Unlock (x3)
+   Rare water flower with glow
+   ═══════════════════════════════ */
+
+const LotusSprout = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Water surface hint */}
+        <ellipse cx="60" cy="83" rx="20" ry="2" fill="#6BABCF" opacity="0.3" />
+        {/* Small leaf pads */}
+        <ellipse cx="55" cy="78" rx="8" ry="3" fill="#4A8C5A" transform="rotate(-10 55 78)" />
+        <ellipse cx="65" cy="78" rx="8" ry="3" fill="#4A8C5A" transform="rotate(10 65 78)" />
+        {/* Tiny bud */}
+        <ellipse cx="60" cy="72" rx="3" ry="5" fill="#F0A0C0" />
+    </svg>
+);
+
+const LotusBud = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Water surface */}
+        <ellipse cx="60" cy="83" rx="22" ry="2.5" fill="#6BABCF" opacity="0.3" />
+        {/* Lily pads */}
+        <ellipse cx="45" cy="78" rx="12" ry="4" fill="#4A8C5A" transform="rotate(-15 45 78)" />
+        <ellipse cx="75" cy="78" rx="12" ry="4" fill="#4A8C5A" transform="rotate(15 75 78)" />
+        {/* Stem */}
+        <path d="M60 78 Q59 68 60 58" stroke="#5A8C6A" strokeWidth="2" strokeLinecap="round" fill="none" />
+        {/* Closed lotus bud */}
+        <path d="M56 58 Q58 46 60 42 Q62 46 64 58 Z" fill="#F0A0C0" />
+        <path d="M57 56 Q60 44 63 56" fill="#E8889A" />
+        <ellipse cx="60" cy="56" rx="5" ry="2" fill="#5A8C6A" />
+    </svg>
+);
+
+const LotusFlower = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <defs>
+            <filter id="lotus-glow">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+        </defs>
+        <Pot />
+        <ellipse cx="60" cy="83" rx="22" ry="2.5" fill="#6BABCF" opacity="0.3" />
+        <ellipse cx="42" cy="78" rx="14" ry="4.5" fill="#4A8C5A" transform="rotate(-15 42 78)" />
+        <ellipse cx="78" cy="78" rx="14" ry="4.5" fill="#4A8C5A" transform="rotate(15 78 78)" />
+        <path d="M60 76 Q58 60 60 44" stroke="#5A8C6A" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {/* Lotus bloom with glow */}
+        <g filter="url(#lotus-glow)">
+            {/* Outer petals */}
+            <ellipse cx="50" cy="38" rx="5" ry="10" fill="#F5B8D0" transform="rotate(-25 50 38)" />
+            <ellipse cx="70" cy="38" rx="5" ry="10" fill="#F5B8D0" transform="rotate(25 70 38)" />
+            <ellipse cx="46" cy="42" rx="4" ry="8" fill="#F0A0C0" transform="rotate(-40 46 42)" />
+            <ellipse cx="74" cy="42" rx="4" ry="8" fill="#F0A0C0" transform="rotate(40 74 42)" />
+            {/* Inner petals */}
+            <ellipse cx="54" cy="36" rx="4" ry="9" fill="#E8889A" transform="rotate(-12 54 36)" />
+            <ellipse cx="66" cy="36" rx="4" ry="9" fill="#E8889A" transform="rotate(12 66 36)" />
+            <ellipse cx="60" cy="34" rx="3.5" ry="8" fill="#E07088" />
+            {/* Center */}
+            <circle cx="60" cy="38" r="4" fill="#FBBF24" />
+            <circle cx="60" cy="38" r="2.5" fill="#F5C542" />
+        </g>
+    </svg>
+);
+
+const LotusTree = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <defs>
+            <filter id="lotus-glow-full">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+        </defs>
+        <Pot />
+        <ellipse cx="60" cy="83" rx="24" ry="3" fill="#6BABCF" opacity="0.3" />
+        <ellipse cx="38" cy="78" rx="14" ry="5" fill="#3D7A4A" transform="rotate(-20 38 78)" />
+        <ellipse cx="82" cy="78" rx="14" ry="5" fill="#3D7A4A" transform="rotate(20 82 78)" />
+        <ellipse cx="55" cy="80" rx="10" ry="3.5" fill="#4A8C5A" transform="rotate(-5 55 80)" />
+        {/* Main stem */}
+        <path d="M60 76 Q56 55 58 34" stroke="#4A7C5A" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {/* Side stem */}
+        <path d="M58 60 Q48 52 42 42" stroke="#4A7C5A" strokeWidth="2" strokeLinecap="round" fill="none" />
+        {/* Main lotus */}
+        <g filter="url(#lotus-glow-full)">
+            <ellipse cx="48" cy="28" rx="6" ry="11" fill="#F5B8D0" transform="rotate(-20 48 28)" />
+            <ellipse cx="72" cy="28" rx="6" ry="11" fill="#F5B8D0" transform="rotate(20 72 28)" />
+            <ellipse cx="44" cy="32" rx="5" ry="9" fill="#F0A0C0" transform="rotate(-35 44 32)" />
+            <ellipse cx="76" cy="32" rx="5" ry="9" fill="#F0A0C0" transform="rotate(35 76 32)" />
+            <ellipse cx="54" cy="26" rx="5" ry="10" fill="#E8889A" transform="rotate(-10 54 26)" />
+            <ellipse cx="66" cy="26" rx="5" ry="10" fill="#E8889A" transform="rotate(10 66 26)" />
+            <ellipse cx="60" cy="24" rx="4" ry="9" fill="#E07088" />
+            <circle cx="60" cy="28" r="5" fill="#FBBF24" />
+            <circle cx="60" cy="28" r="3" fill="#F5C542" />
+        </g>
+        {/* Side lotus (smaller) */}
+        <g filter="url(#lotus-glow-full)">
+            <ellipse cx="38" cy="38" rx="4" ry="7" fill="#F5B8D0" transform="rotate(-20 38 38)" />
+            <ellipse cx="48" cy="38" rx="4" ry="7" fill="#F5B8D0" transform="rotate(20 48 38)" />
+            <ellipse cx="43" cy="36" rx="3" ry="6" fill="#E8889A" />
+            <circle cx="43" cy="38" r="3" fill="#FBBF24" />
+        </g>
+    </svg>
+);
+
+/* ═══════════════════════════════
+   CRYSTAL — Deep Focus Unlock (x5)
+   Crystalline plant with prismatic glow
+   ═══════════════════════════════ */
+
+const CrystalSprout = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Small crystal emerging */}
+        <polygon points="60,68 56,80 64,80" fill="#A0D8EF" />
+        <polygon points="60,68 56,80 60,78" fill="#C0E8FF" opacity="0.6" />
+        {/* Tiny sparkle */}
+        <circle cx="59" cy="72" r="1" fill="white" opacity="0.8" />
+    </svg>
+);
+
+const CrystalBud = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <defs>
+            <filter id="crystal-glow-s">
+                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+        </defs>
+        <Pot />
+        <g filter="url(#crystal-glow-s)">
+            {/* Main crystal */}
+            <polygon points="60,50 52,78 60,82 68,78" fill="#88C8E8" />
+            <polygon points="60,50 52,78 60,82" fill="#A0D8EF" opacity="0.7" />
+            {/* Side crystal */}
+            <polygon points="48,62 44,78 52,78" fill="#80B8D8" />
+            <polygon points="72,58 68,78 76,78" fill="#80B8D8" />
+        </g>
+        {/* Sparkles */}
+        <circle cx="58" cy="58" r="1.2" fill="white" opacity="0.9" />
+        <circle cx="65" cy="66" r="0.8" fill="white" opacity="0.7" />
+    </svg>
+);
+
+const CrystalFlower = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <defs>
+            <filter id="crystal-glow-m">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <linearGradient id="prism1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#A0D8EF" />
+                <stop offset="50%" stopColor="#C8A0E8" />
+                <stop offset="100%" stopColor="#F0A0C0" />
+            </linearGradient>
+        </defs>
+        <Pot />
+        <g filter="url(#crystal-glow-m)">
+            {/* Main crystal cluster */}
+            <polygon points="60,36 50,78 60,82 70,78" fill="url(#prism1)" />
+            <polygon points="60,36 50,78 60,82" fill="#B0E0FF" opacity="0.5" />
+            {/* Left crystal */}
+            <polygon points="44,50 38,78 50,78" fill="#80B8D8" />
+            <polygon points="44,50 38,78 44,76" fill="#A0D8EF" opacity="0.5" />
+            {/* Right crystal */}
+            <polygon points="76,46 70,78 82,78" fill="#80B8D8" />
+            <polygon points="76,46 82,78 76,76" fill="#A0D8EF" opacity="0.5" />
+        </g>
+        {/* Sparkles */}
+        <circle cx="58" cy="48" r="1.5" fill="white" opacity="0.9" />
+        <circle cx="67" cy="56" r="1" fill="white" opacity="0.8" />
+        <circle cx="44" cy="60" r="1" fill="white" opacity="0.7" />
+        <circle cx="78" cy="58" r="1.2" fill="white" opacity="0.7" />
+    </svg>
+);
+
+const CrystalTree = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <defs>
+            <filter id="crystal-glow-l">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <linearGradient id="prism2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#A0D8EF" />
+                <stop offset="33%" stopColor="#C8A0E8" />
+                <stop offset="66%" stopColor="#F0A0C0" />
+                <stop offset="100%" stopColor="#A0EFC8" />
+            </linearGradient>
+        </defs>
+        <Pot />
+        <g filter="url(#crystal-glow-l)">
+            {/* Tall main crystal */}
+            <polygon points="60,24 48,78 60,82 72,78" fill="url(#prism2)" />
+            <polygon points="60,24 48,78 60,82" fill="#C0E8FF" opacity="0.4" />
+            {/* Left tall crystal */}
+            <polygon points="40,38 32,78 48,78" fill="#88C8E8" />
+            <polygon points="40,38 32,78 40,74" fill="#B0E0FF" opacity="0.5" />
+            {/* Right tall crystal */}
+            <polygon points="80,34 72,78 88,78" fill="#88C8E8" />
+            <polygon points="80,34 88,78 80,74" fill="#B0E0FF" opacity="0.5" />
+            {/* Small front crystal */}
+            <polygon points="52,52 48,78 56,78" fill="#A0C8E0" />
+            {/* Small right crystal */}
+            <polygon points="70,48 66,78 74,78" fill="#A0C8E0" />
+        </g>
+        {/* Sparkles */}
+        <circle cx="58" cy="38" r="1.8" fill="white" opacity="0.95" />
+        <circle cx="68" cy="50" r="1.2" fill="white" opacity="0.8" />
+        <circle cx="40" cy="50" r="1.3" fill="white" opacity="0.8" />
+        <circle cx="82" cy="48" r="1.5" fill="white" opacity="0.8" />
+        <circle cx="52" cy="60" r="0.8" fill="white" opacity="0.6" />
+        <circle cx="72" cy="62" r="0.8" fill="white" opacity="0.6" />
+    </svg>
+);
+
+/* ═══════════════════════════════
    Lookup Table
    ═══════════════════════════════ */
 
@@ -549,6 +766,8 @@ const PLANTS: Record<PlantType, {
     PINE: { sprout: PineSprout, bud: PineBud, flower: PineFlower, tree: PineTree },
     ROSE: { sprout: RoseSprout, bud: RoseBud, flower: RoseFlower, tree: RoseTree },
     ORCHID: { sprout: OrchidSprout, bud: OrchidBud, flower: OrchidFlower, tree: OrchidTree },
+    LOTUS: { sprout: LotusSprout, bud: LotusBud, flower: LotusFlower, tree: LotusTree },
+    CRYSTAL: { sprout: CrystalSprout, bud: CrystalBud, flower: CrystalFlower, tree: CrystalTree },
 };
 
 export function getPlantComponent(type: PlantType, stage: string): React.FC {

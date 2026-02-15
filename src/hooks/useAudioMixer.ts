@@ -45,6 +45,7 @@ export function useAudioMixer() {
     const contextRef = useRef<AudioContext | null>(null);
     const tracksRef = useRef<Map<NoiseType, AudioTrack>>(new Map());
     const compressorRef = useRef<DynamicsCompressorNode | null>(null);
+    const analyserRef = useRef<AnalyserNode | null>(null);
     const bufferCacheRef = useRef<Map<NoiseType, AudioBuffer>>(new Map());
     const loadingRef = useRef<Set<NoiseType>>(new Set());
 
@@ -70,8 +71,15 @@ export function useAudioMixer() {
             comp.ratio.value = 4;
             comp.attack.value = 0.005;
             comp.release.value = 0.15;
-            comp.connect(contextRef.current.destination);
+
+            // Analyser for audio reactivity (between compressor and destination)
+            const analyser = contextRef.current.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.8;
+            comp.connect(analyser);
+            analyser.connect(contextRef.current.destination);
             compressorRef.current = comp;
+            analyserRef.current = analyser;
         }
         if (contextRef.current.state === "suspended") {
             contextRef.current.resume();
@@ -162,6 +170,7 @@ export function useAudioMixer() {
         setVolume,
         isMuted,
         toggleMute,
-        initAudio
+        initAudio,
+        analyserRef,
     };
 }

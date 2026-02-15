@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type PlantStage = "SEED" | "SPROUT" | "BUD" | "FLOWER" | "TREE" | "DEAD";
-export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID";
+export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID" | "LOTUS" | "CRYSTAL";
 
 export type FocusSession = { date: string; minutes: number; categoryId?: string };
 
@@ -12,6 +12,11 @@ const BASE_PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"]
 export const STREAK_UNLOCKS: { streak: number; plant: PlantType; label: string }[] = [
     { streak: 3, plant: "ROSE", label: "Rose" },
     { streak: 7, plant: "ORCHID", label: "Orchid" },
+];
+
+export const DEEP_FOCUS_UNLOCKS: { depth: number; plant: PlantType; label: string }[] = [
+    { depth: 3, plant: "LOTUS", label: "Lotus" },
+    { depth: 5, plant: "CRYSTAL", label: "Crystal" },
 ];
 
 import { getToday, getYesterday } from "@/lib/date-utils";
@@ -45,7 +50,10 @@ interface GardenState {
     lastFocusDate: string | null;
     unlockedPlants: PlantType[];
     pendingUnlock: PlantType | null;
+    deepFocusStreak: number;
+    lastFocusTimestamp: number;
     setStage: (stage: PlantStage) => void;
+    setType: (type: PlantType) => void;
     plantSeed: () => void;
     killPlant: () => void;
     harvestPlant: () => void;
@@ -66,12 +74,15 @@ const useGardenStore = create<GardenState>()(
             lastFocusDate: null,
             unlockedPlants: [],
             pendingUnlock: null,
+            deepFocusStreak: 0,
+            lastFocusTimestamp: 0,
             setStage: (stage) => set({ stage }),
+            setType: (type) => set({ type }),
             plantSeed: () => set((state) => ({
                 stage: "SEED",
                 type: randomPlantType(getAvailablePlants(state.unlockedPlants)),
             })),
-            killPlant: () => set({ stage: "DEAD" }),
+            killPlant: () => set({ stage: "DEAD", deepFocusStreak: 0 }),
             harvestPlant: () => set((state) => ({
                 stage: "SEED",
                 type: randomPlantType(getAvailablePlants(state.unlockedPlants)),
@@ -79,6 +90,7 @@ const useGardenStore = create<GardenState>()(
             })),
             addFocusMinutes: (minutes, categoryId?) => set((state) => {
                 const today = getToday();
+                const now = Date.now();
                 const newSessions = [...state.focusSessions, { date: today, minutes, categoryId }];
 
                 let newStreak = state.currentStreak;
@@ -94,10 +106,27 @@ const useGardenStore = create<GardenState>()(
 
                 const newBestStreak = Math.max(state.bestStreak, newStreak);
 
+                // Deep focus streak: increment if last focus was within 30 min, else reset to 1
+                const GAP_MS = 30 * 60 * 1000;
+                const timeSinceLastFocus = now - state.lastFocusTimestamp;
+                const newDeepFocusStreak = state.lastFocusTimestamp > 0 && timeSinceLastFocus <= GAP_MS
+                    ? state.deepFocusStreak + 1
+                    : 1;
+
                 let pendingUnlock: PlantType | null = null;
                 const newUnlocks = [...state.unlockedPlants];
+
+                // Streak unlocks
                 for (const unlock of STREAK_UNLOCKS) {
                     if (newStreak >= unlock.streak && !newUnlocks.includes(unlock.plant)) {
+                        newUnlocks.push(unlock.plant);
+                        pendingUnlock = unlock.plant;
+                    }
+                }
+
+                // Deep focus unlocks
+                for (const unlock of DEEP_FOCUS_UNLOCKS) {
+                    if (newDeepFocusStreak >= unlock.depth && !newUnlocks.includes(unlock.plant)) {
                         newUnlocks.push(unlock.plant);
                         pendingUnlock = unlock.plant;
                     }
@@ -111,6 +140,8 @@ const useGardenStore = create<GardenState>()(
                     lastFocusDate: today,
                     unlockedPlants: newUnlocks,
                     pendingUnlock,
+                    deepFocusStreak: newDeepFocusStreak,
+                    lastFocusTimestamp: now,
                 };
             }),
             clearPendingUnlock: () => set({ pendingUnlock: null }),
@@ -145,6 +176,8 @@ export function useGarden() {
     return {
         stage: store.stage,
         type: store.type,
+        setStage: store.setStage,
+        setType: store.setType,
         plantSeed: store.plantSeed,
         killPlant: store.killPlant,
         harvest: store.harvestPlant,
@@ -158,5 +191,6 @@ export function useGarden() {
         bestStreak: store.bestStreak,
         unlockedPlants: store.unlockedPlants,
         pendingUnlock: store.pendingUnlock,
+        deepFocusStreak: store.deepFocusStreak,
     };
 }

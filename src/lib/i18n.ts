@@ -255,6 +255,23 @@ const translations = {
     "category.removeLabel": { en: "Remove", ko: "삭제", ja: "削除" },
     "category.undoRemove": { en: "removed. Undo?", ko: "삭제됨. 되돌리기?", ja: "削除しました。元に戻す？" },
     "category.undo": { en: "Undo", ko: "되돌리기", ja: "元に戻す" },
+
+    // Undo
+    "toast.undo": { en: "Undo", ko: "되돌리기", ja: "元に戻す" },
+
+    // Breathing Guide
+    "breathing.inhale": { en: "Breathe in...", ko: "들이쉬세요...", ja: "吸って..." },
+    "breathing.hold": { en: "Hold...", ko: "멈추세요...", ja: "止めて..." },
+    "breathing.exhale": { en: "Breathe out...", ko: "내쉬세요...", ja: "吐いて..." },
+    "breathing.start": { en: "Breathe", ko: "호흡", ja: "呼吸" },
+
+    // Deep Focus
+    "deepFocus.badge": { en: "Deep Focus", ko: "딥 포커스", ja: "ディープフォーカス" },
+    "toast.deepFocusUnlocked": { en: "New plant unlocked:", ko: "새 식물 잠금 해제:", ja: "新しい植物がアンロック:" },
+
+    // Plant types — new
+    "plantType.LOTUS": { en: "Lotus", ko: "연꽃", ja: "ハス" },
+    "plantType.CRYSTAL": { en: "Crystal", ko: "크리스탈", ja: "クリスタル" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

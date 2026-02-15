@@ -158,6 +158,99 @@
     --aurora-4: 55 55% 55%;
   }
   /* Winter uses default aurora colors (cool blue-purple-cyan) */
+
+  /* ─── Weather aurora overrides (FOCUS mode only) ─── */
+  :root[data-weather="clear"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 35 80% 75%;
+    --aurora-2: 25 70% 72%;
+    --aurora-3: 50 65% 78%;
+    --aurora-4: 15 60% 74%;
+  }
+  .dark[data-weather="clear"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 35 70% 58%;
+    --aurora-2: 25 60% 55%;
+    --aurora-3: 50 55% 60%;
+    --aurora-4: 15 50% 56%;
+  }
+
+  :root[data-weather="cloudy"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 220 25% 75%;
+    --aurora-2: 240 20% 72%;
+    --aurora-3: 200 30% 76%;
+    --aurora-4: 260 20% 78%;
+  }
+  .dark[data-weather="cloudy"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 220 20% 50%;
+    --aurora-2: 240 18% 48%;
+    --aurora-3: 200 25% 52%;
+    --aurora-4: 260 18% 52%;
+  }
+
+  :root[data-weather="rain"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 210 65% 70%;
+    --aurora-2: 230 55% 68%;
+    --aurora-3: 195 60% 72%;
+    --aurora-4: 250 45% 75%;
+  }
+  .dark[data-weather="rain"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 210 55% 48%;
+    --aurora-2: 230 48% 46%;
+    --aurora-3: 195 50% 50%;
+    --aurora-4: 250 40% 52%;
+  }
+
+  :root[data-weather="snow"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 200 20% 85%;
+    --aurora-2: 220 15% 82%;
+    --aurora-3: 180 25% 88%;
+    --aurora-4: 240 15% 84%;
+  }
+  .dark[data-weather="snow"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 200 18% 60%;
+    --aurora-2: 220 14% 56%;
+    --aurora-3: 180 20% 62%;
+    --aurora-4: 240 14% 58%;
+  }
+
+  :root[data-weather="night"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 260 60% 55%;
+    --aurora-2: 280 50% 52%;
+    --aurora-3: 230 55% 48%;
+    --aurora-4: 300 40% 58%;
+  }
+  .dark[data-weather="night"]:not([data-mode="SHORT_BREAK"]):not([data-mode="LONG_BREAK"]) {
+    --aurora-1: 260 55% 42%;
+    --aurora-2: 280 45% 40%;
+    --aurora-3: 230 50% 38%;
+    --aurora-4: 300 38% 45%;
+  }
+
+  /* ─── Deep Focus aurora modifiers ─── */
+  :root[data-deep="1"] {
+    --aurora-1: 45 75% 72%;
+    --aurora-2: 35 65% 70%;
+    --aurora-3: 55 60% 75%;
+    --aurora-4: 25 55% 68%;
+  }
+  .dark[data-deep="1"] {
+    --aurora-1: 45 65% 55%;
+    --aurora-2: 35 55% 52%;
+    --aurora-3: 55 50% 58%;
+    --aurora-4: 25 48% 50%;
+  }
+
+  :root[data-deep="2"] {
+    --aurora-1: 45 80% 68%;
+    --aurora-2: 30 75% 65%;
+    --aurora-3: 55 70% 72%;
+    --aurora-4: 20 65% 62%;
+  }
+  .dark[data-deep="2"] {
+    --aurora-1: 45 72% 50%;
+    --aurora-2: 30 65% 48%;
+    --aurora-3: 55 60% 52%;
+    --aurora-4: 20 58% 46%;
+  }
 }
 
 @layer base {

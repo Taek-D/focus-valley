@@ -17,11 +17,14 @@ type PlantGardenProps = {
     stageTransition: StageTransition;
     particleTrigger: number;
     particleType: "growth" | "harvest" | "death";
+    breathCycle?: number;
+    isBreathing?: boolean;
 };
 
 export const PlantGarden = memo(function PlantGarden({
     gardenType, gardenStage, canInteract, onPlantClick,
     activeTodo, stageTransition, particleTrigger, particleType,
+    breathCycle = 4, isBreathing = false,
 }: PlantGardenProps) {
     const { t } = useTranslation();
     const PlantComponent = useMemo(
@@ -38,37 +41,50 @@ export const PlantGarden = memo(function PlantGarden({
         >
             {/* Plant area */}
             <div className="relative h-32 md:h-40 flex items-end justify-center w-full">
-                <button
-                    className={cn(
-                        "mb-1 bg-transparent border-none p-0 transition-all relative",
-                        canInteract ? "cursor-pointer" : "cursor-default"
-                    )}
-                    onClick={onPlantClick}
-                    aria-label={
-                        gardenStage === "TREE" || gardenStage === "FLOWER"
-                            ? t("plant.harvestLabel")
-                            : gardenStage === "DEAD"
-                            ? t("plant.plantSeedLabel")
-                            : `${t(`plantType.${gardenType}` as TranslationKey)} - ${t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}`
-                    }
+                <motion.div
+                    animate={isBreathing ? {
+                        scaleY: [1, 1.02, 1],
+                        scaleX: [1, 1.005, 1],
+                    } : {}}
+                    transition={isBreathing ? {
+                        duration: breathCycle,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    } : {}}
+                    style={{ originY: 1 }}
                 >
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={`${gardenType}-${gardenStage}`}
-                            initial={stageTransition.initial}
-                            animate={stageTransition.animate}
-                            exit={stageTransition.exit}
-                            transition={{ type: "spring", damping: 20, stiffness: 180, duration: 0.4 }}
-                            whileHover={canInteract ? { scale: 1.05, y: -2 } : {}}
-                        >
-                            {/* eslint-disable-next-line react-hooks/static-components -- lookup table returns stable refs */}
-                            <PlantComponent />
-                        </motion.div>
-                    </AnimatePresence>
+                    <button
+                        className={cn(
+                            "mb-1 bg-transparent border-none p-0 transition-all relative",
+                            canInteract ? "cursor-pointer" : "cursor-default"
+                        )}
+                        onClick={onPlantClick}
+                        aria-label={
+                            gardenStage === "TREE" || gardenStage === "FLOWER"
+                                ? t("plant.harvestLabel")
+                                : gardenStage === "DEAD"
+                                ? t("plant.plantSeedLabel")
+                                : `${t(`plantType.${gardenType}` as TranslationKey)} - ${t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}`
+                        }
+                    >
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={`${gardenType}-${gardenStage}`}
+                                initial={stageTransition.initial}
+                                animate={stageTransition.animate}
+                                exit={stageTransition.exit}
+                                transition={{ type: "spring", damping: 20, stiffness: 180, duration: 0.4 }}
+                                whileHover={canInteract ? { scale: 1.05, y: -2 } : {}}
+                            >
+                                {/* eslint-disable-next-line react-hooks/static-components -- lookup table returns stable refs */}
+                                <PlantComponent />
+                            </motion.div>
+                        </AnimatePresence>
 
-                    {/* Particles overlay */}
-                    <PlantParticles trigger={particleTrigger} type={particleType} />
-                </button>
+                        {/* Particles overlay */}
+                        <PlantParticles trigger={particleTrigger} type={particleType} />
+                    </button>
+                </motion.div>
             </div>
 
             {/* Stage label */}

@@ -1,8 +1,10 @@
-import { useEffect, useState, useCallback, lazy, Suspense } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTimer } from "./hooks/useTimer";
 import { useAudioMixer } from "./hooks/useAudioMixer";
-import { useGarden, STREAK_UNLOCKS } from "./hooks/useGarden";
+import { useAudioReactivity } from "./hooks/useAudioReactivity";
+import { useGarden, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } from "./hooks/useGarden";
+import type { PlantStage, PlantType } from "./hooks/useGarden";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useNotification } from "./hooks/useNotification";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
@@ -11,6 +13,7 @@ import { useTimerSettings } from "./hooks/useTimerSettings";
 import { useTodos } from "./hooks/useTodos";
 import { usePlantParticles } from "./hooks/usePlantParticles";
 import { useCategoryStore } from "./hooks/useCategories";
+import { useWeather } from "./hooks/useWeather";
 import { playCompletionSound } from "./lib/notification-sound";
 import { ANIMATION } from "./lib/constants";
 import {
@@ -32,12 +35,13 @@ import { Fireflies } from "./components/Fireflies";
 import { AuroraBlob } from "./components/AuroraBlob";
 import { AppHeader } from "./components/AppHeader";
 import { PlantGarden } from "./components/PlantGarden";
+import { BreathingGuide } from "./components/BreathingGuide";
 import { AuthModal } from "./components/AuthModal";
 import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding, useOnboarding } from "./components/Onboarding";
 import { useAuth } from "./hooks/useAuth";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
-import { Volume2, ChevronDown, ChevronUp, Heart } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Heart, Wind } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -70,8 +74,10 @@ const selectActiveTodo = (s: TodoState) => {
 function App() {
   const timer = useTimer();
   const mixer = useAudioMixer();
+  const audioIntensity = useAudioReactivity(mixer.analyserRef);
   const garden = useGarden();
   const { grow, addFocusMinutes, clearPendingUnlock } = garden;
+  const weather = useWeather();
   const { isDark, toggle: toggleDark } = useDarkMode();
   const notification = useNotification();
   const { notify } = notification;
@@ -91,10 +97,15 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showTodo, setShowTodo] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showBreathing, setShowBreathing] = useState(false);
   const [confettiTrigger, setConfettiTrigger] = useState(0);
-  const [toast, setToast] = useState({ message: "", visible: false });
+  const [toast, setToast] = useState<{ message: string; visible: boolean; action?: { label: string; onClick: () => void } }>({ message: "", visible: false });
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
+
+  // Undo plant death
+  const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const undoInfoRef = useRef<{ stage: PlantStage; type: PlantType } | null>(null);
 
   // Plant particles — extracted hook
   const { trigger: particleTrigger, type: particleType, stageTransition } = usePlantParticles(garden.stage);
@@ -129,8 +140,31 @@ function App() {
     document.documentElement.setAttribute("data-season", season);
   }, []);
 
-  const showToast = useCallback((message: string) => {
-    setToast({ message, visible: true });
+  // Set weather theme (only during FOCUS)
+  useEffect(() => {
+    if (weather.loaded && timer.mode === "FOCUS") {
+      document.documentElement.setAttribute("data-weather", weather.mood);
+    } else {
+      document.documentElement.removeAttribute("data-weather");
+    }
+  }, [weather.loaded, weather.mood, timer.mode]);
+
+  // Set deep focus tier
+  useEffect(() => {
+    const depth = garden.deepFocusStreak;
+    if (depth >= 4) {
+      document.documentElement.setAttribute("data-deep", "2");
+    } else if (depth >= 2) {
+      document.documentElement.setAttribute("data-deep", "1");
+    } else {
+      document.documentElement.removeAttribute("data-deep");
+    }
+  }, [garden.deepFocusStreak]);
+
+  // Breathing guide auto-closes when break ends (derived from isBreakActive)
+
+  const showToast = useCallback((message: string, action?: { label: string; onClick: () => void }) => {
+    setToast({ message, visible: true, action });
   }, []);
 
   const closeToast = useCallback(() => {
@@ -181,7 +215,8 @@ function App() {
 
   useEffect(() => {
     if (!garden.pendingUnlock) return;
-    const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
+    const unlock = STREAK_UNLOCKS.find((u) => u.plant === garden.pendingUnlock)
+      ?? DEEP_FOCUS_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
     clearPendingUnlock();
     if (unlock) {
       queueMicrotask(() => showToast(`${t("toast.unlocked")} ${unlock.label}!`));
@@ -206,10 +241,39 @@ function App() {
     const elapsed = timer.totalDuration - timer.timeLeft;
     trackSessionAbandon(timer.mode, elapsed);
     trackPlantDied(garden.type);
+
+    // Save current plant info for undo
+    const savedStage = garden.stage;
+    const savedType = garden.type;
+    undoInfoRef.current = { stage: savedStage, type: savedType };
+
     garden.killPlant();
     timer.reset();
     setConfirmModal(false);
-    showToast(t("toast.plantDied"));
+
+    // Clear any previous undo timer
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+
+    showToast(t("toast.plantDied"), {
+      label: t("toast.undo"),
+      onClick: () => {
+        if (undoInfoRef.current) {
+          garden.setStage(undoInfoRef.current.stage);
+          garden.setType(undoInfoRef.current.type);
+          undoInfoRef.current = null;
+        }
+        if (undoTimerRef.current) {
+          clearTimeout(undoTimerRef.current);
+          undoTimerRef.current = null;
+        }
+      },
+    });
+
+    // Auto-clear undo after 5 seconds
+    undoTimerRef.current = setTimeout(() => {
+      undoInfoRef.current = null;
+      undoTimerRef.current = null;
+    }, 5000);
   };
 
   const handlePlantClick = () => {
@@ -262,6 +326,19 @@ function App() {
   });
 
   const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
+
+  // Plant breathing: active during FOCUS + running, cycle slows as progress increases
+  const isPlantBreathing = timer.isRunning && timer.mode === "FOCUS";
+  const breathCycle = useMemo(() => {
+    if (!isPlantBreathing) return 4;
+    const totalTime = timer.focusDuration * 60;
+    const elapsed = totalTime - timer.timeLeft;
+    const progress = Math.min(elapsed / totalTime, 1);
+    return 4 + progress * 4; // 4s → 8s
+  }, [isPlantBreathing, timer.timeLeft, timer.focusDuration]);
+
+  // Is it break mode and timer running?
+  const isBreakActive = timer.isRunning && (timer.mode === "SHORT_BREAK" || timer.mode === "LONG_BREAK");
 
   // Stable callbacks for AppHeader
   const handleShowSettings = useCallback(() => setShowSettings(true), []);
@@ -320,7 +397,7 @@ function App() {
 
       {/* Main */}
       <main className="flex-1 flex flex-col items-center justify-center w-full max-w-lg relative z-10 px-4 sm:px-6">
-        <AuroraBlob />
+        <AuroraBlob audioIntensity={audioIntensity} />
 
         <PlantGarden
           gardenType={garden.type}
@@ -331,11 +408,41 @@ function App() {
           stageTransition={stageTransition}
           particleTrigger={particleTrigger}
           particleType={particleType}
+          breathCycle={breathCycle}
+          isBreathing={isPlantBreathing}
         />
 
         {/* Category Chips */}
         <div className="z-10 w-full mb-2">
           <CategoryChips />
+        </div>
+
+        {/* Deep Focus Badge + Breathing Button */}
+        <div className="z-10 flex items-center gap-3 mb-2">
+          {garden.deepFocusStreak >= 2 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20"
+            >
+              <span className="text-[10px] font-body font-medium tracking-[0.08em] uppercase text-amber-600/70 dark:text-amber-400/70">
+                {t("deepFocus.badge")} x{garden.deepFocusStreak}
+              </span>
+            </motion.div>
+          )}
+          {isBreakActive && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={() => setShowBreathing(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-foreground/[0.03] border border-foreground/8 hover:border-foreground/15 transition-colors"
+            >
+              <Wind size={10} className="text-muted-foreground/40" />
+              <span className="text-[10px] font-body font-medium tracking-[0.08em] uppercase text-muted-foreground/40">
+                {t("breathing.start")}
+              </span>
+            </motion.button>
+          )}
         </div>
 
         {/* Timer */}
@@ -424,7 +531,7 @@ function App() {
       </footer>
 
       {/* Overlays */}
-      <Toast message={toast.message} isVisible={toast.visible} onClose={closeToast} />
+      <Toast message={toast.message} isVisible={toast.visible} onClose={closeToast} action={toast.action} duration={toast.action ? 5000 : 3000} />
 
       <ConfirmModal
         isOpen={confirmModal}
@@ -486,6 +593,8 @@ function App() {
         isOpen={showAuth}
         onClose={() => setShowAuth(false)}
       />
+
+      <BreathingGuide isOpen={isBreakActive && showBreathing} onClose={() => setShowBreathing(false)} />
 
       <Confetti trigger={confettiTrigger} />
 
