@@ -128,7 +128,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                         className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all flex items-center gap-1"
                     >
                         <Download size={14} />
-                        {!isPro && <ProBadge />}
+                        {!isPro && <ProBadge source="csv-export" />}
                     </button>
                 </>
             }

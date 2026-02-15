@@ -1,6 +1,7 @@
 import React from "react";
 import { Lock } from "lucide-react";
 import { useIsPro } from "@/hooks/useSubscription";
+import { useUpgradeModal } from "@/hooks/useUpgradeModal";
 import { useTranslation } from "@/lib/i18n";
 
 type ProGateProps = {
@@ -11,13 +12,14 @@ type ProGateProps = {
 export const ProGate: React.FC<ProGateProps> = ({ children, featureName }) => {
     const isPro = useIsPro();
     const { t } = useTranslation();
+    const openUpgrade = useUpgradeModal((s) => s.open);
 
     if (isPro) {
         return <>{children}</>;
     }
 
     return (
-        <div className="relative">
+        <div className="relative cursor-pointer" onClick={() => openUpgrade(featureName)}>
             <div className="opacity-40 pointer-events-none select-none">
                 {children}
             </div>
@@ -36,11 +38,19 @@ export const ProGate: React.FC<ProGateProps> = ({ children, featureName }) => {
     );
 };
 
-export const ProBadge: React.FC = () => {
+export const ProBadge: React.FC<{ source?: string }> = ({ source }) => {
     const { t } = useTranslation();
+    const openUpgrade = useUpgradeModal((s) => s.open);
+
     return (
-        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-foreground/8 font-body text-[8px] font-medium tracking-wider uppercase text-foreground/50">
+        <button
+            onClick={(e) => {
+                e.stopPropagation();
+                openUpgrade(source);
+            }}
+            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-foreground/8 font-body text-[8px] font-medium tracking-wider uppercase text-foreground/50 hover:bg-foreground/12 transition-colors"
+        >
             {t("pro.badge")}
-        </span>
+        </button>
     );
 };

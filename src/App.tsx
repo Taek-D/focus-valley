@@ -37,6 +37,7 @@ import { AppHeader } from "./components/AppHeader";
 import { PlantGarden } from "./components/PlantGarden";
 import { BreathingGuide } from "./components/BreathingGuide";
 import { AuthModal } from "./components/AuthModal";
+import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding, useOnboarding } from "./components/Onboarding";
 import { useAuth } from "./hooks/useAuth";
@@ -600,6 +601,8 @@ function App() {
       <Confetti trigger={confettiTrigger} />
 
       <Onboarding isOpen={showOnboarding} onComplete={completeOnboarding} />
+
+      <UpgradeModal />
     </div>
   );
 }

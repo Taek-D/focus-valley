@@ -92,7 +92,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                 </div>
                                 <div className="font-body text-[10px] font-medium text-foreground/70 flex items-center gap-1">
                                     {t(`plantType.${type}` as TranslationKey)}
-                                    {!isBase && !streakInfo && !deepInfo && !isPro && <ProBadge />}
+                                    {!isBase && !streakInfo && !deepInfo && !isPro && <ProBadge source="garden" />}
                                 </div>
                                 {isUnlocked && (
                                     <>
