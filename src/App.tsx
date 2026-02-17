@@ -25,7 +25,7 @@ import {
   trackSeedPlanted,
 } from "./lib/analytics";
 import { syncWithCloud } from "./lib/sync";
-import { useTranslation } from "./lib/i18n";
+import { useTranslation, type TranslationKey } from "./lib/i18n";
 import { TimerDisplay } from "./components/TimerDisplay";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
@@ -39,9 +39,10 @@ import { BreathingGuide } from "./components/BreathingGuide";
 import { AuthModal } from "./components/AuthModal";
 import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
-import { Onboarding, useOnboarding } from "./components/Onboarding";
+import { Onboarding } from "./components/Onboarding";
 import { useAuth } from "./hooks/useAuth";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
+import { useOnboarding } from "./hooks/useOnboarding";
 import { Volume2, ChevronDown, ChevronUp, Heart, Wind } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
@@ -220,7 +221,8 @@ function App() {
       ?? DEEP_FOCUS_UNLOCKS.find((u) => u.plant === garden.pendingUnlock);
     clearPendingUnlock();
     if (unlock) {
-      queueMicrotask(() => showToast(`${t("toast.unlocked")} ${unlock.label}!`));
+      const name = t(`plantType.${unlock.plant}` as TranslationKey);
+      queueMicrotask(() => showToast(`${t("toast.unlocked")} ${name}!`));
     }
   }, [garden.pendingUnlock, clearPendingUnlock, showToast, t]);
 

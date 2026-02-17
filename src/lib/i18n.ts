@@ -125,6 +125,7 @@ const translations = {
     "sync.pushed": { en: "Data uploaded to cloud", ko: "데이터가 클라우드에 업로드됨", ja: "データがクラウドにアップロードされました" },
     "sync.pulled": { en: "Data downloaded from cloud", ko: "클라우드에서 데이터 다운로드됨", ja: "クラウドからデータがダウンロードされました" },
     "sync.merged": { en: "Data synced across devices", ko: "기기 간 데이터 동기화 완료", ja: "デバイス間でデータが同期されました" },
+    "sync.upToDate": { en: "Already up to date", ko: "이미 최신 상태입니다", ja: "すでに最新です" },
     "sync.failed": { en: "Sync failed. Please try again.", ko: "동기화 실패. 다시 시도해주세요.", ja: "同期に失敗しました。もう一度お試しください。" },
 
     // Onboarding
@@ -272,6 +273,8 @@ const translations = {
     // Plant types — new
     "plantType.LOTUS": { en: "Lotus", ko: "연꽃", ja: "ハス" },
     "plantType.CRYSTAL": { en: "Crystal", ko: "크리스탈", ja: "クリスタル" },
+    "plantType.BAMBOO": { en: "Bamboo", ko: "대나무", ja: "竹" },
+    "plantType.SAKURA": { en: "Sakura", ko: "벚꽃", ja: "桜" },
 
     // Pro tier
     "pro.badge": { en: "PRO", ko: "PRO", ja: "PRO" },

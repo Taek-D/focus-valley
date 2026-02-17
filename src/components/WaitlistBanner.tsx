@@ -22,6 +22,7 @@ function getStoredState(): WaitlistState {
 export function WaitlistBanner({ source = "history" }: { source?: string }) {
     const [state, setState] = useState<WaitlistState>(getStoredState);
     const [email, setEmail] = useState("");
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     const dismiss = useCallback(() => {
         setState("dismissed");
@@ -34,20 +35,23 @@ export function WaitlistBanner({ source = "history" }: { source?: string }) {
         if (!email.trim() || state === "submitting") return;
 
         setState("submitting");
+        setSubmitError(null);
 
         try {
-            await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+            const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Accept: "application/json" },
                 body: JSON.stringify({ email: email.trim(), source }),
             });
+            if (!response.ok) {
+                throw new Error(`waitlist submit failed: ${response.status}`);
+            }
             setState("success");
             localStorage.setItem(STORAGE_KEY, "success");
             trackWaitlistSignup(source);
         } catch {
-            // Still count as success to not annoy user
-            setState("success");
-            localStorage.setItem(STORAGE_KEY, "success");
+            setState("idle");
+            setSubmitError("Could not join waitlist. Please try again.");
         }
     }, [email, state, source]);
 
@@ -98,7 +102,10 @@ export function WaitlistBanner({ source = "history" }: { source?: string }) {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (submitError) setSubmitError(null);
+                            }}
                             placeholder="you@email.com"
                             required
                             className="flex-1 min-w-0 px-3 py-2 rounded-xl bg-foreground/5 border border-foreground/8 text-foreground font-body text-[11px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
@@ -118,6 +125,11 @@ export function WaitlistBanner({ source = "history" }: { source?: string }) {
                             )}
                         </button>
                     </form>
+                    {submitError && (
+                        <p className="mt-2 font-body text-[10px] text-red-400/70">
+                            {submitError}
+                        </p>
+                    )}
                 </div>
             </motion.div>
         </AnimatePresence>

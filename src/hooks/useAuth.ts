@@ -26,6 +26,8 @@ function friendlyError(err: AuthError): string {
     return err.message;
 }
 
+let authUnsubscribe: (() => void) | null = null;
+
 export const useAuth = create<AuthState>((set) => ({
     user: null,
     loading: false,
@@ -33,15 +35,20 @@ export const useAuth = create<AuthState>((set) => ({
     initialized: false,
 
     initialize: () => {
+        if (useAuth.getState().initialized) return;
+        set({ initialized: true });
+
         // Get initial session
         supabase.auth.getSession().then(({ data }) => {
-            set({ user: data.session?.user ?? null, initialized: true });
+            set({ user: data.session?.user ?? null });
         });
 
         // Listen for auth changes
-        supabase.auth.onAuthStateChange((_event, session) => {
+        authUnsubscribe?.();
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
             set({ user: session?.user ?? null });
         });
+        authUnsubscribe = () => data.subscription.unsubscribe();
     },
 
     signUpWithEmail: async (email, password) => {

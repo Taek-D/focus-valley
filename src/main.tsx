@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+﻿import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import * as Sentry from '@sentry/react'
 import { initAnalytics } from './lib/analytics'
@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')!).render(
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: "3rem", opacity: 0.4 }}>🌱</div>
+          <div style={{ fontSize: "3rem", opacity: 0.4 }}>{"\u{1F331}"}</div>
           <h1 style={{ fontSize: "1.25rem", fontWeight: 500, letterSpacing: "0.05em" }}>
             Something went wrong
           </h1>

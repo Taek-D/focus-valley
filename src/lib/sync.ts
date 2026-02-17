@@ -9,7 +9,7 @@ type SyncableData = {
         type: string;
         history: { type: string; date: string }[];
         totalFocusMinutes: number;
-        focusSessions: { date: string; minutes: number; categoryId?: string }[];
+        focusSessions: { id?: string; date: string; minutes: number; categoryId?: string }[];
         currentStreak: number;
         bestStreak: number;
         lastFocusDate: string | null;
@@ -48,6 +48,8 @@ const STORE_KEYS = {
 } as const;
 
 const LAST_SYNC_KEY = "focus-valley-last-sync";
+
+export type SyncResult = "pushed" | "pulled" | "merged" | "noop" | "error";
 
 // ─── Helpers ──────────────────────────────────────────────
 
@@ -94,6 +96,23 @@ function setLocalData(data: SyncableData) {
     wrap(STORE_KEYS.todos, data.todos);
 }
 
+function isSameData(a: unknown, b: unknown): boolean {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+
+type SyncSession = { id?: string; date: string; minutes: number; categoryId?: string };
+
+function normalizeSessions(sessions: SyncSession[]): (SyncSession & { id: string })[] {
+    const legacyCounts = new Map<string, number>();
+    return sessions.map((session) => {
+        if (session.id) return session as SyncSession & { id: string };
+        const base = `${session.date}:${session.minutes}:${session.categoryId ?? ""}`;
+        const occurrence = (legacyCounts.get(base) ?? 0) + 1;
+        legacyCounts.set(base, occurrence);
+        return { ...session, id: `legacy:${base}:${occurrence}` };
+    });
+}
+
 function mergeData(local: SyncableData, cloud: SyncableData): SyncableData {
     // Merge strategy: prefer the one with more data / higher values
     const garden = { ...local.garden };
@@ -110,19 +129,18 @@ function mergeData(local: SyncableData, cloud: SyncableData): SyncableData {
         garden.lastFocusDate = cloud.garden.lastFocusDate;
     }
 
-    // Merge focus sessions by deduplication (date+minutes combo)
-    const localSessions = garden.focusSessions ?? [];
-    const cloudSessions = cloud.garden.focusSessions ?? [];
-    const sessionSet = new Set(localSessions.map((s: { date: string; minutes: number }) => `${s.date}:${s.minutes}`));
-    for (const s of cloudSessions) {
-        const key = `${s.date}:${s.minutes}`;
-        if (!sessionSet.has(key)) {
-            localSessions.push(s);
-            sessionSet.add(key);
+    // Merge focus sessions by stable id (legacy sessions receive deterministic synthetic ids)
+    const localSessions = normalizeSessions(garden.focusSessions ?? []);
+    const cloudSessions = normalizeSessions(cloud.garden.focusSessions ?? []);
+    const mergedSessions = new Map(localSessions.map((s) => [s.id, s]));
+    for (const session of cloudSessions) {
+        if (!mergedSessions.has(session.id)) {
+            mergedSessions.set(session.id, session);
         }
     }
-    garden.focusSessions = localSessions;
-    garden.totalFocusMinutes = localSessions.reduce((sum: number, s: { minutes: number }) => sum + s.minutes, 0);
+    const mergedSessionList = [...mergedSessions.values()];
+    garden.focusSessions = mergedSessionList;
+    garden.totalFocusMinutes = mergedSessionList.reduce((sum: number, s) => sum + s.minutes, 0);
 
     // Merge history (harvest log)
     const localHistory = garden.history ?? [];
@@ -223,7 +241,7 @@ export async function pullFromCloud(user: User): Promise<boolean> {
     return true;
 }
 
-export async function syncWithCloud(user: User): Promise<"pushed" | "pulled" | "merged" | "error"> {
+export async function syncWithCloud(user: User): Promise<SyncResult> {
     const { data: row, error } = await supabase
         .from("user_sync")
         .select("data, updated_at")
@@ -236,7 +254,6 @@ export async function syncWithCloud(user: User): Promise<"pushed" | "pulled" | "
     }
 
     const local = getLocalData();
-    const lastSync = localStorage.getItem(LAST_SYNC_KEY);
 
     // No cloud data — first sync, push everything
     if (!row?.data) {
@@ -246,7 +263,17 @@ export async function syncWithCloud(user: User): Promise<"pushed" | "pulled" | "
 
     // Cloud exists — merge and push
     const merged = mergeData(local, row.data);
-    setLocalData(merged);
+    const localChanged = !isSameData(local, merged);
+    const cloudChanged = !isSameData(row.data, merged);
+
+    if (localChanged) {
+        setLocalData(merged);
+    }
+
+    if (!cloudChanged) {
+        localStorage.setItem(LAST_SYNC_KEY, row.updated_at);
+        return localChanged ? "pulled" : "noop";
+    }
 
     const now = new Date().toISOString();
     const { error: pushErr } = await supabase
@@ -258,11 +285,12 @@ export async function syncWithCloud(user: User): Promise<"pushed" | "pulled" | "
 
     if (pushErr) {
         console.warn("[sync] push after merge failed:", pushErr.message);
-        return "pulled"; // at least local is updated
+        return localChanged ? "pulled" : "error";
     }
 
     localStorage.setItem(LAST_SYNC_KEY, now);
-    return lastSync ? "merged" : "pulled";
+    if (localChanged) return "merged";
+    return "pushed";
 }
 
 export function getLastSyncTime(): string | null {

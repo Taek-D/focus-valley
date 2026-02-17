@@ -56,8 +56,10 @@ export function useAudioMixer() {
         stream: 0,
         white: 0,
     });
+    const volumesRef = useRef(volumes);
 
     const [isMuted, setIsMuted] = useState(false);
+    const isMutedRef = useRef(isMuted);
 
     const initAudio = useCallback(() => {
         if (!contextRef.current) {
@@ -112,11 +114,12 @@ export function useAudioMixer() {
             }
 
             // Re-check: user may have set volume to 0 while loading
-            if (volumes[type] <= 0 && !loadingRef.current.has(type)) return;
+            const latestVolume = volumesRef.current[type];
+            if (latestVolume <= 0) return;
 
             const gainNode = ctx.createGain();
             gainNode.connect(compressorRef.current!);
-            gainNode.gain.value = isMuted ? 0 : toGain(volumes[type]);
+            gainNode.gain.value = isMutedRef.current ? 0 : toGain(latestVolume);
 
             const source = ctx.createBufferSource();
             source.buffer = audioBuffer;
@@ -133,7 +136,11 @@ export function useAudioMixer() {
     };
 
     const setVolume = (type: NoiseType, value: number) => {
-        setVolumes(prev => ({ ...prev, [type]: value }));
+        setVolumes((prev) => {
+            const next = { ...prev, [type]: value };
+            volumesRef.current = next;
+            return next;
+        });
         initAudio();
 
         if (value > 0 && !tracksRef.current.has(type)) {
@@ -149,7 +156,7 @@ export function useAudioMixer() {
                 track.gainNode.disconnect();
                 tracksRef.current.delete(type);
             } else {
-                const gain = isMuted ? 0 : toGain(value);
+                const gain = isMutedRef.current ? 0 : toGain(value);
                 track.gainNode.gain.setTargetAtTime(gain, track.gainNode.context.currentTime, 0.15);
             }
         }
@@ -158,6 +165,7 @@ export function useAudioMixer() {
     const toggleMute = () => {
         const newMuted = !isMuted;
         setIsMuted(newMuted);
+        isMutedRef.current = newMuted;
 
         tracksRef.current.forEach((track, type) => {
             const gain = newMuted ? 0 : toGain(volumes[type]);

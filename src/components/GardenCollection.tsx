@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
-import { type PlantType, type PlantStage, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } from "../hooks/useGarden";
+import { type PlantType, type PlantStage, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS, PRO_PLANT_TYPES, BASE_PLANT_TYPES } from "../hooks/useGarden";
 import { getPlantComponent } from "./ui/pixel-plants";
 import { BottomSheet } from "./ui/BottomSheet";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
@@ -20,7 +20,7 @@ type GardenCollectionProps = {
     deepFocusStreak?: number;
 };
 
-const ALL_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE", "ROSE", "ORCHID", "LOTUS", "CRYSTAL"];
+const ALL_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE", "ROSE", "ORCHID", "LOTUS", "CRYSTAL", "BAMBOO", "SAKURA"];
 const GROWTH_STAGES: PlantStage[] = ["SEED", "SPROUT", "BUD", "FLOWER", "TREE"];
 
 export const GardenCollection: React.FC<GardenCollectionProps> = ({
@@ -57,8 +57,8 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                 <div className="grid grid-cols-3 gap-3">
                     {ALL_TYPES.map((type) => {
                         const count = typeCounts[type] || 0;
-                        const isBase = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"].includes(type);
-                        const isUnlocked = isBase || unlockedPlants.includes(type);
+                        const isBase = BASE_PLANT_TYPES.includes(type);
+                        const isUnlocked = isBase || unlockedPlants.includes(type) || (isPro && PRO_PLANT_TYPES.includes(type));
                         const streakInfo = STREAK_UNLOCKS.find((u) => u.plant === type);
                         const deepInfo = DEEP_FOCUS_UNLOCKS.find((u) => u.plant === type);
                         const PlantSvg = getPlantComponent(type, "TREE");
@@ -80,8 +80,9 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                         <div className="text-center">
                                             <Lock size={14} className="mx-auto mb-1 text-muted-foreground/40" />
                                             <div className="font-body text-[9px] text-muted-foreground/40">
-                                                {streakInfo ? `${streakInfo.streak} ${t("garden.dayStreakUnlock")}` : deepInfo ? `${t("deepFocus.badge")} x${deepInfo.depth}` : t("garden.locked")}
+                                                {streakInfo ? `${streakInfo.streak} ${t("garden.dayStreakUnlock")}` : deepInfo ? `${t("deepFocus.badge")} x${deepInfo.depth}` : PRO_PLANT_TYPES.includes(type) ? t("pro.unlockWith") : t("garden.locked")}
                                             </div>
+                                            {PRO_PLANT_TYPES.includes(type) && <div className="mt-1"><ProBadge source="garden-lock" /></div>}
                                         </div>
                                     </div>
                                 )}
@@ -92,7 +93,7 @@ export const GardenCollection: React.FC<GardenCollectionProps> = ({
                                 </div>
                                 <div className="font-body text-[10px] font-medium text-foreground/70 flex items-center gap-1">
                                     {t(`plantType.${type}` as TranslationKey)}
-                                    {!isBase && !streakInfo && !deepInfo && !isPro && <ProBadge source="garden" />}
+                                    {PRO_PLANT_TYPES.includes(type) && !isPro && <ProBadge source="garden" />}
                                 </div>
                                 {isUnlocked && (
                                     <>

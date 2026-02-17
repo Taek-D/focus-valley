@@ -64,10 +64,11 @@ export const CategoryChips: React.FC = React.memo(() => {
     }, [undoInfo, addCategoryAt]);
 
     // Drag state — all refs to avoid stale closures
-    const [, forceRender] = useState(0);
+    const [dragIndex, setDragIndex] = useState<number | null>(null);
+    const [overIndex, setOverIndex] = useState<number | null>(null);
     const dragIndexRef = useRef<number | null>(null);
     const overIndexRef = useRef<number | null>(null);
-    const isDragging = useRef(false);
+    const isDraggingRef = useRef(false);
     const chipRefs = useRef<(HTMLDivElement | null)[]>([]);
     const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -89,13 +90,14 @@ export const CategoryChips: React.FC = React.memo(() => {
         const startX = e.clientX;
         const startY = e.clientY;
         const isTouch = e.pointerType === "touch";
-        isDragging.current = false;
+        isDraggingRef.current = false;
 
         const startDrag = () => {
-            isDragging.current = true;
+            isDraggingRef.current = true;
             dragIndexRef.current = index;
+            setDragIndex(index);
+            setOverIndex(null);
             el.setPointerCapture(pointerId);
-            forceRender((n) => n + 1);
             if (isTouch && navigator.vibrate) navigator.vibrate(30);
         };
 
@@ -111,7 +113,7 @@ export const CategoryChips: React.FC = React.memo(() => {
             const dx = moveEvent.clientX - startX;
             const dy = moveEvent.clientY - startY;
 
-            if (!isDragging.current) {
+            if (!isDraggingRef.current) {
                 if (isTouch) {
                     // Touch moved before long-press fired → user is scrolling, cancel
                     if (Math.abs(dx) + Math.abs(dy) > LONG_PRESS_MOVE_TOLERANCE && longPressTimerRef.current) {
@@ -128,7 +130,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                 }
             }
 
-            if (isDragging.current) {
+            if (isDraggingRef.current) {
                 moveEvent.preventDefault();
                 for (let i = 0; i < chipRefs.current.length; i++) {
                     const chip = chipRefs.current[i];
@@ -143,7 +145,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                         const newOver = i !== index ? i : null;
                         if (overIndexRef.current !== newOver) {
                             overIndexRef.current = newOver;
-                            forceRender((n) => n + 1);
+                            setOverIndex(newOver);
                         }
                         break;
                     }
@@ -156,13 +158,14 @@ export const CategoryChips: React.FC = React.memo(() => {
                 clearTimeout(longPressTimerRef.current);
                 longPressTimerRef.current = null;
             }
-            if (isDragging.current && dragIndexRef.current !== null && overIndexRef.current !== null) {
+            if (isDraggingRef.current && dragIndexRef.current !== null && overIndexRef.current !== null) {
                 reorderCategories(dragIndexRef.current, overIndexRef.current);
             }
-            isDragging.current = false;
+            isDraggingRef.current = false;
             dragIndexRef.current = null;
             overIndexRef.current = null;
-            forceRender((n) => n + 1);
+            setDragIndex(null);
+            setOverIndex(null);
             el.removeEventListener("pointermove", handleMove);
             el.removeEventListener("pointerup", handleUp);
             el.removeEventListener("pointercancel", handleUp);
@@ -174,8 +177,6 @@ export const CategoryChips: React.FC = React.memo(() => {
     }, [reorderCategories]);
 
     // Compute display order during drag
-    const dragIndex = dragIndexRef.current;
-    const overIndex = overIndexRef.current;
     const displayCategories = (() => {
         if (dragIndex === null || overIndex === null) return categories;
         const items = [...categories];
@@ -207,7 +208,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 <button
                                     onPointerDown={(e) => handlePointerDown(e, categories.findIndex((c) => c.id === cat.id))}
                                     onClick={() => {
-                                        if (!isDragging.current) setActiveCategory(cat.id);
+                                        if (!isDraggingRef.current) setActiveCategory(cat.id);
                                     }}
                                     className={`
                                         relative flex items-center gap-1.5 px-3 py-1.5 rounded-full

@@ -1,25 +1,34 @@
 import { useCallback } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getToday, getYesterday } from "@/lib/date-utils";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export type PlantStage = "SEED" | "SPROUT" | "BUD" | "FLOWER" | "TREE" | "DEAD";
-export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID" | "LOTUS" | "CRYSTAL";
+export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID" | "LOTUS" | "CRYSTAL" | "BAMBOO" | "SAKURA";
 
-export type FocusSession = { date: string; minutes: number; categoryId?: string };
+export type FocusSession = { id: string; date: string; minutes: number; categoryId?: string };
 
-const BASE_PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"];
+function createSessionId(): string {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+    }
+    return `session-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
 
-export const STREAK_UNLOCKS: { streak: number; plant: PlantType; label: string }[] = [
-    { streak: 3, plant: "ROSE", label: "Rose" },
-    { streak: 7, plant: "ORCHID", label: "Orchid" },
+export const BASE_PLANT_TYPES: PlantType[] = ["DEFAULT", "CACTUS", "SUNFLOWER", "PINE"];
+
+export const STREAK_UNLOCKS: { streak: number; plant: PlantType }[] = [
+    { streak: 3, plant: "ROSE" },
+    { streak: 7, plant: "ORCHID" },
 ];
 
-export const DEEP_FOCUS_UNLOCKS: { depth: number; plant: PlantType; label: string }[] = [
-    { depth: 3, plant: "LOTUS", label: "Lotus" },
-    { depth: 5, plant: "CRYSTAL", label: "Crystal" },
+export const DEEP_FOCUS_UNLOCKS: { depth: number; plant: PlantType }[] = [
+    { depth: 3, plant: "LOTUS" },
+    { depth: 5, plant: "CRYSTAL" },
 ];
 
-import { getToday, getYesterday } from "@/lib/date-utils";
+export const PRO_PLANT_TYPES: PlantType[] = ["BAMBOO", "SAKURA"];
 
 export function getDisplayStreak(currentStreak: number, lastFocusDate: string | null): number {
     if (!lastFocusDate || currentStreak === 0) return 0;
@@ -30,7 +39,9 @@ export function getDisplayStreak(currentStreak: number, lastFocusDate: string | 
 }
 
 function getAvailablePlants(unlocked: PlantType[]): PlantType[] {
-    return [...BASE_PLANT_TYPES, ...unlocked];
+    const { plan, expiresAt } = useSubscription.getState();
+    const isPro = plan === "pro" && (!expiresAt || new Date(expiresAt) > new Date());
+    return [...BASE_PLANT_TYPES, ...unlocked, ...(isPro ? PRO_PLANT_TYPES : [])];
 }
 
 function randomPlantType(available: PlantType[]): PlantType {
@@ -91,7 +102,7 @@ const useGardenStore = create<GardenState>()(
             addFocusMinutes: (minutes, categoryId?) => set((state) => {
                 const today = getToday();
                 const now = Date.now();
-                const newSessions = [...state.focusSessions, { date: today, minutes, categoryId }];
+                const newSessions = [...state.focusSessions, { id: createSessionId(), date: today, minutes, categoryId }];
 
                 let newStreak = state.currentStreak;
 

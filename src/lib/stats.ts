@@ -1,5 +1,6 @@
 import type { FocusSession } from "../hooks/useGarden";
 import type { Category } from "./constants";
+import { toLocalDateKey } from "./date-utils";
 
 function getWeekStart(date: Date): Date {
     const d = new Date(date);
@@ -15,7 +16,7 @@ function getWeekDays(weekStart: Date): string[] {
     for (let i = 0; i < 7; i++) {
         const d = new Date(weekStart);
         d.setDate(d.getDate() + i);
-        days.push(d.toISOString().slice(0, 10));
+        days.push(toLocalDateKey(d));
     }
     return days;
 }
@@ -101,7 +102,7 @@ export function getMonthlyHeatmap(sessions: FocusSession[], dailyGoal: number): 
             if (current > today) {
                 week.push(null);
             } else {
-                const dateStr = current.toISOString().slice(0, 10);
+                const dateStr = toLocalDateKey(current);
                 const minutes = minutesByDay[dateStr] || 0;
 
                 let level: 0 | 1 | 2 | 3 | 4 = 0;

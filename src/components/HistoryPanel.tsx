@@ -1,18 +1,18 @@
-import React, { useMemo, useCallback, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useCallback, useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download, Share2 } from "lucide-react";
 import type { PlantType, FocusSession } from "../hooks/useGarden";
 import { useTimerSettings } from "../hooks/useTimerSettings";
 import { useCategories } from "../hooks/useCategories";
 import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getCategoryBreakdown } from "../lib/stats";
 import { PLANT_ICONS } from "../lib/constants";
-import { getDayLabel, getLast7Days, groupByDate } from "../lib/date-utils";
+import { getDayLabel, getLast7Days, getToday, groupByDate, toLocalDateKey } from "../lib/date-utils";
 import { FREE_TIER } from "@/lib/constants";
 import { generateShareCard, shareOrDownload } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
 import { WaitlistBanner } from "./WaitlistBanner";
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
-import { useTranslation } from "../lib/i18n";
+import { useTranslation, type TranslationKey } from "../lib/i18n";
 import { useIsPro } from "@/hooks/useSubscription";
 import { ProBadge } from "./ProGate";
 
@@ -48,6 +48,10 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const { dailyGoal } = useTimerSettings();
     const { categories } = useCategories();
     const [sharing, setSharing] = useState(false);
+    const [exportNotice, setExportNotice] = useState(false);
+    const exportTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => () => clearTimeout(exportTimerRef.current), []);
 
     const weekData = useMemo(() => {
         const days = getLast7Days();
@@ -74,12 +78,17 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             : (() => {
                   const cutoff = new Date();
                   cutoff.setDate(cutoff.getDate() - FREE_TIER.EXPORT_DAYS);
-                  const cutoffStr = cutoff.toISOString().slice(0, 10);
+                  const cutoffStr = toLocalDateKey(cutoff);
                   return focusSessions.filter((s) => s.date >= cutoffStr);
               })();
         const csv = exportSessionsCSV(sessions, categories);
-        downloadCSV(csv, `focus-valley-${new Date().toISOString().slice(0, 10)}.csv`);
+        downloadCSV(csv, `focus-valley-${getToday()}.csv`);
         trackCsvExport();
+        if (!isPro) {
+            setExportNotice(true);
+            clearTimeout(exportTimerRef.current);
+            exportTimerRef.current = setTimeout(() => setExportNotice(false), 4000);
+        }
     };
 
     const handleShare = useCallback(async () => {
@@ -88,7 +97,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             const today = new Date().toLocaleDateString("en-US", {
                 weekday: "long", year: "numeric", month: "long", day: "numeric",
             });
-            const todaySessions = focusSessions.filter((s) => s.date === new Date().toISOString().slice(0, 10));
+            const todayKey = getToday();
+            const todaySessions = focusSessions.filter((s) => s.date === todayKey);
             const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
             const todayBreakdown = getCategoryBreakdown(todaySessions, categories);
 
@@ -100,7 +110,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 plantCount: history.length,
             });
 
-            await shareOrDownload(blob, `focus-valley-${new Date().toISOString().slice(0, 10)}.png`);
+            await shareOrDownload(blob, `focus-valley-${todayKey}.png`);
             trackShareCard();
         } finally {
             setSharing(false);
@@ -133,6 +143,26 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 </>
             }
         >
+            {/* Export limit notice */}
+            <AnimatePresence>
+                {exportNotice && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="px-5 pb-2 overflow-hidden"
+                    >
+                        <div className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+                            <Download size={10} className="text-muted-foreground/30 shrink-0" />
+                            <span className="font-body text-[10px] text-muted-foreground/40">
+                                {t("pro.exportLimit")}
+                            </span>
+                            <ProBadge source="csv-export-notice" />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Stats Grid */}
             <div className="grid grid-cols-4 gap-2 px-5 pb-4">
                 {[
@@ -364,7 +394,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                         className="flex items-center gap-3 py-2 px-3 rounded-xl hover:bg-foreground/3 transition-colors"
                                     >
                                         <span className="text-base">{PLANT_ICONS[entry.type]}</span>
-                                        <span className="font-body text-xs flex-1 text-foreground/70">{entry.type}</span>
+                                        <span className="font-body text-xs flex-1 text-foreground/70">{t(`plantType.${entry.type}` as TranslationKey)}</span>
                                         <span className="font-body text-[10px] text-muted-foreground/40">
                                             {new Date(entry.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                         </span>

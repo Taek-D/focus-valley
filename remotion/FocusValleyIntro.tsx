@@ -10,7 +10,6 @@ import {
 
 // ─── Colors (matching Focus Valley aurora palette) ────────────────────
 const BG = "#080c16";
-const BG_LIGHTER = "#0e1526";
 const TEXT = "#f0f2f5";
 const TEXT_MUTED = "rgba(240,242,245,0.4)";
 const ACCENT_EMERALD = "#34d399";

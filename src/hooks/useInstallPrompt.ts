@@ -9,18 +9,14 @@ const DISMISS_KEY = "focus-valley-install-dismissed";
 
 export function useInstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-    const [isInstalled, setIsInstalled] = useState(false);
+    const [isInstalled, setIsInstalled] = useState(() =>
+        window.matchMedia("(display-mode: standalone)").matches
+    );
     const [isDismissed, setIsDismissed] = useState(() => {
         try { return localStorage.getItem(DISMISS_KEY) === "1"; } catch { return false; }
     });
 
     useEffect(() => {
-        // Check if already installed (standalone mode)
-        if (window.matchMedia("(display-mode: standalone)").matches) {
-            setIsInstalled(true);
-            return;
-        }
-
         const handler = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e as BeforeInstallPromptEvent);

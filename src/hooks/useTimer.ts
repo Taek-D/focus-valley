@@ -78,24 +78,28 @@ export function useTimer() {
     const [focusCount, setFocusCount] = useState(init.focusCount);
 
     const workerRef = useRef<Worker | null>(null);
-    const startedAtRef = useRef<number>(
-        init.shouldStartWorker && savedRef.current ? savedRef.current.startedAt : 0,
-    );
+    const prevSettingsRef = useRef<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
 
-    // Render-time state adjustment: sync timeLeft when settings change while idle
-    const [prevSettings, setPrevSettings] = useState<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
-    if (
-        !isRunning && !isCompleted &&
-        (prevSettings.focus !== focus || prevSettings.shortBreak !== shortBreak || prevSettings.longBreak !== longBreak || prevSettings.mode !== mode)
-    ) {
-        setPrevSettings({ focus, shortBreak, longBreak, mode });
-        setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
-    }
+    // Sync timeLeft when settings change while idle.
+    useEffect(() => {
+        const prev = prevSettingsRef.current;
+        const changed =
+            prev.focus !== focus
+            || prev.shortBreak !== shortBreak
+            || prev.longBreak !== longBreak
+            || prev.mode !== mode;
+
+        if (!isRunning && !isCompleted && changed) {
+            setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+        }
+
+        prevSettingsRef.current = { focus, shortBreak, longBreak, mode };
+    }, [focus, shortBreak, longBreak, mode, isRunning, isCompleted]);
 
     // Persist timer state on every meaningful change
     useEffect(() => {
         if (isRunning) {
-            saveTimerState({ mode, isRunning: true, focusCount, startedAt: startedAtRef.current, pausedTimeLeft: timeLeft });
+            saveTimerState({ mode, isRunning: true, focusCount, startedAt: Date.now(), pausedTimeLeft: timeLeft });
         } else if (isCompleted || timeLeft !== getDuration(mode, focus, shortBreak, longBreak)) {
             // Save paused/completed state only if it differs from default idle
             saveTimerState({ mode, isRunning: false, focusCount, startedAt: 0, pausedTimeLeft: timeLeft });
@@ -135,7 +139,6 @@ export function useTimer() {
 
     const start = useCallback(() => {
         if (timeLeft === 0) return;
-        startedAtRef.current = Date.now();
         setIsRunning(true);
         setIsCompleted(false);
         workerRef.current?.postMessage({ command: "START" });
@@ -149,7 +152,6 @@ export function useTimer() {
     const reset = useCallback(() => {
         setIsRunning(false);
         setIsCompleted(false);
-        startedAtRef.current = 0;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
         clearTimerState();
@@ -159,7 +161,6 @@ export function useTimer() {
         setMode(newMode);
         setIsRunning(false);
         setIsCompleted(false);
-        startedAtRef.current = 0;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(newMode, focus, shortBreak, longBreak));
         clearTimerState();

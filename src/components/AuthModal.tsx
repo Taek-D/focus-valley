@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, LogOut, User, RefreshCw, Cloud, CloudOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,13 +25,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [syncing, setSyncing] = useState(false);
     const [syncStatus, setSyncStatus] = useState<string | null>(null);
-    const [lastSync, setLastSync] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (isOpen && user) {
-            setLastSync(getLastSyncTime());
-        }
-    }, [isOpen, user]);
+    const lastSync = getLastSyncTime();
 
     const switchMode = useCallback(() => {
         setMode((m) => (m === "login" ? "signup" : "login"));
@@ -75,7 +69,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         setSyncStatus(null);
         const result = await syncWithCloud(user);
         setSyncing(false);
-        setLastSync(getLastSyncTime());
 
         switch (result) {
             case "pushed":
@@ -88,6 +81,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             case "merged":
                 setSyncStatus(t("sync.merged"));
                 setTimeout(() => window.location.reload(), 1500);
+                break;
+            case "noop":
+                setSyncStatus(t("sync.upToDate"));
                 break;
             case "error":
                 setSyncStatus(t("sync.failed"));
