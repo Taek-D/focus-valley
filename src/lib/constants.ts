@@ -13,17 +13,6 @@ export const GESTURE = {
     DRAG_DISMISS_VELOCITY: 500,
 } as const;
 
-export const PLANT_LABELS: Record<PlantType, string> = {
-    DEFAULT: "Fern",
-    CACTUS: "Cactus",
-    SUNFLOWER: "Sunflower",
-    PINE: "Bonsai",
-    ROSE: "Rose",
-    ORCHID: "Orchid",
-    LOTUS: "Lotus",
-    CRYSTAL: "Crystal",
-};
-
 export const PLANT_ICONS: Record<PlantType, string> = {
     DEFAULT: "\u{1F333}",
     CACTUS: "\u{1F335}",
@@ -33,6 +22,8 @@ export const PLANT_ICONS: Record<PlantType, string> = {
     ORCHID: "\u{1F33A}",
     LOTUS: "\u{1F33C}",
     CRYSTAL: "\u{1F48E}",
+    BAMBOO: "\u{1F38D}",
+    SAKURA: "\u{1F338}",
 };
 
 export const MODE_CONFIG: Record<TimerMode, { label: string; short: string }> = {

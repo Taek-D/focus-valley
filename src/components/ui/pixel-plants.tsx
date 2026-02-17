@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components -- exports both SVG components and getPlantComponent lookup */
-import type { PlantType } from "../../hooks/useGarden";
+import type { PlantType, PlantStage } from "../../hooks/useGarden";
 
 /* ─── Shared: Terracotta Pot ─── */
 const Pot = () => (
@@ -571,7 +571,7 @@ const LotusBud = () => (
 const LotusFlower = () => (
     <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
         <defs>
-            <filter id="lotus-glow">
+            <filter id="lotus-flower-glow">
                 <feGaussianBlur stdDeviation="2" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
@@ -582,7 +582,7 @@ const LotusFlower = () => (
         <ellipse cx="78" cy="78" rx="14" ry="4.5" fill="#4A8C5A" transform="rotate(15 78 78)" />
         <path d="M60 76 Q58 60 60 44" stroke="#5A8C6A" strokeWidth="2.5" strokeLinecap="round" fill="none" />
         {/* Lotus bloom with glow */}
-        <g filter="url(#lotus-glow)">
+        <g filter="url(#lotus-flower-glow)">
             {/* Outer petals */}
             <ellipse cx="50" cy="38" rx="5" ry="10" fill="#F5B8D0" transform="rotate(-25 50 38)" />
             <ellipse cx="70" cy="38" rx="5" ry="10" fill="#F5B8D0" transform="rotate(25 70 38)" />
@@ -602,7 +602,7 @@ const LotusFlower = () => (
 const LotusTree = () => (
     <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
         <defs>
-            <filter id="lotus-glow-full">
+            <filter id="lotus-tree-glow">
                 <feGaussianBlur stdDeviation="2.5" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
@@ -617,7 +617,7 @@ const LotusTree = () => (
         {/* Side stem */}
         <path d="M58 60 Q48 52 42 42" stroke="#4A7C5A" strokeWidth="2" strokeLinecap="round" fill="none" />
         {/* Main lotus */}
-        <g filter="url(#lotus-glow-full)">
+        <g filter="url(#lotus-tree-glow)">
             <ellipse cx="48" cy="28" rx="6" ry="11" fill="#F5B8D0" transform="rotate(-20 48 28)" />
             <ellipse cx="72" cy="28" rx="6" ry="11" fill="#F5B8D0" transform="rotate(20 72 28)" />
             <ellipse cx="44" cy="32" rx="5" ry="9" fill="#F0A0C0" transform="rotate(-35 44 32)" />
@@ -629,7 +629,7 @@ const LotusTree = () => (
             <circle cx="60" cy="28" r="3" fill="#F5C542" />
         </g>
         {/* Side lotus (smaller) */}
-        <g filter="url(#lotus-glow-full)">
+        <g filter="url(#lotus-tree-glow)">
             <ellipse cx="38" cy="38" rx="4" ry="7" fill="#F5B8D0" transform="rotate(-20 38 38)" />
             <ellipse cx="48" cy="38" rx="4" ry="7" fill="#F5B8D0" transform="rotate(20 48 38)" />
             <ellipse cx="43" cy="36" rx="3" ry="6" fill="#E8889A" />
@@ -657,13 +657,13 @@ const CrystalSprout = () => (
 const CrystalBud = () => (
     <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
         <defs>
-            <filter id="crystal-glow-s">
+            <filter id="crystal-bud-glow">
                 <feGaussianBlur stdDeviation="1.5" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
         </defs>
         <Pot />
-        <g filter="url(#crystal-glow-s)">
+        <g filter="url(#crystal-bud-glow)">
             {/* Main crystal */}
             <polygon points="60,50 52,78 60,82 68,78" fill="#88C8E8" />
             <polygon points="60,50 52,78 60,82" fill="#A0D8EF" opacity="0.7" />
@@ -680,20 +680,20 @@ const CrystalBud = () => (
 const CrystalFlower = () => (
     <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
         <defs>
-            <filter id="crystal-glow-m">
+            <filter id="crystal-flower-glow">
                 <feGaussianBlur stdDeviation="2" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
-            <linearGradient id="prism1" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="crystal-flower-prism" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#A0D8EF" />
                 <stop offset="50%" stopColor="#C8A0E8" />
                 <stop offset="100%" stopColor="#F0A0C0" />
             </linearGradient>
         </defs>
         <Pot />
-        <g filter="url(#crystal-glow-m)">
+        <g filter="url(#crystal-flower-glow)">
             {/* Main crystal cluster */}
-            <polygon points="60,36 50,78 60,82 70,78" fill="url(#prism1)" />
+            <polygon points="60,36 50,78 60,82 70,78" fill="url(#crystal-flower-prism)" />
             <polygon points="60,36 50,78 60,82" fill="#B0E0FF" opacity="0.5" />
             {/* Left crystal */}
             <polygon points="44,50 38,78 50,78" fill="#80B8D8" />
@@ -713,11 +713,11 @@ const CrystalFlower = () => (
 const CrystalTree = () => (
     <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
         <defs>
-            <filter id="crystal-glow-l">
+            <filter id="crystal-tree-glow">
                 <feGaussianBlur stdDeviation="2.5" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
-            <linearGradient id="prism2" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="crystal-tree-prism" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#A0D8EF" />
                 <stop offset="33%" stopColor="#C8A0E8" />
                 <stop offset="66%" stopColor="#F0A0C0" />
@@ -725,9 +725,9 @@ const CrystalTree = () => (
             </linearGradient>
         </defs>
         <Pot />
-        <g filter="url(#crystal-glow-l)">
+        <g filter="url(#crystal-tree-glow)">
             {/* Tall main crystal */}
-            <polygon points="60,24 48,78 60,82 72,78" fill="url(#prism2)" />
+            <polygon points="60,24 48,78 60,82 72,78" fill="url(#crystal-tree-prism)" />
             <polygon points="60,24 48,78 60,82" fill="#C0E8FF" opacity="0.4" />
             {/* Left tall crystal */}
             <polygon points="40,38 32,78 48,78" fill="#88C8E8" />
@@ -751,6 +751,216 @@ const CrystalTree = () => (
 );
 
 /* ═══════════════════════════════
+   BAMBOO — Pro Exclusive
+   Elegant bamboo with segmented stalks
+   ═══════════════════════════════ */
+
+const BambooSprout = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Single shoot */}
+        <rect x="58" y="65" width="4" height="17" rx="1" fill="#6B9B3A" />
+        {/* Node ring */}
+        <rect x="57" y="72" width="6" height="1.5" rx="0.5" fill="#5A8A2E" />
+        {/* Tiny leaf */}
+        <path d="M62 68 Q68 64 72 66 Q66 68 62 68Z" fill="#7DB84A" />
+    </svg>
+);
+
+const BambooBud = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Two stalks */}
+        <rect x="54" y="48" width="4" height="34" rx="1" fill="#6B9B3A" />
+        <rect x="64" y="55" width="3.5" height="27" rx="1" fill="#5E8E32" />
+        {/* Node rings */}
+        <rect x="53" y="58" width="6" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="53" y="70" width="6" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="63" y="65" width="5.5" height="1.5" rx="0.5" fill="#4E7E26" />
+        {/* Leaves */}
+        <path d="M58 52 Q65 46 72 48 Q64 50 58 52Z" fill="#7DB84A" />
+        <path d="M54 60 Q46 56 42 58 Q48 60 54 60Z" fill="#7DB84A" />
+        <path d="M67.5 58 Q73 54 78 56 Q72 58 67.5 58Z" fill="#6FA83E" />
+    </svg>
+);
+
+const BambooFlower = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <Pot />
+        {/* Three stalks */}
+        <rect x="50" y="32" width="4.5" height="50" rx="1.5" fill="#6B9B3A" />
+        <rect x="62" y="38" width="4" height="44" rx="1.5" fill="#5E8E32" />
+        <rect x="72" y="44" width="3.5" height="38" rx="1" fill="#528228" />
+        {/* Node rings */}
+        <rect x="49" y="42" width="6.5" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="49" y="56" width="6.5" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="49" y="70" width="6.5" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="61" y="50" width="6" height="1.5" rx="0.5" fill="#4E7E26" />
+        <rect x="61" y="64" width="6" height="1.5" rx="0.5" fill="#4E7E26" />
+        <rect x="71" y="56" width="5.5" height="1.5" rx="0.5" fill="#4A7A22" />
+        {/* Leaves */}
+        <path d="M54 36 Q62 28 70 30 Q60 34 54 36Z" fill="#7DB84A" />
+        <path d="M50 44 Q40 38 34 40 Q42 44 50 44Z" fill="#7DB84A" />
+        <path d="M66 42 Q74 36 80 38 Q72 42 66 42Z" fill="#6FA83E" />
+        <path d="M50 58 Q42 54 36 56 Q44 58 50 58Z" fill="#7DB84A" />
+        <path d="M66 52 Q74 48 80 50 Q72 52 66 52Z" fill="#6FA83E" />
+        <path d="M75.5 48 Q82 44 88 46 Q80 48 75.5 48Z" fill="#6FA83E" />
+    </svg>
+);
+
+const BambooTree = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <Pot />
+        {/* Five tall stalks */}
+        <rect x="42" y="22" width="5" height="60" rx="2" fill="#6B9B3A" />
+        <rect x="54" y="18" width="5" height="64" rx="2" fill="#5E8E32" />
+        <rect x="64" y="26" width="4.5" height="56" rx="2" fill="#6B9B3A" />
+        <rect x="74" y="30" width="4" height="52" rx="1.5" fill="#528228" />
+        <rect x="34" y="34" width="3.5" height="48" rx="1.5" fill="#528228" />
+        {/* Node rings on main stalks */}
+        <rect x="41" y="34" width="7" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="41" y="50" width="7" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="41" y="66" width="7" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="53" y="30" width="7" height="1.5" rx="0.5" fill="#4E7E26" />
+        <rect x="53" y="46" width="7" height="1.5" rx="0.5" fill="#4E7E26" />
+        <rect x="53" y="62" width="7" height="1.5" rx="0.5" fill="#4E7E26" />
+        <rect x="63" y="40" width="6.5" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="63" y="56" width="6.5" height="1.5" rx="0.5" fill="#5A8A2E" />
+        <rect x="73" y="46" width="6" height="1.5" rx="0.5" fill="#4A7A22" />
+        {/* Graceful leaves */}
+        <path d="M46 26 Q56 18 64 20 Q54 24 46 26Z" fill="#7DB84A" />
+        <path d="M58 22 Q66 14 74 16 Q64 20 58 22Z" fill="#6FA83E" />
+        <path d="M42 36 Q30 30 24 32 Q34 36 42 36Z" fill="#7DB84A" />
+        <path d="M68 30 Q78 24 86 26 Q76 30 68 30Z" fill="#6FA83E" />
+        <path d="M42 52 Q32 48 26 50 Q36 52 42 52Z" fill="#7DB84A" />
+        <path d="M68 42 Q78 38 84 40 Q76 42 68 42Z" fill="#6FA83E" />
+        <path d="M58 32 Q48 28 42 30 Q50 32 58 32Z" fill="#7DB84A" />
+        <path d="M78 34 Q86 30 90 32 Q84 34 78 34Z" fill="#6FA83E" />
+        <path d="M34 38 Q26 34 20 36 Q28 38 34 38Z" fill="#6FA83E" />
+    </svg>
+);
+
+/* ═══════════════════════════════
+   SAKURA — Pro Exclusive
+   Cherry blossom with pink petals
+   ═══════════════════════════════ */
+
+const SakuraSprout = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Thin branch */}
+        <path d="M60 82 L60 66 Q58 62 56 60" fill="none" stroke="#8B6B5E" strokeWidth="2" strokeLinecap="round" />
+        {/* Small bud */}
+        <circle cx="56" cy="59" r="3" fill="#F9A8C9" />
+        <circle cx="56" cy="58.5" r="1.5" fill="#FDCFE1" opacity="0.7" />
+    </svg>
+);
+
+const SakuraBud = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-breathe">
+        <Pot />
+        {/* Branch */}
+        <path d="M60 82 L60 58 Q56 50 52 46" fill="none" stroke="#8B6B5E" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M60 66 Q66 60 70 56" fill="none" stroke="#8B6B5E" strokeWidth="2" strokeLinecap="round" />
+        {/* Buds */}
+        <circle cx="52" cy="45" r="4" fill="#F9A8C9" />
+        <circle cx="52" cy="44" r="2" fill="#FDCFE1" opacity="0.6" />
+        <circle cx="70" cy="55" r="3.5" fill="#F9A8C9" />
+        <circle cx="70" cy="54" r="1.5" fill="#FDCFE1" opacity="0.6" />
+        {/* Tiny leaf */}
+        <ellipse cx="55" cy="60" rx="4" ry="2" fill="#8FB87A" transform="rotate(-20 55 60)" />
+    </svg>
+);
+
+const SakuraFlower = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <Pot />
+        {/* Main branch */}
+        <path d="M60 82 L58 52 Q54 42 48 36" fill="none" stroke="#8B6B5E" strokeWidth="3" strokeLinecap="round" />
+        <path d="M58 62 Q66 54 74 48" fill="none" stroke="#8B6B5E" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M58 72 Q50 66 44 62" fill="none" stroke="#8B6B5E" strokeWidth="2" strokeLinecap="round" />
+        {/* Blossoms */}
+        <g>
+            <circle cx="48" cy="34" r="5" fill="#F7A0BE" />
+            <circle cx="44" cy="32" r="4" fill="#FAB8D0" />
+            <circle cx="52" cy="32" r="4" fill="#FAB8D0" />
+            <circle cx="48" cy="30" r="3.5" fill="#FDCFE1" />
+            <circle cx="48" cy="34" r="1.5" fill="#E8789E" />
+        </g>
+        <g>
+            <circle cx="74" cy="46" r="4.5" fill="#F7A0BE" />
+            <circle cx="70" cy="44" r="3.5" fill="#FAB8D0" />
+            <circle cx="78" cy="44" r="3.5" fill="#FAB8D0" />
+            <circle cx="74" cy="42" r="3" fill="#FDCFE1" />
+            <circle cx="74" cy="46" r="1.2" fill="#E8789E" />
+        </g>
+        <g>
+            <circle cx="44" cy="60" r="3.5" fill="#F7A0BE" />
+            <circle cx="41" cy="58" r="3" fill="#FAB8D0" />
+            <circle cx="44" cy="57" r="2.5" fill="#FDCFE1" />
+        </g>
+        {/* Falling petals */}
+        <ellipse cx="38" cy="50" rx="2" ry="1.2" fill="#FDCFE1" opacity="0.5" transform="rotate(30 38 50)" />
+        <ellipse cx="80" cy="56" rx="1.8" ry="1" fill="#FDCFE1" opacity="0.4" transform="rotate(-20 80 56)" />
+    </svg>
+);
+
+const SakuraTree = () => (
+    <svg width="120" height="120" viewBox="0 0 120 120" className="animate-sway-gentle">
+        <defs>
+            <radialGradient id="sakura-tree-glow" cx="50%" cy="40%">
+                <stop offset="0%" stopColor="#FFE0EC" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#FFE0EC" stopOpacity="0" />
+            </radialGradient>
+        </defs>
+        <Pot />
+        {/* Glow */}
+        <circle cx="56" cy="40" r="35" fill="url(#sakura-tree-glow)" />
+        {/* Trunk and branches */}
+        <path d="M60 82 L58 48 Q54 36 46 28" fill="none" stroke="#7A5A4E" strokeWidth="4" strokeLinecap="round" />
+        <path d="M58 56 Q68 46 78 38" fill="none" stroke="#8B6B5E" strokeWidth="3" strokeLinecap="round" />
+        <path d="M58 66 Q48 58 40 52" fill="none" stroke="#8B6B5E" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M58 44 Q52 40 48 42" fill="none" stroke="#8B6B5E" strokeWidth="2" strokeLinecap="round" />
+        <path d="M68 42 Q74 40 78 44" fill="none" stroke="#8B6B5E" strokeWidth="2" strokeLinecap="round" />
+        {/* Dense blossom clusters */}
+        <g>
+            <circle cx="44" cy="26" r="6" fill="#F49DBB" />
+            <circle cx="38" cy="24" r="5" fill="#FAB8D0" />
+            <circle cx="50" cy="24" r="5" fill="#FAB8D0" />
+            <circle cx="44" cy="20" r="5" fill="#FDCFE1" />
+            <circle cx="44" cy="26" r="2" fill="#E8789E" />
+        </g>
+        <g>
+            <circle cx="78" cy="36" r="5.5" fill="#F49DBB" />
+            <circle cx="73" cy="34" r="4.5" fill="#FAB8D0" />
+            <circle cx="83" cy="34" r="4.5" fill="#FAB8D0" />
+            <circle cx="78" cy="32" r="4" fill="#FDCFE1" />
+            <circle cx="78" cy="36" r="1.8" fill="#E8789E" />
+        </g>
+        <g>
+            <circle cx="40" cy="50" r="4.5" fill="#F49DBB" />
+            <circle cx="36" cy="48" r="4" fill="#FAB8D0" />
+            <circle cx="44" cy="48" r="3.5" fill="#FAB8D0" />
+            <circle cx="40" cy="46" r="3" fill="#FDCFE1" />
+            <circle cx="40" cy="50" r="1.5" fill="#E8789E" />
+        </g>
+        <g>
+            <circle cx="48" cy="38" r="4" fill="#F7A0BE" />
+            <circle cx="52" cy="36" r="3.5" fill="#FDCFE1" />
+        </g>
+        <g>
+            <circle cx="78" cy="42" r="3" fill="#F7A0BE" />
+            <circle cx="74" cy="46" r="3.5" fill="#FAB8D0" />
+        </g>
+        {/* Falling petals */}
+        <ellipse cx="30" cy="44" rx="2.2" ry="1.3" fill="#FDCFE1" opacity="0.6" transform="rotate(40 30 44)" />
+        <ellipse cx="86" cy="50" rx="2" ry="1.2" fill="#FDCFE1" opacity="0.5" transform="rotate(-25 86 50)" />
+        <ellipse cx="50" cy="68" rx="1.8" ry="1" fill="#FDCFE1" opacity="0.4" transform="rotate(15 50 68)" />
+        <ellipse cx="70" cy="64" rx="1.5" ry="0.8" fill="#FDCFE1" opacity="0.35" transform="rotate(-35 70 64)" />
+    </svg>
+);
+
+/* ═══════════════════════════════
    Lookup Table
    ═══════════════════════════════ */
 
@@ -768,9 +978,11 @@ const PLANTS: Record<PlantType, {
     ORCHID: { sprout: OrchidSprout, bud: OrchidBud, flower: OrchidFlower, tree: OrchidTree },
     LOTUS: { sprout: LotusSprout, bud: LotusBud, flower: LotusFlower, tree: LotusTree },
     CRYSTAL: { sprout: CrystalSprout, bud: CrystalBud, flower: CrystalFlower, tree: CrystalTree },
+    BAMBOO: { sprout: BambooSprout, bud: BambooBud, flower: BambooFlower, tree: BambooTree },
+    SAKURA: { sprout: SakuraSprout, bud: SakuraBud, flower: SakuraFlower, tree: SakuraTree },
 };
 
-export function getPlantComponent(type: PlantType, stage: string): React.FC {
+export function getPlantComponent(type: PlantType, stage: PlantStage): React.FC {
     if (stage === "SEED") return PixelSeed;
     if (stage === "DEAD") return PixelDead;
 
