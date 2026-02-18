@@ -63,6 +63,14 @@ export const CategoryChips: React.FC = React.memo(() => {
         setUndoInfo(null);
     }, [undoInfo, addCategoryAt]);
 
+    // Wheel → horizontal scroll
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const handleWheel = useCallback((e: React.WheelEvent) => {
+        if (!scrollRef.current || e.deltaY === 0) return;
+        e.preventDefault();
+        scrollRef.current.scrollLeft += e.deltaY;
+    }, []);
+
     // Drag state — all refs to avoid stale closures
     const [dragIndex, setDragIndex] = useState<number | null>(null);
     const [overIndex, setOverIndex] = useState<number | null>(null);
@@ -190,7 +198,7 @@ export const CategoryChips: React.FC = React.memo(() => {
             <div className="relative w-full" data-tour="category-chips">
                 <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none z-10 sm:hidden" />
                 <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none z-10 sm:hidden" />
-                <div className="overflow-x-auto scrollbar-hide">
+                <div ref={scrollRef} onWheel={handleWheel} className="overflow-x-auto scrollbar-hide">
                 <div className="flex items-center gap-1.5 w-max mx-auto px-4 sm:px-1">
                     {displayCategories.map((cat, i) => {
                         const isActive = cat.id === activeCategoryId;
