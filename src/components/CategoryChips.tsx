@@ -187,7 +187,7 @@ export const CategoryChips: React.FC = React.memo(() => {
 
     return (
         <>
-            <div className="relative w-full">
+            <div className="relative w-full" data-tour="category-chips">
                 <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none z-10 sm:hidden" />
                 <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none z-10 sm:hidden" />
                 <div className="overflow-x-auto scrollbar-hide">

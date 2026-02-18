@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, RotateCcw, Clock, Coffee, Sunset, Target, SkipForward, Globe } from "lucide-react";
+import { X, RotateCcw, Clock, Coffee, Sunset, Target, SkipForward, Globe, HelpCircle } from "lucide-react";
 import { useTimerSettings, LIMITS, type TimerDurations } from "../hooks/useTimerSettings";
 import { useTranslation, useI18n, LOCALE_LABELS, type TranslationKey, type Locale } from "../lib/i18n";
+import { useTour } from "../hooks/useTour";
 
 type TimerSettingsProps = {
     isOpen: boolean;
@@ -111,6 +112,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
     const closeRef = useRef<HTMLButtonElement>(null);
     const { t } = useTranslation();
     const { locale, setLocale } = useI18n();
+    const startTour = useTour((s) => s.startTour);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -234,6 +236,15 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                 ))}
                             </div>
                         </div>
+
+                        {/* Restart Tour */}
+                        <button
+                            onClick={() => { startTour(); onClose(); }}
+                            className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-wide text-muted-foreground/50 hover:text-foreground rounded-xl border border-foreground/5 hover:border-foreground/15 transition-all"
+                        >
+                            <HelpCircle size={10} />
+                            {t("settings.restartTour")}
+                        </button>
 
                         {/* Reset */}
                         <button

@@ -38,6 +38,7 @@ export const PlantGarden = memo(function PlantGarden({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
+            data-tour="plant-area"
         >
             {/* Plant area */}
             <div className="relative h-32 md:h-40 flex items-end justify-center w-full">

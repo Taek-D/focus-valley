@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사용 가이드 — Focus Valley</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Sora', -apple-system, 'Apple SD Gothic Neo', sans-serif;
+            background: #0a0f1a;
+            color: rgba(245, 245, 247, 0.7);
+            line-height: 1.8;
+            padding: 3rem 1.5rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        a { color: rgba(245, 245, 247, 0.5); }
+        a:hover { color: rgba(245, 245, 247, 0.8); }
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(245, 245, 247, 0.3);
+            margin-bottom: 2rem;
+        }
+        .back:hover { color: rgba(245, 245, 247, 0.6); }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: rgba(245, 245, 247, 0.9);
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(245, 245, 247, 0.4);
+            margin-bottom: 2.5rem;
+        }
+        h2 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.4);
+            margin-top: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+        h3 {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: rgba(245, 245, 247, 0.6);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        p, li { font-size: 0.8rem; font-weight: 300; margin-bottom: 0.75rem; }
+        ul, ol { padding-left: 1.2rem; }
+        li { margin-bottom: 0.4rem; }
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(245, 245, 247, 0.05);
+            margin: 2.5rem 0;
+        }
+        .lang-divider {
+            border: none;
+            border-top: 1px solid rgba(245, 245, 247, 0.08);
+            margin: 3.5rem 0;
+        }
+        .lang-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.2);
+            margin-bottom: 2rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid rgba(245, 245, 247, 0.06);
+            border-radius: 2rem;
+        }
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(245, 245, 247, 0.08);
+            transition: all 0.2s;
+        }
+        .lang-switch a:hover {
+            border-color: rgba(245, 245, 247, 0.2);
+            color: rgba(245, 245, 247, 0.8);
+        }
+        .toc {
+            background: rgba(245, 245, 247, 0.03);
+            border: 1px solid rgba(245, 245, 247, 0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .toc-title {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.3);
+            margin-bottom: 0.75rem;
+        }
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+            padding-left: 0;
+        }
+        .toc li {
+            counter-increment: toc-counter;
+            margin-bottom: 0.3rem;
+        }
+        .toc li::before {
+            content: counter(toc-counter, decimal-leading-zero) " ";
+            color: rgba(245, 245, 247, 0.2);
+            font-size: 0.7rem;
+        }
+        .toc a {
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.75rem;
+        }
+        th {
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(245, 245, 247, 0.3);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid rgba(245, 245, 247, 0.08);
+        }
+        td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid rgba(245, 245, 247, 0.04);
+            font-weight: 300;
+        }
+        kbd {
+            display: inline-block;
+            padding: 0.15rem 0.45rem;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: rgba(245, 245, 247, 0.6);
+            background: rgba(245, 245, 247, 0.06);
+            border: 1px solid rgba(245, 245, 247, 0.1);
+            border-radius: 0.35rem;
+        }
+        .plant-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .plant-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(245, 245, 247, 0.04);
+        }
+        .plant-list .name { color: rgba(245, 245, 247, 0.7); }
+        .plant-list .condition {
+            font-size: 0.7rem;
+            color: rgba(245, 245, 247, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back">&larr; Focus Valley로 돌아가기</a>
+
+    <h1>사용 가이드</h1>
+    <p class="subtitle">Focus Valley의 모든 기능을 알아보세요.</p>
+
+    <div class="lang-switch">
+        <a href="#ko">한국어</a>
+        <a href="#en">English</a>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- 한국어 -->
+    <!-- ══════════════════════════════════════════════════════ -->
+
+    <div id="ko">
+        <span class="lang-label">한국어</span>
+
+        <div class="toc">
+            <div class="toc-title">목차</div>
+            <ol>
+                <li><a href="#ko-timer">뽀모도로 타이머</a></li>
+                <li><a href="#ko-plants">식물 성장</a></li>
+                <li><a href="#ko-sounds">앰비언트 사운드</a></li>
+                <li><a href="#ko-categories">카테고리</a></li>
+                <li><a href="#ko-todo">할 일 목록</a></li>
+                <li><a href="#ko-garden">정원 컬렉션</a></li>
+                <li><a href="#ko-stats">통계 &amp; 기록</a></li>
+                <li><a href="#ko-shortcuts">키보드 단축키</a></li>
+                <li><a href="#ko-breathing">호흡 가이드</a></li>
+                <li><a href="#ko-pwa">앱 설치 (PWA)</a></li>
+                <li><a href="#ko-theme">다크 / 라이트 모드</a></li>
+                <li><a href="#ko-sync">클라우드 동기화</a></li>
+                <li><a href="#ko-streak">스트릭 &amp; 잠금 해제</a></li>
+            </ol>
+        </div>
+
+        <!-- 1. 타이머 -->
+        <h2 id="ko-timer">1. 뽀모도로 타이머</h2>
+        <p>Focus Valley는 <strong>뽀모도로 기법</strong>을 사용합니다 — 집중 세션과 휴식을 번갈아 반복해요.</p>
+        <ul>
+            <li><strong>집중</strong> — 25분 집중 작업 (1~120분 커스터마이즈 가능)</li>
+            <li><strong>짧은 휴식</strong> — 5분 휴식 (1~30분 커스터마이즈 가능)</li>
+            <li><strong>긴 휴식</strong> — 집중 4회 완료 후 15분 휴식 (1~60분 커스터마이즈 가능)</li>
+        </ul>
+        <p>타이머는 <strong>Web Worker</strong>로 동작하기 때문에, 탭을 전환하거나 브라우저를 최소화해도 정확하게 계속 작동합니다. 세션이 끝나면 알림을 받을 수 있어요.</p>
+        <p>설정에서 <strong>자동 진행</strong>을 켜면 세션 완료 후 자동으로 다음 모드로 전환됩니다.</p>
+
+        <!-- 2. 식물 -->
+        <h2 id="ko-plants">2. 식물 성장</h2>
+        <p>집중 세션을 시작하면 식물이 실시간으로 자라요:</p>
+        <ol>
+            <li><strong>씨앗</strong> — 시작 상태</li>
+            <li><strong>새싹</strong> — 초기 성장</li>
+            <li><strong>봉오리</strong> — 중간 단계</li>
+            <li><strong>꽃 / 나무</strong> — 세션 완료! 탭해서 수확하세요.</li>
+        </ol>
+        <p>세션 도중 <strong>포기</strong>하면 식물이 시들어 죽지만, 5초 이내에 되돌리기가 가능합니다.</p>
+
+        <h3>식물 종류 &amp; 해금 조건</h3>
+        <ul class="plant-list">
+            <li><span class="name">고사리</span><span class="condition">기본 — 항상 사용 가능</span></li>
+            <li><span class="name">선인장</span><span class="condition">3일 연속 스트릭</span></li>
+            <li><span class="name">해바라기</span><span class="condition">5일 연속 스트릭</span></li>
+            <li><span class="name">분재</span><span class="condition">7일 연속 스트릭</span></li>
+            <li><span class="name">장미</span><span class="condition">10일 연속 스트릭</span></li>
+            <li><span class="name">난초</span><span class="condition">14일 연속 스트릭</span></li>
+            <li><span class="name">연꽃</span><span class="condition">딥 포커스 2회 연속</span></li>
+            <li><span class="name">크리스탈</span><span class="condition">딥 포커스 3회 연속</span></li>
+            <li><span class="name">대나무</span><span class="condition">딥 포커스 4회 연속</span></li>
+            <li><span class="name">벚꽃</span><span class="condition">딥 포커스 5회 연속</span></li>
+        </ul>
+
+        <!-- 3. 사운드 -->
+        <h2 id="ko-sounds">3. 앰비언트 사운드</h2>
+        <p>하단의 <strong>사운드</strong> 버튼을 클릭해서 믹서를 열어보세요. 최대 5개 채널을 동시에 블렌딩할 수 있어요:</p>
+        <ul>
+            <li><strong>비</strong> — 잔잔한 빗소리</li>
+            <li><strong>불</strong> — 벽난로 소리</li>
+            <li><strong>카페</strong> — 카페 분위기</li>
+            <li><strong>시냇물</strong> — 흐르는 물소리</li>
+            <li><strong>화이트</strong> — 백색 소음</li>
+        </ul>
+        <p>모든 소리는 <strong>Web Audio API</strong>로 실시간 생성됩니다 — 오디오 파일 다운로드가 필요 없어요!</p>
+
+        <!-- 4. 카테고리 -->
+        <h2 id="ko-categories">4. 카테고리</h2>
+        <p>집중 세션에 카테고리(공부, 코딩, 독서, 업무, 디자인, 운동)를 태그하여 시간 활용을 추적하세요. 이모지와 색상을 선택해서 커스텀 카테고리를 추가할 수도 있어요.</p>
+        <p>드래그로 카테고리 순서를 변경할 수 있습니다 (마우스: 클릭 후 드래그, 터치: 꾹 누른 후 드래그).</p>
+
+        <!-- 5. 할 일 -->
+        <h2 id="ko-todo">5. 할 일 목록</h2>
+        <p>헤더의 목록 아이콘을 클릭하면 할 일 패널이 열립니다:</p>
+        <ul>
+            <li>할 일을 추가하고 완료 표시</li>
+            <li>할 일을 <strong>집중 과제</strong>로 고정하면 작업 중 식물 아래에 표시돼요</li>
+            <li>완료된 항목 일괄 삭제</li>
+        </ul>
+
+        <!-- 6. 정원 -->
+        <h2 id="ko-garden">6. 정원 컬렉션</h2>
+        <p>수확한 식물은 모두 <strong>정원 컬렉션</strong>에 저장됩니다 (헤더의 새싹 아이콘). 다음을 확인할 수 있어요:</p>
+        <ul>
+            <li>식물 종류별 재배 횟수</li>
+            <li>잠금 해제된 식물 종류</li>
+            <li>현재 스트릭 &amp; 최고 스트릭</li>
+        </ul>
+
+        <!-- 7. 통계 -->
+        <h2 id="ko-stats">7. 통계 &amp; 기록</h2>
+        <p>헤더의 기록 아이콘에서 집중 기록을 확인하세요:</p>
+        <ul>
+            <li><strong>활동 히트맵</strong> — 최근 3개월 시각적 개요</li>
+            <li><strong>주간 요약</strong> — 총 시간, 일 평균, 지난주 대비 비교</li>
+            <li><strong>카테고리별 분석</strong> — 카테고리별 집중 시간 분포</li>
+            <li><strong>공유 카드</strong> — SNS 공유용 집중 카드 생성</li>
+            <li><strong>CSV 내보내기</strong> — 세션 데이터 다운로드</li>
+        </ul>
+
+        <!-- 8. 단축키 -->
+        <h2 id="ko-shortcuts">8. 키보드 단축키</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>키</th>
+                    <th>동작</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><kbd>Space</kbd></td><td>타이머 시작 / 일시정지</td></tr>
+                <tr><td><kbd>R</kbd></td><td>타이머 리셋</td></tr>
+                <tr><td><kbd>S</kbd></td><td>다음 모드로 건너뛰기</td></tr>
+                <tr><td><kbd>1</kbd></td><td>집중 모드로 전환</td></tr>
+                <tr><td><kbd>2</kbd></td><td>짧은 휴식으로 전환</td></tr>
+                <tr><td><kbd>3</kbd></td><td>긴 휴식으로 전환</td></tr>
+                <tr><td><kbd>M</kbd></td><td>사운드 믹서 열기/닫기</td></tr>
+                <tr><td><kbd>?</kbd></td><td>단축키 안내 보기</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 9. 호흡 -->
+        <h2 id="ko-breathing">9. 호흡 가이드</h2>
+        <p>휴식 시간에 <strong>호흡</strong> 버튼이 나타납니다. 4-7-8 호흡법으로 안내해요:</p>
+        <ol>
+            <li>들이쉬기 (4초)</li>
+            <li>멈추기 (7초)</li>
+            <li>내쉬기 (8초)</li>
+        </ol>
+
+        <!-- 10. PWA -->
+        <h2 id="ko-pwa">10. 앱 설치 (PWA)</h2>
+        <p>Focus Valley는 <strong>프로그레시브 웹 앱(PWA)</strong>입니다. 설치하면 네이티브 앱처럼 사용할 수 있어요:</p>
+        <ul>
+            <li><strong>데스크톱 (Chrome)</strong> — 주소창의 설치 아이콘 클릭 또는 인앱 배너 사용</li>
+            <li><strong>iOS (Safari)</strong> — 공유 버튼 &rarr; 홈 화면에 추가</li>
+            <li><strong>Android (Chrome)</strong> — 설치 배너 또는 메뉴 &rarr; 홈 화면에 추가</li>
+        </ul>
+
+        <!-- 11. 테마 -->
+        <h2 id="ko-theme">11. 다크 / 라이트 모드</h2>
+        <p>헤더의 해/달 아이콘으로 다크 모드와 라이트 모드를 전환할 수 있습니다. 설정은 로컬에 저장돼요.</p>
+        <p>오로라 애니메이션 색상은 현재 타이머 모드(집중, 짧은 휴식, 긴 휴식)에 따라 변합니다.</p>
+
+        <!-- 12. 동기화 -->
+        <h2 id="ko-sync">12. 클라우드 동기화</h2>
+        <p>Google로 로그인하면 기기 간 데이터를 동기화할 수 있습니다:</p>
+        <ul>
+            <li>정원 컬렉션 &amp; 수확 기록</li>
+            <li>집중 세션 통계</li>
+            <li>타이머 설정 &amp; 환경설정</li>
+            <li>할 일 목록</li>
+            <li>카테고리 설정</li>
+        </ul>
+        <p>로그인 시 자동으로 동기화되며, 계정 패널에서 수동으로 실행할 수도 있어요.</p>
+
+        <!-- 13. 스트릭 -->
+        <h2 id="ko-streak">13. 스트릭 &amp; 잠금 해제</h2>
+        <p>매일 최소 1회 집중 세션을 완료하면 <strong>스트릭</strong>이 유지됩니다. 스트릭 카운터는 Focus Valley 로고 옆에 표시돼요.</p>
+        <p>스트릭 마일스톤(3, 5, 7, 10, 14일)에서 새로운 식물이 해금됩니다. <strong>딥 포커스</strong> 스트릭(연속 집중 세션)으로 연꽃, 크리스탈, 대나무, 벚꽃 같은 특별한 식물도 해금할 수 있어요.</p>
+    </div>
+
+    <hr class="lang-divider" />
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- English -->
+    <!-- ══════════════════════════════════════════════════════ -->
+
+    <div id="en">
+        <span class="lang-label">English</span>
+
+        <div class="toc">
+            <div class="toc-title">Table of Contents</div>
+            <ol>
+                <li><a href="#en-timer">Pomodoro Timer</a></li>
+                <li><a href="#en-plants">Plant Growth</a></li>
+                <li><a href="#en-sounds">Ambient Sounds</a></li>
+                <li><a href="#en-categories">Categories</a></li>
+                <li><a href="#en-todo">To-Do List</a></li>
+                <li><a href="#en-garden">Garden Collection</a></li>
+                <li><a href="#en-stats">Stats &amp; History</a></li>
+                <li><a href="#en-shortcuts">Keyboard Shortcuts</a></li>
+                <li><a href="#en-breathing">Breathing Guide</a></li>
+                <li><a href="#en-pwa">Install as App (PWA)</a></li>
+                <li><a href="#en-theme">Dark / Light Mode</a></li>
+                <li><a href="#en-sync">Cloud Sync</a></li>
+                <li><a href="#en-streak">Streaks &amp; Unlocks</a></li>
+            </ol>
+        </div>
+
+        <!-- 1. Timer -->
+        <h2 id="en-timer">1. Pomodoro Timer</h2>
+        <p>Focus Valley uses the <strong>Pomodoro Technique</strong>: focused work sessions followed by breaks.</p>
+        <ul>
+            <li><strong>Focus</strong> — 25 minutes of concentrated work (customizable 1–120 min)</li>
+            <li><strong>Short Break</strong> — 5 minutes rest (customizable 1–30 min)</li>
+            <li><strong>Long Break</strong> — 15 minutes rest after every 4 focus sessions (customizable 1–60 min)</li>
+        </ul>
+        <p>The timer runs in a <strong>Web Worker</strong>, so it keeps ticking even if you switch tabs or minimize the browser. You'll get a notification when a session ends.</p>
+        <p>You can enable <strong>Auto-advance</strong> in Settings to automatically switch to the next mode after completion.</p>
+
+        <!-- 2. Plants -->
+        <h2 id="en-plants">2. Plant Growth</h2>
+        <p>When you start a focus session, your plant begins to grow in real time:</p>
+        <ol>
+            <li><strong>Seed</strong> — Starting state</li>
+            <li><strong>Sprout</strong> — Early growth</li>
+            <li><strong>Bud</strong> — Mid-session</li>
+            <li><strong>Flower / Tree</strong> — Session complete! Tap to harvest.</li>
+        </ol>
+        <p>If you <strong>give up</strong> mid-session, the plant withers and dies (but you can undo within 5 seconds).</p>
+
+        <h3>Plant Types &amp; Unlock Conditions</h3>
+        <ul class="plant-list">
+            <li><span class="name">Fern</span><span class="condition">Default — always available</span></li>
+            <li><span class="name">Cactus</span><span class="condition">3-day streak</span></li>
+            <li><span class="name">Sunflower</span><span class="condition">5-day streak</span></li>
+            <li><span class="name">Bonsai</span><span class="condition">7-day streak</span></li>
+            <li><span class="name">Rose</span><span class="condition">10-day streak</span></li>
+            <li><span class="name">Orchid</span><span class="condition">14-day streak</span></li>
+            <li><span class="name">Lotus</span><span class="condition">2x Deep Focus streak</span></li>
+            <li><span class="name">Crystal</span><span class="condition">3x Deep Focus streak</span></li>
+            <li><span class="name">Bamboo</span><span class="condition">4x Deep Focus streak</span></li>
+            <li><span class="name">Sakura</span><span class="condition">5x Deep Focus streak</span></li>
+        </ul>
+
+        <!-- 3. Sounds -->
+        <h2 id="en-sounds">3. Ambient Sounds</h2>
+        <p>Click <strong>Sounds</strong> at the bottom to open the mixer. You can blend up to 5 sound channels simultaneously:</p>
+        <ul>
+            <li><strong>Rain</strong> — Gentle rain ambient</li>
+            <li><strong>Fire</strong> — Crackling fireplace</li>
+            <li><strong>Cafe</strong> — Coffee shop ambiance</li>
+            <li><strong>Stream</strong> — Flowing water</li>
+            <li><strong>White</strong> — White noise</li>
+        </ul>
+        <p>Sounds are generated procedurally using the <strong>Web Audio API</strong> — no audio files to download!</p>
+
+        <!-- 4. Categories -->
+        <h2 id="en-categories">4. Categories</h2>
+        <p>Tag your focus sessions with categories (Study, Code, Read, Work, Design, Exercise) to track what you spend time on. You can also add custom categories with your own emoji and color.</p>
+        <p>Reorder categories by dragging (mouse: click-drag, touch: long-press then drag).</p>
+
+        <!-- 5. Todo -->
+        <h2 id="en-todo">5. To-Do List</h2>
+        <p>Open the to-do panel from the header (list icon) to manage tasks. You can:</p>
+        <ul>
+            <li>Add tasks and mark them complete</li>
+            <li><strong>Pin a task</strong> as your "focus task" — it shows below the plant while you work</li>
+            <li>Clear all completed tasks at once</li>
+        </ul>
+
+        <!-- 6. Garden -->
+        <h2 id="en-garden">6. Garden Collection</h2>
+        <p>Every harvested plant goes into your <strong>Garden Collection</strong> (sprout icon in the header). It tracks:</p>
+        <ul>
+            <li>How many of each plant type you've grown</li>
+            <li>Which plant types you've unlocked</li>
+            <li>Your current and best streaks</li>
+        </ul>
+
+        <!-- 7. Stats -->
+        <h2 id="en-stats">7. Stats &amp; History</h2>
+        <p>View your focus history from the header (scroll icon). Features include:</p>
+        <ul>
+            <li><strong>Activity heatmap</strong> — Visual overview of the last 3 months</li>
+            <li><strong>Weekly summary</strong> — Total time, daily average, comparison with last week</li>
+            <li><strong>Category breakdown</strong> — How you distribute focus across categories</li>
+            <li><strong>Share card</strong> — Generate a visual summary to share on social media</li>
+            <li><strong>CSV export</strong> — Download your session data</li>
+        </ul>
+
+        <!-- 8. Shortcuts -->
+        <h2 id="en-shortcuts">8. Keyboard Shortcuts</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><kbd>Space</kbd></td><td>Start / Pause timer</td></tr>
+                <tr><td><kbd>R</kbd></td><td>Reset timer</td></tr>
+                <tr><td><kbd>S</kbd></td><td>Skip to next mode</td></tr>
+                <tr><td><kbd>1</kbd></td><td>Switch to Focus mode</td></tr>
+                <tr><td><kbd>2</kbd></td><td>Switch to Short Break</td></tr>
+                <tr><td><kbd>3</kbd></td><td>Switch to Long Break</td></tr>
+                <tr><td><kbd>M</kbd></td><td>Toggle sound mixer</td></tr>
+                <tr><td><kbd>?</kbd></td><td>Show shortcut guide</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 9. Breathing -->
+        <h2 id="en-breathing">9. Breathing Guide</h2>
+        <p>During breaks, a <strong>Breathe</strong> button appears. It guides you through a calming 4-7-8 breathing pattern:</p>
+        <ol>
+            <li>Breathe in (4 seconds)</li>
+            <li>Hold (7 seconds)</li>
+            <li>Breathe out (8 seconds)</li>
+        </ol>
+
+        <!-- 10. PWA -->
+        <h2 id="en-pwa">10. Install as App (PWA)</h2>
+        <p>Focus Valley is a <strong>Progressive Web App</strong>. Install it for a native app-like experience:</p>
+        <ul>
+            <li><strong>Desktop (Chrome)</strong> — Click the install icon in the address bar, or use the in-app banner</li>
+            <li><strong>iOS (Safari)</strong> — Tap Share &rarr; Add to Home Screen</li>
+            <li><strong>Android (Chrome)</strong> — Tap the install banner or Menu &rarr; Add to Home Screen</li>
+        </ul>
+
+        <!-- 11. Theme -->
+        <h2 id="en-theme">11. Dark / Light Mode</h2>
+        <p>Toggle between dark and light modes using the Sun/Moon icon in the header. Your preference is saved locally.</p>
+        <p>The aurora animation colors change based on the current timer mode (Focus, Short Break, Long Break).</p>
+
+        <!-- 12. Sync -->
+        <h2 id="en-sync">12. Cloud Sync</h2>
+        <p>Sign in with Google to sync your data across devices. Cloud sync includes:</p>
+        <ul>
+            <li>Garden collection &amp; harvest history</li>
+            <li>Focus session statistics</li>
+            <li>Timer settings &amp; preferences</li>
+            <li>To-do list</li>
+            <li>Category configurations</li>
+        </ul>
+        <p>Sync happens automatically on login and can be triggered manually from the account panel.</p>
+
+        <!-- 13. Streak -->
+        <h2 id="en-streak">13. Streaks &amp; Unlocks</h2>
+        <p>Complete at least one focus session per day to maintain your <strong>streak</strong>. The streak counter appears next to the Focus Valley logo.</p>
+        <p>Streaks unlock new plant types at milestones (3, 5, 7, 10, 14 days). <strong>Deep Focus</strong> streaks (back-to-back focus sessions without breaks) unlock special plants like Lotus, Crystal, Bamboo, and Sakura.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <p style="font-size: 0.75rem; color: rgba(245, 245, 247, 0.25);">
+        도움이 필요하신가요? / Need help? <a href="mailto:support@focusvalley.app">support@focusvalley.app</a>
+    </p>
+</body>
+</html>

@@ -40,11 +40,13 @@ import { AuthModal } from "./components/AuthModal";
 import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding } from "./components/Onboarding";
+import { TourGuide } from "./components/TourGuide";
 import { useAuth } from "./hooks/useAuth";
 import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useOnboarding } from "./hooks/useOnboarding";
-import { Volume2, ChevronDown, ChevronUp, Heart, Wind } from "lucide-react";
+import { useTour } from "./hooks/useTour";
+import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -92,6 +94,7 @@ function App() {
   const refreshSubscription = useSubscription((s) => s.refresh);
   const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
   const { showOnboarding, completeOnboarding } = useOnboarding();
+  const { startTour, hasCompletedTour } = useTour();
   const { t } = useTranslation();
 
   const [showMixer, setShowMixer] = useState(false);
@@ -123,12 +126,16 @@ function App() {
     void refreshSubscription(user);
   }, [user, refreshSubscription]);
 
-  // Auto-sync on login
+  // Auto-sync on login (reload once per session to apply pulled data)
   useEffect(() => {
     if (user) {
       syncWithCloud(user).then((result) => {
         if (result === "pulled" || result === "merged") {
-          window.location.reload();
+          const key = "focus-valley-synced";
+          if (!sessionStorage.getItem(key)) {
+            sessionStorage.setItem(key, "1");
+            window.location.reload();
+          }
         }
       });
     }
@@ -308,6 +315,13 @@ function App() {
     }
   }, [timer, handleStart]);
 
+  const handleOnboardingComplete = useCallback(() => {
+    completeOnboarding();
+    if (!hasCompletedTour) {
+      setTimeout(() => startTour(), 500);
+    }
+  }, [completeOnboarding, hasCompletedTour, startTour]);
+
   const handleToggleMixer = useCallback(() => {
     setShowMixer((v) => !v);
   }, []);
@@ -484,6 +498,7 @@ function App() {
           onClick={() => setShowMixer(!showMixer)}
           aria-expanded={showMixer}
           aria-label={showMixer ? t("footer.hideSounds") : t("footer.openSounds")}
+          data-tour="sounds-button"
           className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -519,7 +534,20 @@ function App() {
           )}
         </AnimatePresence>
 
-        <div className="flex items-center justify-center gap-3 py-2">
+        <div className="flex items-center justify-center gap-3 py-2" data-tour="shortcuts-hint">
+          <a href="/guide.html" target="_blank" rel="noopener" className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
+            <BookOpen size={8} />
+            {t("footer.guide")}
+          </a>
+          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+          <button
+            onClick={startTour}
+            className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+          >
+            <Navigation size={8} />
+            {t("footer.tour")}
+          </button>
+          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a href="/privacy.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
             {t("footer.privacy")}
           </a>
@@ -609,7 +637,9 @@ function App() {
 
       <Confetti trigger={confettiTrigger} />
 
-      <Onboarding isOpen={showOnboarding} onComplete={completeOnboarding} />
+      <Onboarding isOpen={showOnboarding} onComplete={handleOnboardingComplete} />
+
+      <TourGuide />
 
       <UpgradeModal />
     </div>

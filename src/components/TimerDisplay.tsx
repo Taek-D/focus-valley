@@ -39,7 +39,7 @@ export const TimerDisplay = memo(function TimerDisplay({
     return (
         <div className="flex flex-col items-center justify-center w-full">
             {/* Mode Tabs */}
-            <div className="inline-flex items-center rounded-full bg-foreground/[0.03] p-1 mb-8">
+            <div className="inline-flex items-center rounded-full bg-foreground/[0.03] p-1 mb-8" data-tour="mode-tabs">
                 {(["FOCUS", "SHORT_BREAK", "LONG_BREAK"] as const).map((m) => (
                     <button
                         key={m}
@@ -70,6 +70,7 @@ export const TimerDisplay = memo(function TimerDisplay({
             {/* Timer Display with Progress Ring */}
             <div
                 className="relative flex items-center justify-center mb-10"
+                data-tour="timer-display"
                 role="timer"
                 aria-live="polite"
                 aria-label={`${pad(minutes)} minutes ${pad(seconds)} seconds remaining`}

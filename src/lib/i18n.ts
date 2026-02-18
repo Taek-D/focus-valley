@@ -293,6 +293,28 @@ const translations = {
     "pro.freePlan": { en: "Free", ko: "무료", ja: "無料" },
     "pro.proPlan": { en: "Pro", ko: "Pro", ja: "Pro" },
     "pro.exportLimit": { en: "Free plan: last 7 days only", ko: "무료 플랜: 최근 7일만", ja: "無料プラン：過去7日のみ" },
+
+    // Tour Guide
+    "tour.step1Title": { en: "My Garden", ko: "나의 정원", ja: "マイガーデン" },
+    "tour.step1Desc": { en: "Your plant grows as you focus. Complete a session to harvest it!", ko: "집중하면 식물이 자라요. 세션을 완료하면 수확할 수 있어요!", ja: "集中すると植物が育ちます。セッションを完了して収穫しましょう！" },
+    "tour.step2Title": { en: "Focus Timer", ko: "집중 타이머", ja: "集中タイマー" },
+    "tour.step2Desc": { en: "Start a Pomodoro session. The timer keeps running even if you switch tabs.", ko: "뽀모도로 세션을 시작하세요. 탭을 전환해도 타이머는 계속 작동해요.", ja: "ポモドーロセッションを開始。タブを切り替えてもタイマーは動き続けます。" },
+    "tour.step3Title": { en: "Timer Modes", ko: "타이머 모드", ja: "タイマーモード" },
+    "tour.step3Desc": { en: "Switch between Focus, Short Break, and Long Break modes.", ko: "집중, 짧은 휴식, 긴 휴식 모드를 전환하세요.", ja: "集中、短い休憩、長い休憩モードを切り替えましょう。" },
+    "tour.step4Title": { en: "Categories", ko: "카테고리", ja: "カテゴリー" },
+    "tour.step4Desc": { en: "Tag your sessions with categories to track what you focus on.", ko: "세션에 카테고리를 태그하여 집중 내역을 추적하세요.", ja: "セッションにカテゴリーをタグ付けして集中内容を追跡しましょう。" },
+    "tour.step5Title": { en: "Ambient Sounds", ko: "앰비언트 사운드", ja: "環境音" },
+    "tour.step5Desc": { en: "Mix rain, fire, cafe, and more to create your perfect focus atmosphere.", ko: "비, 불, 카페 등의 소리를 믹스하여 완벽한 집중 분위기를 만드세요.", ja: "雨、火、カフェなどの音をミックスして完璧な集中環境を作りましょう。" },
+    "tour.step6Title": { en: "Quick Access", ko: "빠른 접근", ja: "クイックアクセス" },
+    "tour.step6Desc": { en: "Access settings, to-do list, garden collection, and stats from here.", ko: "설정, 할 일 목록, 정원 컬렉션, 통계에 빠르게 접근하세요.", ja: "設定、タスクリスト、ガーデンコレクション、統計にここからアクセス。" },
+    "tour.step7Title": { en: "Keyboard Shortcuts", ko: "키보드 단축키", ja: "キーボードショートカット" },
+    "tour.step7Desc": { en: "Press ? to view all keyboard shortcuts for quick control.", ko: "?를 눌러 모든 키보드 단축키를 확인하세요.", ja: "?キーを押してすべてのキーボードショートカットを確認しましょう。" },
+    "tour.skip": { en: "Skip", ko: "건너뛰기", ja: "スキップ" },
+    "tour.next": { en: "Next", ko: "다음", ja: "次へ" },
+    "tour.finish": { en: "Finish", ko: "완료", ja: "完了" },
+    "footer.guide": { en: "Guide", ko: "가이드", ja: "ガイド" },
+    "footer.tour": { en: "Tour", ko: "투어", ja: "ツアー" },
+    "settings.restartTour": { en: "Restart Tour", ko: "투어 다시보기", ja: "ツアーを再開" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
