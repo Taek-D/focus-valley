@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://focusvalley.app/sitemap.xml
+Sitemap: https://focus-valley.vercel.app/sitemap.xml
