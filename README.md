@@ -31,6 +31,16 @@ npm install
 npm run dev
 ```
 
+## Supabase Setup
+
+Apply migrations in `supabase/migrations` to create:
+
+- `public.user_sync` (user cloud sync data)
+- `public.user_subscriptions` (server-authoritative plan/entitlement row)
+
+`user_subscriptions` is intentionally read-only from client sessions (RLS select only).
+Write access should be handled by trusted backend/webhook logic using Supabase service role.
+
 ## Scripts
 
 | Command | Description |

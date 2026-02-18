@@ -163,6 +163,18 @@ export function getCategoryBreakdown(sessions: FocusSession[], categories: Categ
     return result.sort((a, b) => b.minutes - a.minutes);
 }
 
+function escapeCsvCell(value: string | number): string {
+    let text = String(value ?? "");
+
+    // Prevent spreadsheet formula injection (Excel/Sheets)
+    if (/^[\s]*[=+\-@]/.test(text)) {
+        text = `'${text}`;
+    }
+
+    const escaped = text.replace(/"/g, "\"\"");
+    return `"${escaped}"`;
+}
+
 export function exportSessionsCSV(sessions: FocusSession[], categories?: Category[]): string {
     const categoryMap = categories ? new Map(categories.map((c) => [c.id, c.label])) : null;
     const header = categoryMap ? "Date,Minutes,Category\n" : "Date,Minutes\n";
@@ -171,7 +183,12 @@ export function exportSessionsCSV(sessions: FocusSession[], categories?: Categor
         .sort((a, b) => a.date.localeCompare(b.date))
         .map((s) => {
             const catLabel = categoryMap?.get(s.categoryId ?? "") ?? "";
-            return categoryMap ? `${s.date},${s.minutes},${catLabel}` : `${s.date},${s.minutes}`;
+            const dateCell = escapeCsvCell(s.date);
+            const minutesCell = escapeCsvCell(s.minutes);
+            if (!categoryMap) {
+                return `${dateCell},${minutesCell}`;
+            }
+            return `${dateCell},${minutesCell},${escapeCsvCell(catLabel)}`;
         })
         .join("\n");
     return header + rows;

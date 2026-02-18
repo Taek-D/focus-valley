@@ -41,6 +41,7 @@ import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding } from "./components/Onboarding";
 import { useAuth } from "./hooks/useAuth";
+import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useOnboarding } from "./hooks/useOnboarding";
 import { Volume2, ChevronDown, ChevronUp, Heart, Wind } from "lucide-react";
@@ -88,6 +89,7 @@ function App() {
   const activeCategoryId = useCategoryStore(selectActiveCategoryId);
   const { advanceToNextMode } = timer;
   const { user, initialize: initAuth } = useAuth();
+  const refreshSubscription = useSubscription((s) => s.refresh);
   const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { t } = useTranslation();
@@ -115,6 +117,11 @@ function App() {
   useEffect(() => {
     initAuth();
   }, [initAuth]);
+
+  // Load subscription state from server-side source of truth
+  useEffect(() => {
+    void refreshSubscription(user);
+  }, [user, refreshSubscription]);
 
   // Auto-sync on login
   useEffect(() => {
