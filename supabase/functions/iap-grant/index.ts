@@ -4,12 +4,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-// SKU → 유효 기간(일)
-const SKU_DURATION_DAYS: Record<string, number> = {
-  focus_valley_pro_1m: 30,
-  focus_valley_pro_3m: 90,
-  focus_valley_pro_1y: 365,
-};
+const VALID_SKU = "focus_valley_pro";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -60,19 +55,16 @@ serve(async (req) => {
       );
     }
 
-    const durationDays = SKU_DURATION_DAYS[sku];
-    if (!durationDays) {
+    if (sku !== VALID_SKU) {
       return new Response(
         JSON.stringify({ error: "Invalid SKU" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
-    // 만료일 계산
     const now = new Date();
-    const periodEnd = new Date(now.getTime() + durationDays * 86400000);
 
-    // service role로 구독 upsert
+    // service role로 구독 upsert (영구 결제 — current_period_end: null)
     const { error: upsertError } = await supabaseClient
       .from("user_subscriptions")
       .upsert(
@@ -80,7 +72,7 @@ serve(async (req) => {
           user_id: user.id,
           plan: "pro",
           status: "active",
-          current_period_end: periodEnd.toISOString(),
+          current_period_end: null,
           provider: "toss_iap",
           updated_at: now.toISOString(),
         },
@@ -96,7 +88,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true, orderId, plan: "pro", expiresAt: periodEnd.toISOString() }),
+      JSON.stringify({ success: true, orderId, plan: "pro" }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {

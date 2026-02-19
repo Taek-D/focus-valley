@@ -8,6 +8,7 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "@/lib/i18n";
 import { supabase } from "@/lib/supabase";
+import { trackProPurchase } from "@/lib/analytics";
 
 const PRO_FEATURES = [
     { icon: Crown, key: "pro.featurePlants" as const },
@@ -17,17 +18,7 @@ const PRO_FEATURES = [
     { icon: Palette, key: "pro.featureThemes" as const },
 ];
 
-type SkuOption = {
-    sku: string;
-    label: string;
-    badge?: string;
-};
-
-const SKU_OPTIONS: SkuOption[] = [
-    { sku: "focus_valley_pro_1m", label: "1개월" },
-    { sku: "focus_valley_pro_3m", label: "3개월", badge: "인기" },
-    { sku: "focus_valley_pro_1y", label: "1년", badge: "최저가" },
-];
+const PRO_SKU = "focus_valley_pro";
 
 type ProductInfo = {
     sku: string;
@@ -40,33 +31,30 @@ export function UpgradeModal() {
     const { t } = useTranslation();
     const user = useAuth((s) => s.user);
     const refreshSubscription = useSubscription((s) => s.refresh);
-    const [selectedSku, setSelectedSku] = useState(SKU_OPTIONS[1].sku);
-    const [products, setProducts] = useState<ProductInfo[]>([]);
+    const [product, setProduct] = useState<ProductInfo | null>(null);
     const [purchasing, setPurchasing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // 상품 목록 조회
+    // 상품 정보 조회
     useEffect(() => {
         if (!isOpen) return;
         IAP.getProductItemList()
             .then((result) => {
                 if (result?.products) {
-                    setProducts(result.products.map((p) => ({
-                        sku: p.sku,
-                        displayAmount: p.displayAmount,
-                        displayName: p.displayName,
-                    })));
+                    const found = result.products.find((p) => p.sku === PRO_SKU);
+                    if (found) {
+                        setProduct({
+                            sku: found.sku,
+                            displayAmount: found.displayAmount,
+                            displayName: found.displayName,
+                        });
+                    }
                 }
             })
             .catch(() => {
                 // sandbox 등에서 미지원 시 무시
             });
     }, [isOpen]);
-
-    const getPrice = (sku: string) => {
-        const product = products.find((p) => p.sku === sku);
-        return product?.displayAmount ?? "...";
-    };
 
     const handlePurchase = useCallback(() => {
         if (purchasing) return;
@@ -75,12 +63,12 @@ export function UpgradeModal() {
 
         const cleanup = IAP.createOneTimePurchaseOrder({
             options: {
-                sku: selectedSku,
+                sku: PRO_SKU,
                 processProductGrant: async ({ orderId }) => {
                     // Supabase에 구매 기록 저장
                     try {
                         await supabase.functions.invoke("iap-grant", {
-                            body: { orderId, sku: selectedSku },
+                            body: { orderId, sku: PRO_SKU },
                         });
                         return true;
                     } catch {
@@ -91,6 +79,7 @@ export function UpgradeModal() {
             onEvent: async (event) => {
                 if (event.type === "success") {
                     setPurchasing(false);
+                    trackProPurchase();
                     // 구독 상태 갱신
                     if (user) await refreshSubscription(user);
                     close();
@@ -108,7 +97,7 @@ export function UpgradeModal() {
                 cleanup();
             },
         });
-    }, [selectedSku, purchasing, user, refreshSubscription, close]);
+    }, [purchasing, user, refreshSubscription, close]);
 
     return createPortal(
         <AnimatePresence>
@@ -155,29 +144,14 @@ export function UpgradeModal() {
                             ))}
                         </div>
 
-                        {/* SKU Selection */}
-                        <div className="grid grid-cols-3 gap-2 mb-4">
-                            {SKU_OPTIONS.map((option) => (
-                                <button
-                                    key={option.sku}
-                                    onClick={() => setSelectedSku(option.sku)}
-                                    className={`relative py-3 px-2 rounded-xl border text-center transition-all ${
-                                        selectedSku === option.sku
-                                            ? "border-[#0064FF]/40 bg-[#0064FF]/5"
-                                            : "border-foreground/[0.06] bg-foreground/[0.02] hover:border-foreground/10"
-                                    }`}
-                                >
-                                    {option.badge && (
-                                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 py-0.5 rounded-full bg-[#0064FF] font-body text-[8px] font-medium text-white whitespace-nowrap">
-                                            {option.badge}
-                                        </span>
-                                    )}
-                                    <div className="font-body text-[11px] font-medium text-foreground/70">{option.label}</div>
-                                    <div className="font-display text-sm text-foreground mt-0.5" style={{ fontWeight: 400 }}>
-                                        {getPrice(option.sku)}
-                                    </div>
-                                </button>
-                            ))}
+                        {/* Price */}
+                        <div className="text-center mb-4">
+                            <div className="font-display text-2xl text-foreground" style={{ fontWeight: 400 }}>
+                                {product?.displayAmount ?? "..."}
+                            </div>
+                            <p className="font-body text-[10px] text-muted-foreground/40 mt-1">
+                                1회 결제 · 영구 이용
+                            </p>
                         </div>
 
                         {/* Error */}

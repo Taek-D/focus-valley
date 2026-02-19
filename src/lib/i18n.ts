@@ -283,8 +283,6 @@ const translations = {
     "pro.unlockWith": { en: "Unlock with Pro", ko: "Pro로 잠금 해제", ja: "Proでアンロック" },
     "pro.customCategoryLimit": { en: "Pro unlocks unlimited categories", ko: "Pro로 무제한 카테고리 사용", ja: "Proで無制限カテゴリー" },
     "pro.fullExport": { en: "Export all data with Pro", ko: "Pro로 전체 데이터 내보내기", ja: "Proで全データエクスポート" },
-    "pro.joinWaitlist": { en: "Join Waitlist", ko: "대기 목록 참여", ja: "ウェイトリストに参加" },
-    "pro.annualSave": { en: "or $39.99/yr (save 33%)", ko: "또는 $39.99/년 (33% 할인)", ja: "または $39.99/年 (33%オフ)" },
     "pro.featurePlants": { en: "8+ rare plant types to collect", ko: "8종 이상 희귀 식물 수집", ja: "8種以上のレア植物を収集" },
     "pro.featureSounds": { en: "15+ ambient sounds library", ko: "15종 이상 앰비언트 사운드", ja: "15種以上のアンビエントサウンド" },
     "pro.featureCategories": { en: "Unlimited custom categories", ko: "무제한 커스텀 카테고리", ja: "無制限のカスタムカテゴリー" },
