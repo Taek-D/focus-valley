@@ -313,6 +313,11 @@ const translations = {
     "footer.guide": { en: "Guide", ko: "가이드", ja: "ガイド" },
     "footer.tour": { en: "Tour", ko: "투어", ja: "ツアー" },
     "settings.restartTour": { en: "Restart Tour", ko: "투어 다시보기", ja: "ツアーを再開" },
+    "sync.blocked": {
+        en: "Detected another account's local data. Reset local state for this account.",
+        ko: "다른 계정의 로컬 데이터가 감지되어 이 계정의 로컬 상태를 초기화했습니다.",
+        ja: "別のアカウントのローカルデータを検出したため、このアカウントのローカル状態を初期化しました。",
+    },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

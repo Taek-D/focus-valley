@@ -56,6 +56,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             case "noop":
                 setSyncStatus(t("sync.upToDate"));
                 break;
+            case "blocked":
+                setSyncStatus(t("sync.blocked"));
+                setTimeout(() => window.location.reload(), 1500);
+                break;
             case "error":
                 setSyncStatus(t("sync.failed"));
                 break;

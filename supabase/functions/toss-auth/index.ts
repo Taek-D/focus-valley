@@ -10,22 +10,55 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+async function findUserByEmail(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  email: string,
+): Promise<{ id: string } | null> {
+  const perPage = 200;
+  const maxPages = 50;
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      throw error;
+    }
+
+    const users = data?.users ?? [];
+    const found = users.find((u) => u.email === email);
+    if (found) {
+      return { id: found.id };
+    }
+
+    if (users.length < perPage) {
+      break;
+    }
+  }
+
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const { authorizationCode, referrer } = await req.json();
+    const { authorizationCode, referrer } = await req.json() as {
+      authorizationCode?: unknown;
+      referrer?: unknown;
+    };
 
-    if (!authorizationCode || !referrer) {
+    if (!isNonEmptyString(authorizationCode) || !isNonEmptyString(referrer)) {
       return new Response(
         JSON.stringify({ error: "authorizationCode and referrer are required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
-    // 1. 인가 코드 → 토스 access token 교환
     const tokenRes = await fetch(`${TOSS_API_BASE}/user/oauth2/generate-token`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,9 +74,14 @@ serve(async (req) => {
       );
     }
 
-    const { accessToken } = await tokenRes.json();
+    const { accessToken } = await tokenRes.json() as { accessToken?: string };
+    if (!isNonEmptyString(accessToken)) {
+      return new Response(
+        JSON.stringify({ error: "Missing access token from Toss" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
-    // 2. access token → 사용자 정보 조회
     const meRes = await fetch(`${TOSS_API_BASE}/user/oauth2/login-me`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
@@ -57,41 +95,42 @@ serve(async (req) => {
       );
     }
 
-    const tossUser = await meRes.json();
-    const userKey = tossUser.userKey as string;
-    const tossName = (tossUser.name as string) ?? null;
+    const tossUser = await meRes.json() as { userKey?: string; name?: string };
+    const userKey = tossUser.userKey;
+    const tossName = tossUser.name ?? null;
 
-    if (!userKey) {
+    if (!isNonEmptyString(userKey)) {
       return new Response(
         JSON.stringify({ error: "No userKey in response" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
-    // 3. Supabase에 사용자 생성 또는 로그인 (service role 사용)
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    // 토스 userKey를 이메일 형태로 변환 (Supabase auth는 이메일 기반)
     const tossEmail = `toss_${userKey}@focus-valley.app`;
 
-    // 기존 유저 조회
-    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-    const existingUser = existingUsers?.users?.find(
-      (u) => u.email === tossEmail,
-    );
+    let existingUser: { id: string } | null;
+    try {
+      existingUser = await findUserByEmail(supabaseAdmin, tossEmail);
+    } catch (listError) {
+      console.error("[toss-auth] list users failed:", listError);
+      return new Response(
+        JSON.stringify({ error: "Failed to lookup user" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     let userId: string;
 
     if (existingUser) {
       userId = existingUser.id;
-      // 메타데이터 업데이트
       await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: { toss_user_key: userKey, toss_name: tossName, provider: "toss" },
       });
     } else {
-      // 신규 유저 생성 (임시 비밀번호 + 이메일 확인 생략)
       const tempPassword = crypto.randomUUID();
       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
         email: tossEmail,
@@ -111,10 +150,6 @@ serve(async (req) => {
       userId = newUser.user.id;
     }
 
-    // 4. 세션 토큰 생성 (서비스 역할로 직접 JWT 발급은 불가하므로 signInWithPassword 대신
-    //    admin.generateLink 또는 custom token 사용)
-    //    Supabase에서는 admin API로 직접 세션을 만들 수 없으므로,
-    //    magic link 방식으로 세션 생성
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: "magiclink",
       email: tossEmail,
@@ -128,7 +163,6 @@ serve(async (req) => {
       );
     }
 
-    // generateLink는 hashed_token을 반환 → verifyOtp으로 세션 생성
     const { data: sessionData, error: verifyError } = await supabaseAdmin.auth.verifyOtp({
       token_hash: linkData.properties.hashed_token,
       type: "magiclink",
@@ -142,7 +176,6 @@ serve(async (req) => {
       );
     }
 
-    // 5. 세션 토큰 반환
     return new Response(
       JSON.stringify({
         access_token: sessionData.session.access_token,

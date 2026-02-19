@@ -67,10 +67,11 @@ export function UpgradeModal() {
                 processProductGrant: async ({ orderId }) => {
                     // Supabase에 구매 기록 저장
                     try {
-                        await supabase.functions.invoke("iap-grant", {
+                        const { data, error } = await supabase.functions.invoke<{ success?: boolean }>("iap-grant", {
                             body: { orderId, sku: PRO_SKU },
                         });
-                        return true;
+                        if (error) return false;
+                        return data?.success === true;
                     } catch {
                         return false;
                     }

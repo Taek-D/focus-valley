@@ -34,6 +34,8 @@ async function checkIapStatus(): Promise<boolean> {
     }
 }
 
+let refreshRequestSeq = 0;
+
 export const useSubscription = create<SubscriptionState>((set) => ({
     plan: "free",
     expiresAt: null,
@@ -41,7 +43,10 @@ export const useSubscription = create<SubscriptionState>((set) => ({
     initialized: false,
 
     refresh: async (user) => {
+        const requestId = ++refreshRequestSeq;
+
         if (!user) {
+            if (requestId !== refreshRequestSeq) return;
             set({ plan: "free", expiresAt: null, loading: false, initialized: true });
             return;
         }
@@ -64,6 +69,8 @@ export const useSubscription = create<SubscriptionState>((set) => ({
 
         // 둘 중 하나라도 pro면 pro
         const isPro = dbIsPro || iapIsPro;
+
+        if (requestId !== refreshRequestSeq) return;
 
         set({
             plan: isPro ? "pro" : "free",

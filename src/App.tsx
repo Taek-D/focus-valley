@@ -132,13 +132,15 @@ function App() {
   useEffect(() => {
     if (user) {
       syncWithCloud(user).then((result) => {
-        if (result === "pulled" || result === "merged") {
+        if (result === "pulled" || result === "merged" || result === "blocked") {
           const key = "focus-valley-synced";
           if (!sessionStorage.getItem(key)) {
             sessionStorage.setItem(key, "1");
             window.location.reload();
           }
         }
+      }).catch((err) => {
+        console.warn("[sync] auto-sync failed:", err);
       });
     }
   }, [user]);
