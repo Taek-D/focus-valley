@@ -43,7 +43,7 @@ import { useAuth } from "./hooks/useAuth";
 import { useSubscription } from "./hooks/useSubscription";
 import { useOnboarding } from "./hooks/useOnboarding";
 import { useTour } from "./hooks/useTour";
-import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -115,6 +115,13 @@ function App() {
   useEffect(() => {
     initAuth();
   }, [initAuth]);
+
+  // 첫 방문 시 투어 자동 시작 (온보딩이 이미 완료된 경우)
+  useEffect(() => {
+    if (!showOnboarding && !hasCompletedTour) {
+      setTimeout(() => startTour(), 500);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load subscription state from server-side source of truth
   useEffect(() => {
@@ -545,16 +552,6 @@ function App() {
           <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a href="/terms.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
             {t("footer.terms")}
-          </a>
-          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
-          <a
-            href="https://ko-fi.com/castletaek"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-pink-400/60 transition-colors"
-          >
-            <Heart size={8} />
-            {t("footer.support")}
           </a>
         </div>
       </footer>
