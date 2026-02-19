@@ -31,6 +31,10 @@ dist-ssr
 # bkit temp files
 docs/.pdca-snapshots/
 .claude/agent-memory/
+.bkit/
+
+# Supabase CLI temp
+supabase/.temp/
 
 # Environment variables
 .env
