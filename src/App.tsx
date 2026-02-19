@@ -5,7 +5,6 @@ import { useAudioMixer } from "./hooks/useAudioMixer";
 import { useAudioReactivity } from "./hooks/useAudioReactivity";
 import { useGarden, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } from "./hooks/useGarden";
 import type { PlantStage, PlantType } from "./hooks/useGarden";
-import { useDarkMode } from "./hooks/useDarkMode";
 import { useNotification } from "./hooks/useNotification";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useDocumentTitle } from "./hooks/useDocumentTitle";
@@ -38,15 +37,13 @@ import { PlantGarden } from "./components/PlantGarden";
 import { BreathingGuide } from "./components/BreathingGuide";
 import { AuthModal } from "./components/AuthModal";
 import { UpgradeModal } from "./components/UpgradeModal";
-import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding } from "./components/Onboarding";
 import { TourGuide } from "./components/TourGuide";
 import { useAuth } from "./hooks/useAuth";
 import { useSubscription } from "./hooks/useSubscription";
-import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useOnboarding } from "./hooks/useOnboarding";
 import { useTour } from "./hooks/useTour";
-import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -83,7 +80,6 @@ function App() {
   const garden = useGarden();
   const { grow, addFocusMinutes, clearPendingUnlock } = garden;
   const weather = useWeather();
-  const { isDark, toggle: toggleDark } = useDarkMode();
   const notification = useNotification();
   const { notify } = notification;
   const { autoAdvance } = useTimerSettings();
@@ -92,7 +88,6 @@ function App() {
   const { advanceToNextMode } = timer;
   const { user, initialize: initAuth } = useAuth();
   const refreshSubscription = useSubscription((s) => s.refresh);
-  const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
   const { showOnboarding, completeOnboarding } = useOnboarding();
   const { startTour, hasCompletedTour } = useTour();
   const { t } = useTranslation();
@@ -121,6 +116,13 @@ function App() {
     initAuth();
   }, [initAuth]);
 
+  // 첫 방문 시 투어 자동 시작 (온보딩이 이미 완료된 경우)
+  useEffect(() => {
+    if (!showOnboarding && !hasCompletedTour) {
+      setTimeout(() => startTour(), 500);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Load subscription state from server-side source of truth
   useEffect(() => {
     void refreshSubscription(user);
@@ -130,13 +132,15 @@ function App() {
   useEffect(() => {
     if (user) {
       syncWithCloud(user).then((result) => {
-        if (result === "pulled" || result === "merged") {
+        if (result === "pulled" || result === "merged" || result === "blocked") {
           const key = "focus-valley-synced";
           if (!sessionStorage.getItem(key)) {
             sessionStorage.setItem(key, "1");
             window.location.reload();
           }
         }
+      }).catch((err) => {
+        console.warn("[sync] auto-sync failed:", err);
       });
     }
   }, [user]);
@@ -373,8 +377,6 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700 dot-grid">
-      <InstallBanner canInstall={canInstall} onInstall={installPwa} onDismiss={dismissInstall} />
-
       {/* Grain */}
       <svg className="grain-overlay" aria-hidden="true">
         <filter id="grain">
@@ -408,10 +410,8 @@ function App() {
       </AnimatePresence>
 
       <AppHeader
-        isDark={isDark}
         currentStreak={garden.currentStreak}
         user={user}
-        onToggleDark={toggleDark}
         onShowSettings={handleShowSettings}
         onShowTodo={handleShowTodo}
         onShowGarden={handleShowGarden}
@@ -554,16 +554,6 @@ function App() {
           <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a href="/terms.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
             {t("footer.terms")}
-          </a>
-          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
-          <a
-            href="https://ko-fi.com/castletaek"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-pink-400/60 transition-colors"
-          >
-            <Heart size={8} />
-            {t("footer.support")}
           </a>
         </div>
       </footer>

@@ -10,7 +10,7 @@ import { getDayLabel, getLast7Days, getToday, groupByDate, toLocalDateKey } from
 import { FREE_TIER } from "@/lib/constants";
 import { generateShareCard, shareOrDownload } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
-import { WaitlistBanner } from "./WaitlistBanner";
+import { UpgradeBanner } from "./UpgradeBanner";
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
 import { useIsPro } from "@/hooks/useSubscription";
@@ -363,9 +363,9 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 </div>
             )}
 
-            {/* Waitlist CTA */}
+            {/* Upgrade CTA */}
             <div className="px-5 pb-4">
-                <WaitlistBanner source="history" />
+                <UpgradeBanner />
             </div>
 
             {/* History List */}

@@ -32,10 +32,13 @@ export function TourGuide() {
 
     useEffect(() => {
         if (!isActive) return;
-        measure();
+        const rafId = requestAnimationFrame(() => {
+            measure();
+        });
         window.addEventListener("resize", measure);
         window.addEventListener("scroll", measure, true);
         return () => {
+            cancelAnimationFrame(rafId);
             window.removeEventListener("resize", measure);
             window.removeEventListener("scroll", measure, true);
         };

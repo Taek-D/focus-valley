@@ -30,7 +30,7 @@
 - **세션 기록** — 카테고리별, 시간별 완료 세션 추적
 
 ### 계정 & 동기화
-- **로그인** — Supabase Auth (이메일/구글)
+- **로그인** — Supabase Auth (이메일/구글) 또는 토스 로그인
 - **클라우드 동기화** — 자동 push/pull (충돌 해소 포함)
 - **구독 관리** — 서버 권한 기반 플랜/엔타이틀먼트 관리
 
@@ -110,7 +110,7 @@ src/
     useTimer.ts                    # 타이머 로직 (Web Worker)
     useGarden.ts                   # 정원 상태 (Zustand + persist)
     useAudioMixer.ts               # 오디오 믹서 (Web Audio API)
-    useAuth.ts                     # 인증 (이메일/구글)
+    useAuth.ts                     # 인증
     useSubscription.ts             # 구독 상태
     useTodos.ts                    # 할 일 목록
     useCategories.ts               # 카테고리 태그
@@ -145,7 +145,7 @@ src/
 | 브랜치 | 설명 |
 |--------|------|
 | `master` | 웹 버전 (PWA, 이메일/구글 로그인) |
-| `feature/apps-in-toss` | 앱인토스 미니앱 버전 |
+| `feature/apps-in-toss` | 앱인토스 미니앱 버전 ([가이드](./APPS_IN_TOSS.md)) |
 
 ## 라이선스
 

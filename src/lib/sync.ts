@@ -48,8 +48,9 @@ const STORE_KEYS = {
 } as const;
 
 const LAST_SYNC_KEY = "focus-valley-last-sync";
+const OWNER_USER_KEY = "focus-valley-owner-user-id";
 
-export type SyncResult = "pushed" | "pulled" | "merged" | "noop" | "error";
+export type SyncResult = "pushed" | "pulled" | "merged" | "noop" | "blocked" | "error";
 
 // ─── Helpers ──────────────────────────────────────────────
 
@@ -94,6 +95,21 @@ function setLocalData(data: SyncableData) {
     wrap(STORE_KEYS.settings, data.settings);
     wrap(STORE_KEYS.categories, data.categories);
     wrap(STORE_KEYS.todos, data.todos);
+}
+
+function clearSyncableLocalData() {
+    for (const key of Object.values(STORE_KEYS)) {
+        localStorage.removeItem(key);
+    }
+    localStorage.removeItem(LAST_SYNC_KEY);
+}
+
+function getOwnerUserId(): string | null {
+    return localStorage.getItem(OWNER_USER_KEY);
+}
+
+function setOwnerUserId(userId: string) {
+    localStorage.setItem(OWNER_USER_KEY, userId);
 }
 
 function isSameData(a: unknown, b: unknown): boolean {
@@ -215,6 +231,7 @@ export async function pushToCloud(user: User): Promise<boolean> {
     }
 
     localStorage.setItem(LAST_SYNC_KEY, now);
+    setOwnerUserId(user.id);
     return true;
 }
 
@@ -238,6 +255,7 @@ export async function pullFromCloud(user: User): Promise<boolean> {
     const merged = mergeData(local, row.data);
     setLocalData(merged);
     localStorage.setItem(LAST_SYNC_KEY, row.updated_at);
+    setOwnerUserId(user.id);
     return true;
 }
 
@@ -253,9 +271,24 @@ export async function syncWithCloud(user: User): Promise<SyncResult> {
         return "error";
     }
 
+    const ownerUserId = getOwnerUserId();
+    const hasForeignOwner = ownerUserId !== null && ownerUserId !== user.id;
     const local = getLocalData();
 
     // No cloud data — first sync, push everything
+    if (hasForeignOwner && !row?.data) {
+        clearSyncableLocalData();
+        setOwnerUserId(user.id);
+        return "blocked";
+    }
+
+    if (hasForeignOwner && row?.data) {
+        setLocalData(row.data);
+        localStorage.setItem(LAST_SYNC_KEY, row.updated_at);
+        setOwnerUserId(user.id);
+        return "pulled";
+    }
+
     if (!row?.data) {
         const ok = await pushToCloud(user);
         return ok ? "pushed" : "error";
@@ -272,6 +305,7 @@ export async function syncWithCloud(user: User): Promise<SyncResult> {
 
     if (!cloudChanged) {
         localStorage.setItem(LAST_SYNC_KEY, row.updated_at);
+        setOwnerUserId(user.id);
         return localChanged ? "pulled" : "noop";
     }
 
@@ -285,10 +319,12 @@ export async function syncWithCloud(user: User): Promise<SyncResult> {
 
     if (pushErr) {
         console.warn("[sync] push after merge failed:", pushErr.message);
+        if (localChanged) setOwnerUserId(user.id);
         return localChanged ? "pulled" : "error";
     }
 
     localStorage.setItem(LAST_SYNC_KEY, now);
+    setOwnerUserId(user.id);
     if (localChanged) return "merged";
     return "pushed";
 }

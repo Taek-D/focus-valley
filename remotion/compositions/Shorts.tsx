@@ -25,10 +25,10 @@ export const Shorts: React.FC<{ layout: Layout }> = ({ layout }) => {
         <AbsoluteFill style={{ backgroundColor: BG }}>
             {/* Ambient Audio */}
             <Loop durationInFrames={750}>
-                <Audio src={staticFile("sounds/rain.mp3")} volume={(f) => 0.15 * audioVolume} />
+                <Audio src={staticFile("sounds/rain.mp3")} volume={0.15 * audioVolume} />
             </Loop>
             <Loop durationInFrames={900}>
-                <Audio src={staticFile("sounds/cafe.mp3")} volume={(f) => 0.08 * audioVolume} />
+                <Audio src={staticFile("sounds/cafe.mp3")} volume={0.08 * audioVolume} />
             </Loop>
 
             {/* Logo: 0-3s */}
