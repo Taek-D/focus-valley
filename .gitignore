@@ -31,7 +31,10 @@ dist-ssr
 # Claude Code local config
 .claude/
 
-# bkit temp files
+# bkit auto-generated docs & temp files
+docs/01-plan/
+docs/03-analysis/
+docs/04-report/
 docs/.bkit-memory.json
 docs/.pdca-status.json
 docs/.pdca-snapshots/
