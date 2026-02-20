@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React from "react";
 import {
     AbsoluteFill,
     useCurrentFrame,
     useVideoConfig,
     interpolate,
-    random,
 } from "remotion";
 
 // ─── Layout Types ───────────────────────────────────────────────────

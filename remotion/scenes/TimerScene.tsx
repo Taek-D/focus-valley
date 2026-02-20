@@ -11,7 +11,6 @@ import {
     TEXT,
     TEXT_MUTED,
     ACCENT_EMERALD,
-    ACCENT_CYAN,
     ACCENT_VIOLET,
     ACCENT_AMBER,
     fontFamily,

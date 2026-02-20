@@ -31,8 +31,6 @@ export const LogoScene: React.FC<SceneProps> = ({ layout }) => {
     const titleY = interpolate(frame, [15, 40], [20, 0], { extrapolateRight: "clamp" });
     const taglineOpacity = interpolate(frame, [35, 55], [0, 1], { extrapolateRight: "clamp" });
     const taglineY = interpolate(frame, [35, 55], [15, 0], { extrapolateRight: "clamp" });
-    const glowOpacity = interpolate(frame, [0, 30], [0, 0.6], { extrapolateRight: "clamp" });
-
     return (
         <AbsoluteFill style={{ backgroundColor: BG, justifyContent: "center", alignItems: "center" }}>
             <AnimatedAurora />
