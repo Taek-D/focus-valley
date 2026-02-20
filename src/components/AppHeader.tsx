@@ -1,12 +1,14 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { ScrollText, Leaf, Settings, Sprout, Flame, ListTodo, UserCircle } from "lucide-react";
+import { ScrollText, Moon, Sun, Leaf, Settings, Sprout, Flame, ListTodo, UserCircle } from "lucide-react";
 import { useTranslation } from "../lib/i18n";
 import type { User } from "@supabase/supabase-js";
 
 type AppHeaderProps = {
+    isDark: boolean;
     currentStreak: number;
     user: User | null;
+    onToggleDark: () => void;
     onShowSettings: () => void;
     onShowTodo: () => void;
     onShowGarden: () => void;
@@ -15,8 +17,8 @@ type AppHeaderProps = {
 };
 
 export const AppHeader = memo(function AppHeader({
-    currentStreak, user,
-    onShowSettings, onShowTodo, onShowGarden, onShowHistory, onShowAuth,
+    isDark, currentStreak, user,
+    onToggleDark, onShowSettings, onShowTodo, onShowGarden, onShowHistory, onShowAuth,
 }: AppHeaderProps) {
     const { t } = useTranslation();
     return (
@@ -47,6 +49,7 @@ export const AppHeader = memo(function AppHeader({
             >
 
                 {[
+                    { action: onToggleDark, label: t("header.darkMode"), icon: isDark ? <Sun size={15} /> : <Moon size={15} /> },
                     { action: onShowSettings, label: t("header.settings"), icon: <Settings size={15} /> },
                     { action: onShowTodo, label: t("header.todo"), icon: <ListTodo size={15} /> },
                     { action: onShowGarden, label: t("header.garden"), icon: <Sprout size={15} /> },

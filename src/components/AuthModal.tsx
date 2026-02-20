@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, User, RefreshCw, Cloud } from "lucide-react";
+import { Mail, Lock, LogOut, User, RefreshCw, Cloud, CloudOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { syncWithCloud, getLastSyncTime } from "@/lib/sync";
 import { useTranslation } from "@/lib/i18n";
@@ -15,19 +15,48 @@ type AuthModalProps = {
 };
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-    const { user, loading, error, signInWithToss, signOut, clearError } = useAuth();
+    const { user, loading, error, signUpWithEmail, signInWithEmail, signInWithGoogle, signOut, clearError } = useAuth();
     const { t } = useTranslation();
     const isPro = useIsPro();
     const openUpgrade = useUpgradeModal((s) => s.open);
+    const [mode, setMode] = useState<"login" | "signup">("login");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [signupSuccess, setSignupSuccess] = useState(false);
     const [syncing, setSyncing] = useState(false);
     const [syncStatus, setSyncStatus] = useState<string | null>(null);
     const lastSync = getLastSyncTime();
 
-    const handleTossLogin = useCallback(async () => {
+    const switchMode = useCallback(() => {
+        setMode((m) => (m === "login" ? "signup" : "login"));
         clearError();
-        const ok = await signInWithToss();
-        if (ok) onClose();
-    }, [signInWithToss, onClose, clearError]);
+        setSignupSuccess(false);
+    }, [clearError]);
+
+    const handleSubmit = useCallback(async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email.trim() || !password.trim()) return;
+
+        if (mode === "signup") {
+            const ok = await signUpWithEmail(email, password);
+            if (ok) {
+                setSignupSuccess(true);
+                setEmail("");
+                setPassword("");
+            }
+        } else {
+            const ok = await signInWithEmail(email, password);
+            if (ok) {
+                onClose();
+                setEmail("");
+                setPassword("");
+            }
+        }
+    }, [email, password, mode, signUpWithEmail, signInWithEmail, onClose]);
+
+    const handleGoogleLogin = useCallback(() => {
+        signInWithGoogle();
+    }, [signInWithGoogle]);
 
     const handleLogout = useCallback(async () => {
         await signOut();
@@ -56,10 +85,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             case "noop":
                 setSyncStatus(t("sync.upToDate"));
                 break;
-            case "blocked":
-                setSyncStatus(t("sync.blocked"));
-                setTimeout(() => window.location.reload(), 1500);
-                break;
             case "error":
                 setSyncStatus(t("sync.failed"));
                 break;
@@ -81,22 +106,32 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     // Logged-in view
     if (user) {
-        const displayName = user.user_metadata?.full_name || user.user_metadata?.toss_name || user.email?.split("@")[0] || "User";
+        const displayName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
+        const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
 
         return (
             <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.account")}>
                 <div className="px-5 pb-8 space-y-5">
                     {/* Profile */}
                     <div className="flex items-center gap-3 p-4 rounded-2xl border border-foreground/5">
-                        <div className="w-10 h-10 rounded-full bg-foreground/8 flex items-center justify-center">
-                            <User size={16} className="text-foreground/40" />
-                        </div>
+                        {avatarUrl ? (
+                            <img
+                                src={avatarUrl}
+                                alt=""
+                                className="w-10 h-10 rounded-full"
+                                referrerPolicy="no-referrer"
+                            />
+                        ) : (
+                            <div className="w-10 h-10 rounded-full bg-foreground/8 flex items-center justify-center">
+                                <User size={16} className="text-foreground/40" />
+                            </div>
+                        )}
                         <div className="flex-1 min-w-0">
                             <div className="font-body text-sm font-medium text-foreground truncate">
                                 {displayName}
                             </div>
                             <div className="font-body text-[11px] text-muted-foreground/40 truncate">
-                                토스 계정으로 로그인됨
+                                {user.email}
                             </div>
                         </div>
                     </div>
@@ -179,10 +214,26 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         );
     }
 
-    // Login view — Toss login only
+    // Auth form
     return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.signIn")}>
+        <BottomSheet isOpen={isOpen} onClose={onClose} title={mode === "login" ? t("auth.signIn") : t("auth.createAccount")}>
             <div className="px-5 pb-8 space-y-4">
+                {/* Signup success message */}
+                <AnimatePresence>
+                    {signupSuccess && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20"
+                        >
+                            <p className="font-body text-[11px] text-emerald-400/80 text-center">
+                                {t("auth.checkEmail")}
+                            </p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
                 {/* Error */}
                 <AnimatePresence>
                     {error && (
@@ -197,34 +248,90 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     )}
                 </AnimatePresence>
 
-                {/* Info */}
+                {/* Sync info */}
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-foreground/[0.02]">
-                    <Cloud size={11} className="text-muted-foreground/25 shrink-0" />
+                    <CloudOff size={11} className="text-muted-foreground/25 shrink-0" />
                     <p className="font-body text-[10px] text-muted-foreground/30 leading-relaxed">
-                        토스 계정으로 로그인하면 데이터를 클라우드에 동기화할 수 있어요.
+                        {t("auth.syncInfo")}
                     </p>
                 </div>
 
-                {/* Toss Login */}
+                {/* Google */}
                 <button
-                    onClick={handleTossLogin}
+                    onClick={handleGoogleLogin}
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-2.5 py-3 rounded-2xl bg-[#0064FF] font-body text-[12px] font-medium text-white hover:bg-[#0050CC] transition-all disabled:opacity-30"
+                    className="w-full flex items-center justify-center gap-2.5 py-3 rounded-2xl border border-foreground/8 font-body text-[12px] font-medium text-foreground hover:bg-foreground/[0.03] transition-all disabled:opacity-30"
                 >
-                    {loading ? (
-                        <div className="w-4 h-4 mx-auto rounded-full border-2 border-white/20 border-t-white/60 animate-spin" />
-                    ) : (
-                        <>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                <path d="M7.5 3H4.5C3.67 3 3 3.67 3 4.5V7.5C3 8.33 3.67 9 4.5 9H7.5C8.33 9 9 8.33 9 7.5V4.5C9 3.67 8.33 3 7.5 3Z" fill="white"/>
-                                <path d="M19.5 3H16.5C15.67 3 15 3.67 15 4.5V7.5C15 8.33 15.67 9 16.5 9H19.5C20.33 9 21 8.33 21 7.5V4.5C21 3.67 20.33 3 19.5 3Z" fill="white"/>
-                                <path d="M7.5 15H4.5C3.67 15 3 15.67 3 16.5V19.5C3 20.33 3.67 21 4.5 21H7.5C8.33 21 9 20.33 9 19.5V16.5C9 15.67 8.33 15 7.5 15Z" fill="white"/>
-                                <path d="M19.5 15H16.5C15.67 15 15 15.67 15 16.5V19.5C15 20.33 15.67 21 16.5 21H19.5C20.33 21 21 20.33 21 19.5V16.5C21 15.67 20.33 15 19.5 15Z" fill="white"/>
-                            </svg>
-                            토스로 로그인
-                        </>
-                    )}
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    {t("auth.continueGoogle")}
                 </button>
+
+                {/* Divider */}
+                <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-foreground/5" />
+                    <span className="font-body text-[9px] text-muted-foreground/25 uppercase tracking-wider">{t("auth.or")}</span>
+                    <div className="flex-1 h-px bg-foreground/5" />
+                </div>
+
+                {/* Email form */}
+                <form onSubmit={handleSubmit} className="space-y-3">
+                    <div className="relative">
+                        <Mail size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/25" />
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={t("auth.email")}
+                            required
+                            autoComplete="email"
+                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
+                        />
+                    </div>
+
+                    <div className="relative">
+                        <Lock size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/25" />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder={t("auth.password")}
+                            required
+                            minLength={6}
+                            autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading || !email.trim() || !password.trim()}
+                        className="w-full py-3 rounded-xl bg-foreground/8 text-foreground font-body text-[12px] font-medium hover:bg-foreground/12 transition-all disabled:opacity-30"
+                    >
+                        {loading ? (
+                            <div className="w-4 h-4 mx-auto rounded-full border-2 border-foreground/20 border-t-foreground/60 animate-spin" />
+                        ) : mode === "login" ? (
+                            t("auth.signIn")
+                        ) : (
+                            t("auth.createAccount")
+                        )}
+                    </button>
+                </form>
+
+                {/* Switch mode */}
+                <p className="text-center font-body text-[11px] text-muted-foreground/40">
+                    {mode === "login" ? t("auth.noAccount") : t("auth.hasAccount")}{" "}
+                    <button
+                        onClick={switchMode}
+                        className="text-foreground/60 hover:text-foreground font-medium transition-colors"
+                    >
+                        {mode === "login" ? t("auth.signUp") : t("auth.signIn")}
+                    </button>
+                </p>
             </div>
         </BottomSheet>
     );

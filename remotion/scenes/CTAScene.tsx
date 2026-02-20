@@ -11,6 +11,8 @@ import {
     TEXT,
     TEXT_MUTED,
     ACCENT_EMERALD,
+    ACCENT_CYAN,
+    ACCENT_VIOLET,
     fontFamily,
     scaleFactor,
     type SceneProps,
@@ -25,6 +27,10 @@ export const CTAScene: React.FC<SceneProps> = ({ layout }) => {
     const enter = spring({ frame, fps, config: { damping: 12, stiffness: 60 } });
     const badgeEnter = spring({ frame, fps, delay: 15, config: { damping: 14 } });
     const urlOpacity = interpolate(frame, [30, 50], [0, 1], { extrapolateRight: "clamp" });
+    const glowPulse = interpolate(frame, [0, 90], [0.6, 1], {
+        extrapolateRight: "clamp",
+        easing: (t) => Math.sin(t * Math.PI),
+    });
 
     return (
         <AbsoluteFill style={{ backgroundColor: BG, justifyContent: "center", alignItems: "center" }}>

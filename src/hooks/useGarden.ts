@@ -39,8 +39,9 @@ export function getDisplayStreak(currentStreak: number, lastFocusDate: string | 
 }
 
 function getAvailablePlants(unlocked: PlantType[]): PlantType[] {
-    const { plan } = useSubscription.getState();
-    return [...BASE_PLANT_TYPES, ...unlocked, ...(plan === "pro" ? PRO_PLANT_TYPES : [])];
+    const { plan, expiresAt } = useSubscription.getState();
+    const isPro = plan === "pro" && (!expiresAt || new Date(expiresAt) > new Date());
+    return [...BASE_PLANT_TYPES, ...unlocked, ...(isPro ? PRO_PLANT_TYPES : [])];
 }
 
 function randomPlantType(available: PlantType[]): PlantType {

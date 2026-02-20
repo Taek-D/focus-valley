@@ -109,8 +109,12 @@ export function trackSettingsChanged(setting: string, value: unknown) {
     track("settings_changed", { setting, value });
 }
 
-// ── Pro Purchase ────────────────────────────────────────
+// ── Waitlist ─────────────────────────────────────────────
 
-export function trackProPurchase() {
-    track("pro_purchase");
+export function trackWaitlistSignup(source: string) {
+    track("waitlist_signup", { source });
+}
+
+export function trackWaitlistDismissed() {
+    track("waitlist_dismissed");
 }

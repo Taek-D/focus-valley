@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
@@ -79,13 +79,6 @@ export const CategoryChips: React.FC = React.memo(() => {
     const isDraggingRef = useRef(false);
     const chipRefs = useRef<(HTMLDivElement | null)[]>([]);
     const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    useEffect(() => {
-        return () => {
-            if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-            if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
-        };
-    }, []);
 
     const handleAdd = () => {
         if (!newLabel.trim()) return;
@@ -181,17 +174,14 @@ export const CategoryChips: React.FC = React.memo(() => {
             overIndexRef.current = null;
             setDragIndex(null);
             setOverIndex(null);
-            if (el.hasPointerCapture(pointerId)) {
-                el.releasePointerCapture(pointerId);
-            }
-            window.removeEventListener("pointermove", handleMove);
-            window.removeEventListener("pointerup", handleUp);
-            window.removeEventListener("pointercancel", handleUp);
+            el.removeEventListener("pointermove", handleMove);
+            el.removeEventListener("pointerup", handleUp);
+            el.removeEventListener("pointercancel", handleUp);
         };
 
-        window.addEventListener("pointermove", handleMove);
-        window.addEventListener("pointerup", handleUp);
-        window.addEventListener("pointercancel", handleUp);
+        el.addEventListener("pointermove", handleMove);
+        el.addEventListener("pointerup", handleUp);
+        el.addEventListener("pointercancel", handleUp);
     }, [reorderCategories]);
 
     // Compute display order during drag
