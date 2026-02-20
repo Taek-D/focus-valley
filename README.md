@@ -85,7 +85,7 @@ npm run dev
 | `npm run build` | 타입 체크 + 프로덕션 빌드 |
 | `npm run preview` | 프로덕션 빌드 미리보기 |
 | `npm run lint` | ESLint 실행 |
-| `npm run video:studio` | Remotion Studio 열기 |
+| `npm run video:preview` | Remotion Studio 열기 |
 | `npm run video:render` | 인트로 비디오 렌더링 (`out/intro.mp4`) |
 | `npm run video:render:all` | 전체 비디오 컴포지션 렌더링 |
 
@@ -139,13 +139,6 @@ src/
   workers/
     timer.worker.ts                # Web Worker (정확한 타이머)
 ```
-
-## 브랜치
-
-| 브랜치 | 설명 |
-|--------|------|
-| `master` | 웹 버전 (PWA, 이메일/구글 로그인) |
-| `feature/apps-in-toss` | 앱인토스 미니앱 버전 |
 
 ## 라이선스
 

@@ -1,14 +1,12 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-19T10:48:09.762Z",
+  "lastUpdated": "2026-02-20T03:57:40.893Z",
   "activeFeatures": [
     "focus-valley",
     "ui",
     "remotion",
     "scenes",
     "compositions",
-    "toss-auth",
-    "iap-grant"
   ],
   "primaryFeature": "focus-valley",
   "features": {
@@ -25,9 +23,9 @@
       },
       "timestamps": {
         "started": "2026-02-12T17:54:13.855Z",
-        "lastUpdated": "2026-02-19T10:46:30.109Z"
+        "lastUpdated": "2026-02-20T03:57:19.977Z"
       },
-      "lastFile": "E:\\프로젝트\\focus-valley\\src\\components\\UpgradeModal.tsx"
+      "lastFile": "/e/프로젝트/focus-valley/src/components/TourGuide.tsx"
     },
     "ui": {
       "phase": "do",
@@ -64,9 +62,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-18T09:04:56.375Z",
-        "lastUpdated": "2026-02-18T17:30:48.444Z"
+        "lastUpdated": "2026-02-20T03:57:40.892Z"
       },
-      "lastFile": "E:\\프로젝트\\focus-valley\\remotion\\scenes\\CTAScene.tsx"
+      "lastFile": "/e/프로젝트/focus-valley/remotion/scenes/shared.tsx"
     },
     "compositions": {
       "phase": "do",
@@ -77,36 +75,10 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-18T09:07:30.369Z",
-        "lastUpdated": "2026-02-18T09:07:42.887Z"
+        "lastUpdated": "2026-02-20T03:57:04.791Z"
       },
-      "lastFile": "E:\\프로젝트\\focus-valley\\remotion\\compositions\\Full.tsx"
+      "lastFile": "/e/프로젝트/focus-valley/remotion/compositions/Shorts.tsx"
     },
-    "toss-auth": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-19T10:47:48.160Z",
-        "lastUpdated": "2026-02-19T10:47:48.160Z"
-      },
-      "lastFile": "E:\\프로젝트\\focus-valley\\supabase\\functions\\toss-auth\\index.ts"
-    },
-    "iap-grant": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-19T10:48:09.762Z",
-        "lastUpdated": "2026-02-19T10:48:09.762Z"
-      },
-      "lastFile": "E:\\프로젝트\\focus-valley\\supabase\\functions\\iap-grant\\index.ts"
-    }
   },
   "pipeline": {
     "currentPhase": 1,
@@ -116,7 +88,7 @@
   "session": {
     "startedAt": "2026-02-12T17:17:55.937Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-02-19T10:48:09.762Z"
+    "lastActivity": "2026-02-20T03:57:40.893Z"
   },
   "history": [
     {
@@ -3408,14 +3380,74 @@
       "action": "updated"
     },
     {
-      "timestamp": "2026-02-19T10:47:48.160Z",
-      "feature": "toss-auth",
+      "timestamp": "2026-02-20T03:57:00.853Z",
+      "feature": "compositions",
       "phase": "do",
       "action": "updated"
     },
     {
-      "timestamp": "2026-02-19T10:48:09.762Z",
-      "feature": "iap-grant",
+      "timestamp": "2026-02-20T03:57:04.277Z",
+      "feature": "compositions",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:04.533Z",
+      "feature": "compositions",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:04.791Z",
+      "feature": "compositions",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:05.479Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:07.733Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:08.627Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:10.208Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:11.024Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:12.947Z",
+      "feature": "scenes",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:19.977Z",
+      "feature": "focus-valley",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-20T03:57:40.892Z",
+      "feature": "scenes",
       "phase": "do",
       "action": "updated"
     }
