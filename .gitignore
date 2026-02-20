@@ -28,10 +28,17 @@ dist-ssr
 # Screenshots (dev artifacts)
 /*.png
 
+# Claude Code local config
+.claude/
+
 # bkit temp files
+docs/.bkit-memory.json
+docs/.pdca-status.json
 docs/.pdca-snapshots/
-.claude/agent-memory/
 .bkit/
+
+# Sound generation scripts (one-time use, sounds already in public/)
+scripts/
 
 # Supabase CLI temp
 supabase/.temp/
