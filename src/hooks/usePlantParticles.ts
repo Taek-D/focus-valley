@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useReducer } from "react";
 import type { PlantStage } from "./useGarden";
 import type { TargetAndTransition } from "framer-motion";
 
@@ -50,31 +50,54 @@ function getStageTransition(prev: PlantStage | null, current: PlantStage): Stage
     return stageVariants["default"];
 }
 
-export function usePlantParticles(currentStage: PlantStage) {
-    const [particleTrigger, setParticleTrigger] = useState(0);
-    const [particleType, setParticleType] = useState<"growth" | "harvest" | "death">("growth");
-    const [prevStage, setPrevStage] = useState<PlantStage>(currentStage);
+type ParticleState = {
+    trigger: number;
+    type: "growth" | "harvest" | "death";
+    prevStage: PlantStage;
+};
 
-    if (prevStage !== currentStage) {
-        if (currentStage === "DEAD") {
-            setParticleType("death");
-            setParticleTrigger((t) => t + 1);
-        } else if (currentStage === "SEED" && (prevStage === "TREE" || prevStage === "FLOWER")) {
-            setParticleType("harvest");
-            setParticleTrigger((t) => t + 1);
-        } else if (
-            (prevStage === "SEED" && currentStage === "SPROUT") ||
-            (prevStage === "SPROUT" && currentStage === "BUD") ||
-            (prevStage === "BUD" && currentStage === "FLOWER") ||
-            (prevStage === "FLOWER" && currentStage === "TREE")
-        ) {
-            setParticleType("growth");
-            setParticleTrigger((t) => t + 1);
-        }
-        setPrevStage(currentStage);
+function particleReducer(state: ParticleState, currentStage: PlantStage): ParticleState {
+    const prevStage = state.prevStage;
+    if (prevStage === currentStage) return state;
+
+    let nextType = state.type;
+    let nextTrigger = state.trigger;
+
+    if (currentStage === "DEAD") {
+        nextType = "death";
+        nextTrigger += 1;
+    } else if (currentStage === "SEED" && (prevStage === "TREE" || prevStage === "FLOWER")) {
+        nextType = "harvest";
+        nextTrigger += 1;
+    } else if (
+        (prevStage === "SEED" && currentStage === "SPROUT") ||
+        (prevStage === "SPROUT" && currentStage === "BUD") ||
+        (prevStage === "BUD" && currentStage === "FLOWER") ||
+        (prevStage === "FLOWER" && currentStage === "TREE")
+    ) {
+        nextType = "growth";
+        nextTrigger += 1;
     }
 
-    const stageTransition = getStageTransition(prevStage, currentStage);
+    return {
+        trigger: nextTrigger,
+        type: nextType,
+        prevStage: currentStage,
+    };
+}
 
-    return { trigger: particleTrigger, type: particleType, stageTransition };
+export function usePlantParticles(currentStage: PlantStage) {
+    const [state, syncStage] = useReducer(particleReducer, {
+        trigger: 0,
+        type: "growth",
+        prevStage: currentStage,
+    });
+
+    useEffect(() => {
+        syncStage(currentStage);
+    }, [currentStage]);
+
+    const stageTransition = getStageTransition(state.prevStage, currentStage);
+
+    return { trigger: state.trigger, type: state.type, stageTransition };
 }

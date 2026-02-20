@@ -39,7 +39,10 @@ type Dateable = { date: string };
 export function groupByDate<T extends Dateable>(items: T[]): Record<string, T[]> {
     const groups: Record<string, T[]> = {};
     for (const item of items) {
-        const date = new Date(item.date).toLocaleDateString();
+        const parsed = new Date(item.date);
+        const date = Number.isNaN(parsed.getTime())
+            ? item.date.slice(0, 10)
+            : toLocalDateKey(parsed);
         if (!groups[date]) groups[date] = [];
         groups[date].push(item);
     }

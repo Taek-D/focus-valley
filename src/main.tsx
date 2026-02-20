@@ -9,7 +9,7 @@ Sentry.init({
   dsn: "https://943e92eca40c46d660b31b9a8cebf9e8@o4510836478377984.ingest.de.sentry.io/4510879155683408",
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
+    Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
   ],
   tracesSampleRate: 0.1,
   replaysSessionSampleRate: 0,

@@ -1,7 +1,9 @@
 // Google Analytics 4 — Event tracking utility
-// Replace GA_MEASUREMENT_ID with your actual GA4 measurement ID
+// Enabled only when VITE_ENABLE_ANALYTICS=true in production.
 
-const GA_MEASUREMENT_ID = "G-DJGQRRNSTQ";
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || "G-DJGQRRNSTQ";
+const ANALYTICS_ENABLED = import.meta.env.PROD && import.meta.env.VITE_ENABLE_ANALYTICS === "true";
+let analyticsInitialized = false;
 
 declare global {
     interface Window {
@@ -13,6 +15,9 @@ declare global {
 /** Load gtag.js script (called once from main.tsx) */
 export function initAnalytics() {
     if (typeof window === "undefined") return;
+    if (!ANALYTICS_ENABLED) return;
+    if (!GA_MEASUREMENT_ID) return;
+    if (analyticsInitialized) return;
 
     // dataLayer init
     window.dataLayer = window.dataLayer || [];
@@ -30,11 +35,13 @@ export function initAnalytics() {
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     document.head.appendChild(script);
+    analyticsInitialized = true;
 }
 
 // ── Event helpers ────────────────────────────────────────
 
 function track(eventName: string, params?: Record<string, unknown>) {
+    if (!analyticsInitialized) return;
     if (typeof window.gtag !== "function") return;
     window.gtag("event", eventName, params);
 }

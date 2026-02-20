@@ -17,8 +17,8 @@ export function TourGuide() {
         if (!isActive || !step) return;
         const el = document.querySelector(`[data-tour="${step.target}"]`);
         if (!el) {
-            // Auto-skip if target not found
-            nextStep();
+            // Abort tour gracefully if layout doesn't expose expected targets.
+            skipTour();
             return;
         }
         const rect = el.getBoundingClientRect();
@@ -28,7 +28,7 @@ export function TourGuide() {
             width: rect.width,
             height: rect.height,
         });
-    }, [isActive, step, nextStep]);
+    }, [isActive, step, skipTour]);
 
     useEffect(() => {
         if (!isActive) return;

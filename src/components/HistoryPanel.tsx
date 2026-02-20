@@ -77,7 +77,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             ? focusSessions
             : (() => {
                   const cutoff = new Date();
-                  cutoff.setDate(cutoff.getDate() - FREE_TIER.EXPORT_DAYS);
+                  cutoff.setDate(cutoff.getDate() - (FREE_TIER.EXPORT_DAYS - 1));
                   const cutoffStr = toLocalDateKey(cutoff);
                   return focusSessions.filter((s) => s.date >= cutoffStr);
               })();
@@ -138,7 +138,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                         className="p-1.5 rounded-xl text-muted-foreground/40 hover:text-foreground transition-all flex items-center gap-1"
                     >
                         <Download size={14} />
-                        {!isPro && <ProBadge source="csv-export" />}
+                        {!isPro && <ProBadge source="csv-export" asSpan />}
                     </button>
                 </>
             }
@@ -157,7 +157,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                             <span className="font-body text-[10px] text-muted-foreground/40">
                                 {t("pro.exportLimit")}
                             </span>
-                            <ProBadge source="csv-export-notice" />
+                            <ProBadge source="csv-export-notice" asSpan />
                         </div>
                     </motion.div>
                 )}

@@ -7,12 +7,12 @@ type AudioTrack = {
     source: AudioBufferSourceNode;
 };
 
-const SOUND_URLS: Record<NoiseType, string> = {
-    rain: "/sounds/rain.mp3",
-    fire: "/sounds/fire.mp3",
-    cafe: "/sounds/cafe.mp3",
-    stream: "/sounds/stream.mp3",
-    white: "/sounds/white.mp3",
+const SOUND_URLS: Record<NoiseType, string[]> = {
+    rain: ["/sounds/rain.mp3", "/sounds/rain.wav"],
+    fire: ["/sounds/fire.mp3", "/sounds/fire.wav"],
+    cafe: ["/sounds/cafe.mp3", "/sounds/cafe.wav"],
+    stream: ["/sounds/stream.mp3", "/sounds/stream.wav"],
+    white: ["/sounds/white.mp3", "/sounds/white.wav"],
 };
 
 // Crossfade duration at loop boundary (seconds)
@@ -95,6 +95,20 @@ export function useAudioMixer() {
         return 1.0 * Math.pow(sliderValue / 100, 1.8);
     };
 
+    const loadBuffer = async (ctx: AudioContext, type: NoiseType): Promise<AudioBuffer> => {
+        for (const url of SOUND_URLS[type]) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) continue;
+                const arrayBuffer = await response.arrayBuffer();
+                return await ctx.decodeAudioData(arrayBuffer);
+            } catch {
+                // Try next candidate.
+            }
+        }
+        throw new Error(`Failed to load audio for ${type}`);
+    };
+
     const loadAndPlayTrack = async (type: NoiseType) => {
         const ctx = initAudio();
         if (!ctx || !compressorRef.current) return;
@@ -106,9 +120,7 @@ export function useAudioMixer() {
             let audioBuffer = bufferCacheRef.current.get(type);
 
             if (!audioBuffer) {
-                const response = await fetch(SOUND_URLS[type]);
-                const arrayBuffer = await response.arrayBuffer();
-                audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+                audioBuffer = await loadBuffer(ctx, type);
                 applyLoopCrossfade(audioBuffer);
                 bufferCacheRef.current.set(type, audioBuffer);
             }

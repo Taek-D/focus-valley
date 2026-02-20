@@ -1,9 +1,9 @@
 /**
- * Generates high-quality ambient sound loops as MP3 files.
+ * Generates high-quality ambient sound loops as WAV files.
  * Offline rendering allows multi-pass filtering and long, seamless loops.
  *
  * Usage: node scripts/generate-sounds.cjs
- * Output: public/sounds/{rain,fire,cafe,stream,white}.mp3
+ * Output: public/sounds/{rain,fire,cafe,stream,white}.wav
  */
 const fs = require("fs");
 const path = require("path");

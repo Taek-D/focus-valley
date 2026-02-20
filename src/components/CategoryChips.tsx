@@ -266,7 +266,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 disabled={atLimit}
                             >
                                 <Plus size={13} />
-                                {atLimit && <ProBadge source="categories" />}
+                                {atLimit && <ProBadge source="categories" asSpan />}
                             </button>
                         );
                     })()}
