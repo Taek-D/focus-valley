@@ -4,7 +4,7 @@
 
 | | Free | Pro |
 |---|---|---|
-| **Price** | $0 | $4.99/mo or $39.99/yr (33% off) |
+| **Price** | $0 | ₩19,900 one-time (lifetime) |
 | **Target** | Casual users, students | Power users, remote workers |
 
 ---
@@ -116,5 +116,5 @@
 
 1. **Lemon Squeezy vs Stripe?** — LS recommended for simplicity
 2. **Free trial duration?** — 7 days recommended
-3. **Lifetime deal?** — $79.99 one-time as launch promo?
+3. ~~**Lifetime deal?**~~ — **Decided**: ₩19,900 one-time purchase (lifetime)
 4. **Ko-fi integration?** — Keep as tip jar alongside Pro?

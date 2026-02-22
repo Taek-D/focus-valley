@@ -284,7 +284,7 @@ const translations = {
     "pro.customCategoryLimit": { en: "Pro unlocks unlimited categories", ko: "Pro로 무제한 카테고리 사용", ja: "Proで無制限カテゴリー" },
     "pro.fullExport": { en: "Export all data with Pro", ko: "Pro로 전체 데이터 내보내기", ja: "Proで全データエクスポート" },
     "pro.joinWaitlist": { en: "Join Waitlist", ko: "대기 목록 참여", ja: "ウェイトリストに参加" },
-    "pro.annualSave": { en: "or $39.99/yr (save 33%)", ko: "또는 $39.99/년 (33% 할인)", ja: "または $39.99/年 (33%オフ)" },
+    "pro.oneTimePurchase": { en: "One-time purchase. Yours forever.", ko: "한 번 결제로 평생 소유", ja: "一度の購入で永久利用。" },
     "pro.featurePlants": { en: "8+ rare plant types to collect", ko: "8종 이상 희귀 식물 수집", ja: "8種以上のレア植物を収集" },
     "pro.featureSounds": { en: "15+ ambient sounds library", ko: "15종 이상 앰비언트 사운드", ja: "15種以上のアンビエントサウンド" },
     "pro.featureCategories": { en: "Unlimited custom categories", ko: "무제한 커스텀 카테고리", ja: "無制限のカスタムカテゴリー" },
@@ -374,6 +374,8 @@ const translations = {
     "landing.step3": { en: "Complete & harvest to your garden", ko: "완료 & 정원에 수확", ja: "完了 & ガーデンに収穫" },
     "landing.tryDemo": { en: "Try 3-min demo", ko: "3분 체험하기", ja: "3分デモを試す" },
     "landing.getStarted": { en: "Get Started", ko: "시작하기", ja: "始めましょう" },
+    "share.todayRecord": { en: "Share today's record", ko: "오늘의 기록 인증", ja: "今日の記録をシェア" },
+    "landing.proPitch": { en: "Go Pro: premium plants, unlimited categories & full data export — one-time purchase", ko: "Pro 업그레이드: 프리미엄 식물, 무제한 카테고리, 전체 데이터 내보내기 — 한 번 결제", ja: "Proへ: プレミアム植物・無制限カテゴリー・全データエクスポート — 一度の購入で" },
     "landing.demoToast": { en: "Demo mode: 3-min focus session", ko: "데모 모드: 3분 집중 세션", ja: "デモモード：3分集中セッション" },
 } as const;
 

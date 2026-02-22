@@ -23,7 +23,11 @@ import {
   trackPlantHarvested,
   trackPlantDied,
   trackSeedPlanted,
+  trackShareCard,
 } from "./lib/analytics";
+import { generateShareCard, shareOrDownload } from "./lib/share-card";
+import { getCategoryBreakdown } from "./lib/stats";
+import { getToday } from "./lib/date-utils";
 import { syncWithCloud } from "./lib/sync";
 import { useTranslation, type TranslationKey } from "./lib/i18n";
 import { getMilestoneById } from "./lib/milestones";
@@ -53,7 +57,7 @@ import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useOnboarding } from "./hooks/useOnboarding";
 import { useTour } from "./hooks/useTour";
-import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation, Share2 } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -118,6 +122,7 @@ function App() {
   const [toast, setToast] = useState<{ message: string; visible: boolean; action?: { label: string; onClick: () => void } }>({ message: "", visible: false });
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
+  const [showSharePrompt, setShowSharePrompt] = useState(false);
 
   // Undo plant death
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -219,6 +224,8 @@ function App() {
         notify("Focus Valley", t("notification.focusComplete"));
         setConfettiTrigger((c) => c + 1);
         trackSessionComplete("FOCUS", timer.focusDuration, activeCategoryId);
+        // Show share prompt after confetti settles
+        setTimeout(() => setShowSharePrompt(true), 1500);
         // Background cloud sync after focus completion
         if (user) setTimeout(() => syncWithCloud(user), 1000);
       } else {
@@ -229,14 +236,14 @@ function App() {
     });
   }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId, t, user]);
 
-  // Auto-advance to next mode after completion
+  // Auto-advance to next mode after completion (wait for share prompt to dismiss)
   useEffect(() => {
-    if (!timer.isCompleted || !autoAdvance) return;
+    if (!timer.isCompleted || !autoAdvance || showSharePrompt) return;
     const timeout = setTimeout(() => {
       advanceToNextMode();
     }, ANIMATION.AUTO_ADVANCE_DELAY_MS);
     return () => clearTimeout(timeout);
-  }, [timer.isCompleted, autoAdvance, advanceToNextMode]);
+  }, [timer.isCompleted, autoAdvance, advanceToNextMode, showSharePrompt]);
 
   useEffect(() => {
     if (!garden.pendingUnlock) return;
@@ -262,6 +269,7 @@ function App() {
   const handleStart = useCallback(() => {
     notification.requestPermission();
     timer.start();
+    setShowSharePrompt(false);
     trackSessionStart(timer.mode, timer.focusDuration, activeCategoryId);
   }, [notification, timer, activeCategoryId]);
 
@@ -354,6 +362,37 @@ function App() {
       showToast(t("landing.demoToast"));
     }, 500);
   }, [dismissLanding, showToast, t]);
+
+  // Share prompt: auto-dismiss after 8s
+  useEffect(() => {
+    if (!showSharePrompt) return;
+    const timeout = setTimeout(() => setShowSharePrompt(false), 8000);
+    return () => clearTimeout(timeout);
+  }, [showSharePrompt]);
+
+  const categories = useCategoryStore((s) => s.categories);
+
+  const handlePostSessionShare = useCallback(async () => {
+    setShowSharePrompt(false);
+    const today = new Date().toLocaleDateString("en-US", {
+      weekday: "long", year: "numeric", month: "long", day: "numeric",
+    });
+    const todayKey = getToday();
+    const todaySessions = garden.focusSessions.filter((s) => s.date === todayKey);
+    const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
+    const todayBreakdown = getCategoryBreakdown(todaySessions, categories);
+
+    const blob = await generateShareCard({
+      date: today,
+      totalMinutes: todayMinutes,
+      streak: garden.currentStreak,
+      categoryBreakdown: todayBreakdown,
+      plantCount: garden.history.length,
+    });
+
+    await shareOrDownload(blob, `focus-valley-${todayKey}.png`);
+    trackShareCard();
+  }, [garden.focusSessions, garden.currentStreak, garden.history.length, categories]);
 
   const handleToggleMixer = useCallback(() => {
     setShowMixer((v) => !v);
@@ -543,6 +582,25 @@ function App() {
           />
         </motion.div>
       </main>
+
+      {/* Post-session share prompt */}
+      <AnimatePresence>
+        {showSharePrompt && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            onClick={handlePostSessionShare}
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-5 py-3 rounded-2xl bg-foreground/8 border border-foreground/[0.06] backdrop-blur-sm hover:bg-foreground/12 transition-colors"
+          >
+            <Share2 size={14} className="text-foreground/60" />
+            <span className="font-body text-[12px] font-medium text-foreground/70">
+              {t("share.todayRecord")}
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
       <footer className="w-full max-w-lg z-10 px-4 sm:px-6 pb-4 pt-2">

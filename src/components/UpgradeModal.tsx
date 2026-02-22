@@ -67,10 +67,10 @@ export function UpgradeModal() {
                         {/* Price preview */}
                         <div className="text-center mb-4 py-3 rounded-xl border border-foreground/5">
                             <div className="font-display text-xl text-foreground" style={{ fontWeight: 300 }}>
-                                $4.99<span className="font-body text-[11px] text-muted-foreground/40">/mo</span>
+                                ₩19,900
                             </div>
                             <div className="font-body text-[10px] text-muted-foreground/30 mt-0.5">
-                                {t("pro.annualSave")}
+                                {t("pro.oneTimePurchase")}
                             </div>
                         </div>
 

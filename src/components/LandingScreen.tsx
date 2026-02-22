@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, ArrowRight, Timer, Sprout, Trophy } from "lucide-react";
+import { Play, ArrowRight, Timer, Sprout, Trophy, Sparkles } from "lucide-react";
 import { getPlantComponent } from "./ui/pixel-plants";
 import { useTranslation } from "@/lib/i18n";
 import type { PlantStage } from "@/hooks/useGarden";
@@ -135,6 +135,19 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                                     </div>
                                 ))}
                             </div>
+                        </motion.div>
+
+                        {/* Pro pitch */}
+                        <motion.div
+                            className="flex items-center justify-center gap-1.5 mb-4"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.55 }}
+                        >
+                            <Sparkles size={10} className="text-muted-foreground/35 shrink-0" />
+                            <span className="text-[10px] text-muted-foreground/35 font-body text-center">
+                                {t("landing.proPitch")}
+                            </span>
                         </motion.div>
 
                         {/* CTA Buttons */}
