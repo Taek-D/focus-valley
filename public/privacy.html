@@ -69,7 +69,7 @@
     <a href="/" class="back">&larr; Back to Focus Valley</a>
 
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: February 13, 2026</p>
+    <p class="updated">Last updated: February 22, 2026</p>
 
     <p>Focus Valley ("we", "us", "our") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.</p>
 
@@ -84,13 +84,13 @@
         <li>Category configurations</li>
         <li>Sound mixer preferences</li>
     </ul>
-    <p>This data is stored in your browser's localStorage and never leaves your device unless you explicitly export it.</p>
+    <p>This data is stored in your browser's localStorage. If you sign in, it is also synced to our cloud (Supabase) for cross-device access.</p>
 
-    <p><strong>Email address (optional):</strong></p>
+    <p><strong>Account information (optional):</strong></p>
     <ul>
-        <li>If you join our waitlist, we collect your email address via Formspree</li>
-        <li>Your email is used solely to notify you about product updates and new features</li>
-        <li>You can unsubscribe at any time</li>
+        <li>If you create an account, we collect your email address via email/password or Google sign-in (Supabase Auth)</li>
+        <li>Your account enables cloud sync across devices</li>
+        <li>You can delete your account and associated data at any time</li>
     </ul>
 
     <p><strong>Analytics data:</strong></p>
@@ -101,24 +101,38 @@
         <li>No personally identifiable information is sent to Google Analytics</li>
     </ul>
 
+    <p><strong>Error monitoring:</strong></p>
+    <ul>
+        <li>We use Sentry to detect and diagnose application errors</li>
+        <li>Error reports may include browser type, OS, and stack traces — no personal data</li>
+    </ul>
+
+    <p><strong>Location data:</strong></p>
+    <ul>
+        <li>With your permission, the app may request your approximate location to fetch local weather data from Open-Meteo</li>
+        <li>Location data is sent directly to Open-Meteo and is not stored on our servers</li>
+    </ul>
+
     <h2>2. How We Use Your Information</h2>
     <ul>
         <li>To provide and improve the Focus Valley experience</li>
         <li>To understand usage patterns and prioritize features</li>
-        <li>To communicate product updates (waitlist subscribers only)</li>
+        <li>To enable cloud sync for signed-in users</li>
         <li>To diagnose technical issues</li>
     </ul>
 
     <h2>3. Third-Party Services</h2>
     <ul>
+        <li><strong>Supabase</strong> — Authentication and cloud data sync. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
         <li><strong>Google Analytics</strong> — Usage analytics. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
-        <li><strong>Formspree</strong> — Email form processing. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">Formspree Privacy Policy</a></li>
+        <li><strong>Sentry</strong> — Error monitoring. <a href="https://sentry.io/privacy/" target="_blank" rel="noopener">Sentry Privacy Policy</a></li>
+        <li><strong>Open-Meteo</strong> — Weather data. <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">Open-Meteo Terms</a></li>
         <li><strong>Vercel</strong> — Hosting and delivery. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel Privacy Policy</a></li>
         <li><strong>Google Fonts</strong> — Font delivery (Sora typeface)</li>
     </ul>
 
     <h2>4. Data Retention</h2>
-    <p>Local data persists until you clear your browser storage. Waitlist emails are retained until you unsubscribe or request deletion. Analytics data is retained per Google Analytics' default retention settings (14 months).</p>
+    <p>Local data persists until you clear your browser storage. Cloud-synced data is retained as long as your account is active; you may request deletion at any time. Analytics data is retained per Google Analytics' default retention settings (14 months).</p>
 
     <h2>5. Your Rights</h2>
     <p>You have the right to:</p>
@@ -126,7 +140,7 @@
         <li>Access your local data (it's already on your device)</li>
         <li>Export your data via the CSV export feature</li>
         <li>Delete your local data by clearing browser storage</li>
-        <li>Request deletion of your waitlist email</li>
+        <li>Request deletion of your cloud account and all associated data</li>
         <li>Opt out of analytics by using browser extensions like Google Analytics Opt-out</li>
     </ul>
 

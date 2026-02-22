@@ -582,14 +582,14 @@
             color: var(--muted);
         }
 
-        /* ── Waitlist CTA ──────────────────────── */
+        /* ── Pro CTA ──────────────────────────── */
 
-        .waitlist-section {
+        .pro-cta-section {
             padding: 6rem 0;
             text-align: center;
         }
 
-        .waitlist-card {
+        .pro-cta-card {
             max-width: 480px;
             margin: 0 auto;
             padding: 3rem 2.5rem;
@@ -600,7 +600,7 @@
             overflow: hidden;
         }
 
-        .waitlist-card::before {
+        .pro-cta-card::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -609,76 +609,18 @@
             background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3), var(--aurora-4));
         }
 
-        .waitlist-card h2 {
+        .pro-cta-card h2 {
             font-size: 1.25rem;
             font-weight: 400;
             margin-bottom: 0.75rem;
         }
 
-        .waitlist-card p {
+        .pro-cta-card p {
             font-size: 0.8rem;
             font-weight: 300;
             color: var(--muted);
             line-height: 1.6;
             margin-bottom: 1.5rem;
-        }
-
-        .waitlist-form {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        @media (max-width: 480px) {
-            .waitlist-form { flex-direction: column; }
-        }
-
-        .waitlist-form input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid rgba(245, 245, 247, 0.08);
-            background: rgba(245, 245, 247, 0.04);
-            color: var(--fg);
-            font-family: 'Sora', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 300;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .waitlist-form input::placeholder { color: rgba(245, 245, 247, 0.2); }
-        .waitlist-form input:focus { border-color: rgba(245, 245, 247, 0.2); }
-
-        .waitlist-form button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            border: none;
-            background: var(--fg);
-            color: var(--bg);
-            font-family: 'Sora', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .waitlist-form button:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        .waitlist-success {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            font-size: 0.8rem;
-            color: var(--aurora-4);
-        }
-
-        .form-note {
-            font-size: 0.65rem;
-            color: rgba(245, 245, 247, 0.2);
-            margin-top: 1rem;
         }
 
         /* ── Footer ────────────────────────────── */
@@ -843,7 +785,7 @@
                 <div class="feature-card fade-in">
                     <div class="feature-icon">🎧</div>
                     <h3>Ambient Sounds</h3>
-                    <p>Mix rain, fire, cafe, stream, and white noise. Procedurally generated, no audio files needed.</p>
+                    <p>Mix rain, fire, cafe, stream, and white noise. Curated ambient audio loops for deep focus.</p>
                 </div>
                 <div class="feature-card fade-in">
                     <div class="feature-icon">🌱</div>
@@ -913,10 +855,10 @@
                     </ul>
                 </div>
                 <div class="plan-card pro fade-in">
-                    <span class="plan-badge">Coming Soon</span>
+                    <span class="plan-badge">Lifetime</span>
                     <h3>Pro</h3>
-                    <div class="plan-price">$4.99 <span>/month</span></div>
-                    <p style="font-size:0.7rem;color:var(--muted);margin-top:-1rem;margin-bottom:1.5rem;">or $39.99/yr (save 33%)</p>
+                    <div class="plan-price">₩19,900 <span>one-time</span></div>
+                    <p style="font-size:0.7rem;color:var(--muted);margin-top:-1rem;margin-bottom:1.5rem;">One-time purchase. Yours forever.</p>
                     <ul class="plan-features">
                         <li><span class="check">&#10003;</span> Everything in Free</li>
                         <li><span class="check">&#10003;</span> 8+ rare plant types</li>
@@ -926,31 +868,22 @@
                         <li><span class="check">&#10003;</span> Unlimited device sync</li>
                         <li><span class="check">&#10003;</span> Full CSV export (all time)</li>
                         <li><span class="check">&#10003;</span> Custom share card themes</li>
-                        <li><span class="check">&#10003;</span> Focus insights (AI)</li>
                         <li><span class="check">&#10003;</span> Priority support</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Waitlist -->
-        <section class="waitlist-section" id="waitlist">
-            <div class="waitlist-card fade-in">
-                <h2>Pro is coming soon</h2>
-                <p>Cloud sync across devices, premium plant skins, advanced stats, and more. Join the waitlist for early access.</p>
+        <!-- Pro CTA -->
+        <section class="pro-cta-section" id="pro-cta">
+            <div class="pro-cta-card fade-in">
+                <h2>Ready to go Pro?</h2>
+                <p>Unlock premium plants, unlimited categories, full data export, and more. One-time purchase, yours forever.</p>
 
-                <form class="waitlist-form" id="waitlist-form" action="https://formspree.io/f/xykdeoyz" method="POST">
-                    <input type="email" name="email" placeholder="you@email.com" required />
-                    <input type="hidden" name="source" value="landing" />
-                    <button type="submit">Join Waitlist</button>
-                </form>
-
-                <div class="waitlist-success" id="waitlist-success">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                    You're on the list! We'll notify you.
-                </div>
-
-                <p class="form-note">No spam. Unsubscribe anytime.</p>
+                <a href="/" class="btn-primary" style="display:inline-flex;margin-top:0.5rem;">
+                    Open App
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
             </div>
         </section>
     </div>
@@ -978,30 +911,6 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
         document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
-
-        // Waitlist form
-        const form = document.getElementById('waitlist-form');
-        const success = document.getElementById('waitlist-success');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const data = new FormData(form);
-
-            try {
-                await fetch(form.action, {
-                    method: 'POST',
-                    body: data,
-                    headers: { 'Accept': 'application/json' },
-                });
-            } catch {}
-
-            form.style.display = 'none';
-            success.style.display = 'flex';
-
-            if (typeof gtag === 'function') {
-                gtag('event', 'waitlist_signup', { source: 'landing' });
-            }
-        });
     </script>
 
 </body>

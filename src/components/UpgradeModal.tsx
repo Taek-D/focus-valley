@@ -50,7 +50,7 @@ export function UpgradeModal() {
                                 Focus Valley <span className="px-2 py-0.5 rounded-full bg-foreground/8 font-body text-[9px] font-medium tracking-wider uppercase text-foreground/50 ml-1">PRO</span>
                             </h3>
                             <p className="font-body text-[11px] text-muted-foreground/40 mt-1.5">
-                                {t("pro.comingSoon")}
+                                {t("pro.oneTimePurchase")}
                             </p>
                         </div>
 
@@ -76,10 +76,10 @@ export function UpgradeModal() {
 
                         {/* CTA */}
                         <a
-                            href="/landing.html#waitlist"
+                            href="/"
                             className="block w-full py-3 rounded-xl bg-foreground/8 text-center font-body text-[12px] font-medium text-foreground hover:bg-foreground/12 transition-all"
                         >
-                            {t("pro.joinWaitlist")}
+                            {t("pro.getStarted")}
                         </a>
                     </motion.div>
                 </>

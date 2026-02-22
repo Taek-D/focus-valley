@@ -278,11 +278,10 @@ const translations = {
     // Pro tier
     "pro.badge": { en: "PRO", ko: "PRO", ja: "PRO" },
     "pro.upgrade": { en: "Upgrade to Pro", ko: "Pro로 업그레이드", ja: "Proにアップグレード" },
-    "pro.comingSoon": { en: "Coming Soon", ko: "곧 출시", ja: "近日公開" },
     "pro.unlockWith": { en: "Unlock with Pro", ko: "Pro로 잠금 해제", ja: "Proでアンロック" },
     "pro.customCategoryLimit": { en: "Pro unlocks unlimited categories", ko: "Pro로 무제한 카테고리 사용", ja: "Proで無制限カテゴリー" },
     "pro.fullExport": { en: "Export all data with Pro", ko: "Pro로 전체 데이터 내보내기", ja: "Proで全データエクスポート" },
-    "pro.joinWaitlist": { en: "Join Waitlist", ko: "대기 목록 참여", ja: "ウェイトリストに参加" },
+    "pro.getStarted": { en: "Get Started", ko: "시작하기", ja: "始めましょう" },
     "pro.oneTimePurchase": { en: "One-time purchase. Yours forever.", ko: "한 번 결제로 평생 소유", ja: "一度の購入で永久利用。" },
     "pro.featurePlants": { en: "8+ rare plant types to collect", ko: "8종 이상 희귀 식물 수집", ja: "8種以上のレア植物を収集" },
     "pro.featureSounds": { en: "15+ ambient sounds library", ko: "15종 이상 앰비언트 사운드", ja: "15種以上のアンビエントサウンド" },
