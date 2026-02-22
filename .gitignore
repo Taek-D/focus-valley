@@ -58,3 +58,9 @@ Focus-Valley-OAuth.txt
 
 # Remotion output
 out/
+
+# Dev artifacts & planning docs
+screenshots/
+take-screenshots.mjs
+upgrade_tasks.md
+Focus valley *.md
