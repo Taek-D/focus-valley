@@ -1,6 +1,8 @@
 import { useRef, useState, useCallback } from "react";
 
-export type NoiseType = "rain" | "fire" | "cafe" | "stream" | "white";
+export type NoiseType = "rain" | "fire" | "cafe" | "stream" | "white" | "thunder" | "wind" | "night";
+
+export const PRO_SOUNDS: ReadonlySet<NoiseType> = new Set(["thunder", "wind", "night"]);
 
 type AudioTrack = {
     gainNode: GainNode;
@@ -13,6 +15,9 @@ const SOUND_URLS: Record<NoiseType, string[]> = {
     cafe: ["/sounds/cafe.mp3", "/sounds/cafe.wav"],
     stream: ["/sounds/stream.mp3", "/sounds/stream.wav"],
     white: ["/sounds/white.mp3", "/sounds/white.wav"],
+    thunder: ["/sounds/thunder.mp3"],
+    wind: ["/sounds/wind.mp3"],
+    night: ["/sounds/night.mp3"],
 };
 
 // Crossfade duration at loop boundary (seconds)
@@ -55,6 +60,9 @@ export function useAudioMixer() {
         cafe: 0,
         stream: 0,
         white: 0,
+        thunder: 0,
+        wind: 0,
+        night: 0,
     });
     const volumesRef = useRef(volumes);
 

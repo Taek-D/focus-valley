@@ -8,13 +8,16 @@ import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getC
 import { PLANT_ICONS } from "../lib/constants";
 import { getDayLabel, getLast7Days, getToday, groupByDate, toLocalDateKey } from "../lib/date-utils";
 import { FREE_TIER } from "@/lib/constants";
-import { generateShareCard, shareOrDownload } from "../lib/share-card";
+import { generateShareCard, shareOrDownload, type ShareCardTheme } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
 
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
 import { useIsPro } from "@/hooks/useSubscription";
+import { useShareTheme, PRO_THEMES } from "@/hooks/useShareTheme";
+import { useUpgradeModal } from "@/hooks/useUpgradeModal";
 import { ProBadge } from "./ProGate";
+import { Lock } from "lucide-react";
 
 type HistoryEntry = { type: PlantType; date: string };
 
@@ -41,6 +44,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 }) => {
     const { t } = useTranslation();
     const isPro = useIsPro();
+    const { theme: shareTheme, setTheme: setShareTheme } = useShareTheme();
+    const openUpgrade = useUpgradeModal((s) => s.open);
     const grouped = groupByDate(history);
     const sortedDates = Object.keys(grouped).reverse();
     const totalHours = Math.floor(totalFocusMinutes / 60);
@@ -117,14 +122,14 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 streak: currentStreak,
                 categoryBreakdown: todayBreakdown,
                 plantCount: history.length,
-            });
+            }, shareTheme);
 
             await shareOrDownload(blob, `focus-valley-${todayKey}.png`);
             trackShareCard();
         } finally {
             setSharing(false);
         }
-    }, [focusSessions, categories, currentStreak, history.length]);
+    }, [focusSessions, categories, currentStreak, history.length, shareTheme]);
 
     return (
         <BottomSheet
@@ -133,6 +138,33 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             title={t("stats.title")}
             headerActions={
                 <>
+                    {/* Theme picker */}
+                    <div className="flex items-center gap-1 mr-1">
+                        {(["aurora", "sunset", "forest"] as const).map((th) => {
+                            const isProTheme = PRO_THEMES.has(th);
+                            const isLocked = isProTheme && !isPro;
+                            const isActive = shareTheme === th;
+                            const colors: Record<ShareCardTheme, string> = {
+                                aurora: "bg-purple-500",
+                                sunset: "bg-orange-500",
+                                forest: "bg-emerald-500",
+                            };
+                            return (
+                                <button
+                                    key={th}
+                                    onClick={() => isLocked ? openUpgrade("share-theme") : setShareTheme(th, isPro)}
+                                    aria-label={t(`share.theme${th[0].toUpperCase()}${th.slice(1)}` as TranslationKey)}
+                                    className={`relative w-3 h-3 rounded-full transition-all ${colors[th]} ${
+                                        isActive ? "ring-2 ring-foreground/40 ring-offset-1 ring-offset-background" : "opacity-50 hover:opacity-80"
+                                    }`}
+                                >
+                                    {isLocked && (
+                                        <Lock size={6} className="absolute -top-1 -right-1 text-foreground/50" />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
                     <button
                         onClick={handleShare}
                         disabled={sharing}

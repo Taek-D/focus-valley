@@ -228,6 +228,9 @@ const translations = {
     "audio.cafe": { en: "Cafe", ko: "카페", ja: "カフェ" },
     "audio.stream": { en: "Stream", ko: "시냇물", ja: "小川" },
     "audio.white": { en: "White", ko: "화이트", ja: "ホワイト" },
+    "audio.thunder": { en: "Thunder", ko: "천둥", ja: "雷" },
+    "audio.wind": { en: "Wind", ko: "바람", ja: "風" },
+    "audio.night": { en: "Night", ko: "밤소리", ja: "夜" },
 
     // History / Stats Panel
     "stats.title": { en: "Stats & History", ko: "통계 & 기록", ja: "統計 & 履歴" },
@@ -284,10 +287,10 @@ const translations = {
     "pro.getStarted": { en: "Get Started", ko: "시작하기", ja: "始めましょう" },
     "pro.oneTimePurchase": { en: "One-time purchase. Yours forever.", ko: "한 번 결제로 평생 소유", ja: "一度の購入で永久利用。" },
     "pro.featurePlants": { en: "8+ rare plant types to collect", ko: "8종 이상 희귀 식물 수집", ja: "8種以上のレア植物を収集" },
-    "pro.featureSounds": { en: "5 ambient sound channels", ko: "5종 앰비언트 사운드 채널", ja: "5種アンビエントサウンドチャンネル" },
+    "pro.featureSounds": { en: "8 ambient sound channels", ko: "8종 앰비언트 사운드 채널", ja: "8種アンビエントサウンドチャンネル" },
     "pro.featureCategories": { en: "Unlimited custom categories", ko: "무제한 커스텀 카테고리", ja: "無制限のカスタムカテゴリー" },
     "pro.featureStats": { en: "Advanced stats & full CSV export", ko: "고급 통계 & 전체 CSV 내보내기", ja: "高度な統計 & 全CSVエクスポート" },
-    "pro.featureThemes": { en: "Cloud sync across devices", ko: "기기 간 클라우드 동기화", ja: "デバイス間クラウド同期" },
+    "pro.featureThemes": { en: "Custom share card themes", ko: "커스텀 공유 카드 테마", ja: "カスタム共有カードテーマ" },
     "pro.freePlan": { en: "Free", ko: "무료", ja: "無料" },
     "pro.proPlan": { en: "Pro", ko: "Pro", ja: "Pro" },
     "pro.exportLimit": { en: "Free plan: last 7 days only", ko: "무료 플랜: 최근 7일만", ja: "無料プラン：過去7日のみ" },
@@ -373,6 +376,9 @@ const translations = {
     "landing.tryDemo": { en: "Try 3-min demo", ko: "3분 체험하기", ja: "3分デモを試す" },
     "landing.getStarted": { en: "Get Started", ko: "시작하기", ja: "始めましょう" },
     "share.todayRecord": { en: "Share today's record", ko: "오늘의 기록 인증", ja: "今日の記録をシェア" },
+    "share.themeAurora": { en: "Aurora", ko: "오로라", ja: "オーロラ" },
+    "share.themeSunset": { en: "Sunset", ko: "석양", ja: "夕焼け" },
+    "share.themeForest": { en: "Forest", ko: "숲", ja: "森" },
     "landing.proPitch": { en: "Go Pro: premium plants, unlimited categories & full data export — one-time purchase", ko: "Pro 업그레이드: 프리미엄 식물, 무제한 카테고리, 전체 데이터 내보내기 — 한 번 결제", ja: "Proへ: プレミアム植物・無制限カテゴリー・全データエクスポート — 一度の購入で" },
     "landing.demoToast": { en: "Demo mode: 3-min focus session", ko: "데모 모드: 3분 집중 세션", ja: "デモモード：3分集中セッション" },
 } as const;

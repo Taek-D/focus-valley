@@ -1,3 +1,55 @@
+export type ShareCardTheme = "aurora" | "sunset" | "forest";
+
+type ThemeConfig = {
+    gradient: { stop: number; color: string }[];
+    blobs: { x: number; y: number; r: number; color: string }[];
+};
+
+export const SHARE_THEMES: Record<ShareCardTheme, ThemeConfig> = {
+    aurora: {
+        gradient: [
+            { stop: 0, color: "hsl(230 15% 10%)" },
+            { stop: 0.4, color: "hsl(260 20% 14%)" },
+            { stop: 0.7, color: "hsl(200 18% 12%)" },
+            { stop: 1, color: "hsl(230 15% 8%)" },
+        ],
+        blobs: [
+            { x: 130, y: 180, r: 120, color: "hsla(330, 70%, 60%, 0.15)" },
+            { x: 290, y: 220, r: 100, color: "hsla(270, 60%, 62%, 0.12)" },
+            { x: 200, y: 280, r: 140, color: "hsla(185, 55%, 55%, 0.10)" },
+            { x: 320, y: 160, r: 80, color: "hsla(140, 45%, 58%, 0.08)" },
+        ],
+    },
+    sunset: {
+        gradient: [
+            { stop: 0, color: "hsl(20 20% 12%)" },
+            { stop: 0.4, color: "hsl(350 25% 16%)" },
+            { stop: 0.7, color: "hsl(30 22% 14%)" },
+            { stop: 1, color: "hsl(15 18% 8%)" },
+        ],
+        blobs: [
+            { x: 140, y: 190, r: 130, color: "hsla(25, 80%, 55%, 0.16)" },
+            { x: 280, y: 210, r: 110, color: "hsla(345, 65%, 58%, 0.13)" },
+            { x: 210, y: 290, r: 120, color: "hsla(40, 70%, 50%, 0.10)" },
+            { x: 310, y: 150, r: 90, color: "hsla(10, 60%, 55%, 0.09)" },
+        ],
+    },
+    forest: {
+        gradient: [
+            { stop: 0, color: "hsl(160 18% 10%)" },
+            { stop: 0.4, color: "hsl(140 22% 14%)" },
+            { stop: 0.7, color: "hsl(170 20% 12%)" },
+            { stop: 1, color: "hsl(150 15% 7%)" },
+        ],
+        blobs: [
+            { x: 120, y: 200, r: 130, color: "hsla(150, 60%, 50%, 0.14)" },
+            { x: 300, y: 230, r: 100, color: "hsla(170, 55%, 45%, 0.12)" },
+            { x: 200, y: 270, r: 140, color: "hsla(130, 50%, 55%, 0.10)" },
+            { x: 330, y: 170, r: 85, color: "hsla(90, 45%, 50%, 0.08)" },
+        ],
+    },
+};
+
 type ShareCardData = {
     date: string;
     totalMinutes: number;
@@ -31,7 +83,7 @@ function drawRoundedRect(
     ctx.closePath();
 }
 
-export function generateShareCard(data: ShareCardData): Promise<Blob> {
+export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "aurora"): Promise<Blob> {
     return new Promise((resolve, reject) => {
         const W = 420;
         const H = 560;
@@ -46,24 +98,19 @@ export function generateShareCard(data: ShareCardData): Promise<Blob> {
 
         ctx.scale(2, 2);
 
-        // Background gradient (aurora tones)
+        const themeConfig = SHARE_THEMES[theme];
+
+        // Background gradient
         const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-        bgGrad.addColorStop(0, "hsl(230 15% 10%)");
-        bgGrad.addColorStop(0.4, "hsl(260 20% 14%)");
-        bgGrad.addColorStop(0.7, "hsl(200 18% 12%)");
-        bgGrad.addColorStop(1, "hsl(230 15% 8%)");
+        for (const g of themeConfig.gradient) {
+            bgGrad.addColorStop(g.stop, g.color);
+        }
         ctx.fillStyle = bgGrad;
         drawRoundedRect(ctx, 0, 0, W, H, 24);
         ctx.fill();
 
-        // Aurora glow blobs
-        const blobs = [
-            { x: 130, y: 180, r: 120, color: "hsla(330, 70%, 60%, 0.15)" },
-            { x: 290, y: 220, r: 100, color: "hsla(270, 60%, 62%, 0.12)" },
-            { x: 200, y: 280, r: 140, color: "hsla(185, 55%, 55%, 0.10)" },
-            { x: 320, y: 160, r: 80, color: "hsla(140, 45%, 58%, 0.08)" },
-        ];
-        for (const blob of blobs) {
+        // Glow blobs
+        for (const blob of themeConfig.blobs) {
             const grad = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.r);
             grad.addColorStop(0, blob.color);
             grad.addColorStop(1, "transparent");
