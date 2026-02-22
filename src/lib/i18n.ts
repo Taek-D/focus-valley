@@ -61,7 +61,6 @@ const translations = {
     "footer.sounds": { en: "Sounds", ko: "사운드", ja: "サウンド" },
     "footer.privacy": { en: "Privacy", ko: "개인정보", ja: "プライバシー" },
     "footer.terms": { en: "Terms", ko: "이용약관", ja: "利用規約" },
-    "footer.support": { en: "Support", ko: "후원", ja: "サポート" },
 
     // Settings panel
     "settings.title": { en: "Timer Settings", ko: "타이머 설정", ja: "タイマー設定" },

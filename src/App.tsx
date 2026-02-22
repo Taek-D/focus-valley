@@ -57,7 +57,7 @@ import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
 import { useOnboarding } from "./hooks/useOnboarding";
 import { useTour } from "./hooks/useTour";
-import { Volume2, ChevronDown, ChevronUp, Heart, Wind, BookOpen, Navigation, Share2 } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, Share2 } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -664,16 +664,6 @@ function App() {
           <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
           <a href="/terms.html" target="_blank" rel="noopener" className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors">
             {t("footer.terms")}
-          </a>
-          <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
-          <a
-            href="https://ko-fi.com/castletaek"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-pink-400/60 transition-colors"
-          >
-            <Heart size={8} />
-            {t("footer.support")}
           </a>
         </div>
       </footer>

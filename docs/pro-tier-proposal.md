@@ -117,4 +117,3 @@
 1. **Lemon Squeezy vs Stripe?** — LS recommended for simplicity
 2. **Free trial duration?** — 7 days recommended
 3. ~~**Lifetime deal?**~~ — **Decided**: ₩19,900 one-time purchase (lifetime)
-4. **Ko-fi integration?** — Keep as tip jar alongside Pro?
