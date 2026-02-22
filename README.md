@@ -8,7 +8,7 @@
 
 - **뽀모도로 타이머** — 집중 / 짧은 휴식 / 긴 휴식, 4사이클 자동 전환, 시간 커스터마이징
 - **픽셀 아트 정원** — 집중 중 식물이 5단계(씨앗 → 새싹 → 묘목 → 나무 → 꽃)로 성장, 포기 시 시들기
-- **앰비언트 사운드** — 비, 불, 카페, 시냇물, 화이트 노이즈 (Web Audio API)
+- **앰비언트 사운드** — 비, 불, 카페, 시냇물, 화이트 노이즈 (mp3 루프 + Web Audio API)
 - **오로라 비주얼** — 타이머 모드/계절에 따라 색이 바뀌는 홀로그래픽 오로라
 
 ### 게이미피케이션
@@ -76,7 +76,7 @@
 | 애니메이션 | Framer Motion 12 |
 | 아이콘 | Lucide React |
 | 타이머 | Web Workers (탭 쓰로틀링 방지) |
-| 오디오 | Web Audio API (절차적 노이즈 생성) |
+| 오디오 | Web Audio API (mp3 루프 재생) |
 | 인증 & DB | Supabase |
 | 모니터링 | Sentry |
 | PWA | vite-plugin-pwa |
@@ -157,7 +157,6 @@ src/
     ProgressRing.tsx               # 원형 프로그레스
     Toast.tsx                      # 토스트 알림
     ProGate.tsx                    # Pro 기능 게이트
-    WaitlistBanner.tsx             # 대기자 목록 배너
     InstallBanner.tsx              # PWA 설치 배너
     ErrorBoundary.tsx              # 에러 바운더리
     ui/
@@ -266,7 +265,7 @@ supabase/
 
 ### 오디오 시스템
 
-Web Audio API를 사용한 절차적 노이즈 생성. 5개 트랙 개별 볼륨 조절 + 마스터 뮤트.
+Web Audio API를 사용한 mp3 오디오 루프 재생. 5개 트랙(rain, fire, cafe, stream, white) 개별 볼륨 조절 + 마스터 뮤트.
 
 ## 라이선스
 

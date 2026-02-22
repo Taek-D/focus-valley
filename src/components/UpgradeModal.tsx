@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Crown, Palette, BarChart3, Headphones, Infinity as InfinityIcon } from "lucide-react";
+import { Sparkles, X, Crown, Cloud, BarChart3, Headphones, Infinity as InfinityIcon } from "lucide-react";
 import { useUpgradeModal } from "@/hooks/useUpgradeModal";
 import { useTranslation } from "@/lib/i18n";
 
@@ -9,7 +9,7 @@ const PRO_FEATURES = [
     { icon: Headphones, key: "pro.featureSounds" as const },
     { icon: InfinityIcon, key: "pro.featureCategories" as const },
     { icon: BarChart3, key: "pro.featureStats" as const },
-    { icon: Palette, key: "pro.featureThemes" as const },
+    { icon: Cloud, key: "pro.featureThemes" as const },
 ];
 
 export function UpgradeModal() {
