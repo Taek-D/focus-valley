@@ -19,12 +19,13 @@ type PlantGardenProps = {
     particleType: "growth" | "harvest" | "death";
     breathCycle?: number;
     isBreathing?: boolean;
+    growthPercent?: number;
 };
 
 export const PlantGarden = memo(function PlantGarden({
     gardenType, gardenStage, canInteract, onPlantClick,
     activeTodo, stageTransition, particleTrigger, particleType,
-    breathCycle = 4, isBreathing = false,
+    breathCycle = 4, isBreathing = false, growthPercent,
 }: PlantGardenProps) {
     const { t } = useTranslation();
     const PlantComponent = useMemo(
@@ -89,9 +90,26 @@ export const PlantGarden = memo(function PlantGarden({
             </div>
 
             {/* Stage label */}
-            <div className="font-body text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase mt-1 mb-2">
+            <div className="font-body text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase mt-1 mb-1">
                 {t(`plantType.${gardenType}` as TranslationKey)} &middot; {t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}
             </div>
+
+            {/* Growth progress bar */}
+            {growthPercent != null && growthPercent > 0 && gardenStage !== "DEAD" && gardenStage !== "TREE" && (
+                <div className="w-24 mb-2 flex items-center gap-1.5">
+                    <div className="flex-1 h-1 rounded-full bg-foreground/5 overflow-hidden">
+                        <motion.div
+                            className="h-full rounded-full bg-foreground/20"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.min(growthPercent, 100)}%` }}
+                            transition={{ duration: 0.5 }}
+                        />
+                    </div>
+                    <span className="font-body text-[8px] text-muted-foreground/30 tabular-nums">
+                        {Math.round(growthPercent)}%
+                    </span>
+                </div>
+            )}
 
             {canInteract && (
                 <motion.div

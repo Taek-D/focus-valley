@@ -40,6 +40,13 @@ export const CategoryChips: React.FC = React.memo(() => {
     const [newEmoji, setNewEmoji] = useState(PRESET_EMOJIS[0]);
     const [newColor, setNewColor] = useState(PRESET_COLORS[0]);
 
+    const HINT_KEY = "focus-valley-category-hint-dismissed";
+    const [hintDismissed, setHintDismissed] = useState(() => !!localStorage.getItem(HINT_KEY));
+    const dismissHint = useCallback(() => {
+        localStorage.setItem(HINT_KEY, "1");
+        setHintDismissed(true);
+    }, []);
+
     // Undo state for category removal
     const [undoInfo, setUndoInfo] = useState<{ cat: { id: string; label: string; emoji: string; color: string }; index: number } | null>(null);
     const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -272,6 +279,18 @@ export const CategoryChips: React.FC = React.memo(() => {
                     })()}
                 </div>
                 </div>
+                {!hintDismissed && (
+                    <div className="flex items-center justify-center gap-1 mt-1 px-4">
+                        <span className="font-body text-[9px] text-muted-foreground/30">{t("category.hint")}</span>
+                        <button
+                            onClick={dismissHint}
+                            className="p-0.5 rounded-full text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+                            aria-label={t("category.dismissHint")}
+                        >
+                            <X size={8} />
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Undo toast — portaled to body */}

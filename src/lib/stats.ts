@@ -163,6 +163,33 @@ export function getCategoryBreakdown(sessions: FocusSession[], categories: Categ
     return result.sort((a, b) => b.minutes - a.minutes);
 }
 
+export type MonthlyBarItem = { date: string; minutes: number };
+
+export function getMonthlyBarData(sessions: FocusSession[]): MonthlyBarItem[] {
+    const minutesByDay: Record<string, number> = {};
+    for (const session of sessions) {
+        minutesByDay[session.date] = (minutesByDay[session.date] || 0) + session.minutes;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const data: MonthlyBarItem[] = [];
+
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const key = toLocalDateKey(d);
+        data.push({ date: key, minutes: minutesByDay[key] || 0 });
+    }
+
+    return data;
+}
+
+export function getLongestSession(sessions: FocusSession[]): number {
+    if (sessions.length === 0) return 0;
+    return Math.max(...sessions.map((s) => s.minutes));
+}
+
 function escapeCsvCell(value: string | number): string {
     let text = String(value ?? "");
 

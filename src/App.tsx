@@ -26,6 +26,7 @@ import {
 } from "./lib/analytics";
 import { syncWithCloud } from "./lib/sync";
 import { useTranslation, type TranslationKey } from "./lib/i18n";
+import { getMilestoneById } from "./lib/milestones";
 import { TimerDisplay } from "./components/TimerDisplay";
 import { Toast } from "./components/Toast";
 import { ConfirmModal } from "./components/ConfirmModal";
@@ -41,6 +42,12 @@ import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
 import { Onboarding } from "./components/Onboarding";
 import { TourGuide } from "./components/TourGuide";
+import { SessionRecoveryDialog } from "./components/SessionRecoveryDialog";
+import { HelpButton } from "./components/HelpButton";
+import { WeeklySummaryPopup } from "./components/WeeklySummaryPopup";
+import { useWeeklySummary } from "./hooks/useWeeklySummary";
+import { LandingScreen } from "./components/LandingScreen";
+import { useLanding } from "./hooks/useLanding";
 import { useAuth } from "./hooks/useAuth";
 import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
@@ -81,7 +88,7 @@ function App() {
   const mixer = useAudioMixer();
   const audioIntensity = useAudioReactivity(mixer.analyserRef);
   const garden = useGarden();
-  const { grow, addFocusMinutes, clearPendingUnlock } = garden;
+  const { grow, addFocusMinutes, clearPendingUnlock, clearPendingMilestone } = garden;
   const weather = useWeather();
   const { isDark, toggle: toggleDark } = useDarkMode();
   const notification = useNotification();
@@ -93,8 +100,10 @@ function App() {
   const { user, initialize: initAuth } = useAuth();
   const refreshSubscription = useSubscription((s) => s.refresh);
   const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
-  const { showOnboarding, completeOnboarding } = useOnboarding();
-  const { startTour, hasCompletedTour } = useTour();
+  const { showOnboarding, completeOnboarding, reopenOnboarding, hasCompletedOnboarding } = useOnboarding();
+  const { showWeeklySummary, dismissWeeklySummary } = useWeeklySummary();
+  const { showLanding, dismissLanding } = useLanding();
+  const { startTour, hasCompletedTour, isActive: isTourActive } = useTour();
   const { t } = useTranslation();
 
   const [showMixer, setShowMixer] = useState(false);
@@ -240,6 +249,16 @@ function App() {
     }
   }, [garden.pendingUnlock, clearPendingUnlock, showToast, t]);
 
+  useEffect(() => {
+    if (!garden.pendingMilestone) return;
+    const milestone = getMilestoneById(garden.pendingMilestone);
+    clearPendingMilestone();
+    if (milestone) {
+      const name = t(milestone.titleKey);
+      queueMicrotask(() => showToast(`${milestone.icon} ${t("milestone.earned")} ${name}`));
+    }
+  }, [garden.pendingMilestone, clearPendingMilestone, showToast, t]);
+
   const handleStart = useCallback(() => {
     notification.requestPermission();
     timer.start();
@@ -322,6 +341,20 @@ function App() {
     }
   }, [completeOnboarding, hasCompletedTour, startTour]);
 
+  const handleLandingGetStarted = useCallback(() => {
+    dismissLanding();
+  }, [dismissLanding]);
+
+  const handleLandingDemo = useCallback(() => {
+    dismissLanding();
+    // Set focus to 3 minutes for demo
+    useTimerSettings.getState().setDuration("focus", 3);
+    // Start timer after onboarding/tour flow settles
+    setTimeout(() => {
+      showToast(t("landing.demoToast"));
+    }, 500);
+  }, [dismissLanding, showToast, t]);
+
   const handleToggleMixer = useCallback(() => {
     setShowMixer((v) => !v);
   }, []);
@@ -349,6 +382,16 @@ function App() {
     mode: timer.mode,
   });
 
+  // Warn before unload during FOCUS sessions
+  useEffect(() => {
+    if (!timer.isRunning || timer.mode !== "FOCUS") return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [timer.isRunning, timer.mode]);
+
   const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
 
   // Plant breathing: active during FOCUS + running, cycle slows as progress increases
@@ -360,6 +403,14 @@ function App() {
     const progress = Math.min(elapsed / totalTime, 1);
     return 4 + progress * 4; // 4s → 8s
   }, [isPlantBreathing, timer.timeLeft, timer.focusDuration]);
+
+  // Growth percentage for plant progress bar
+  const growthPercent = useMemo(() => {
+    if (!timer.isRunning || timer.mode !== "FOCUS") return undefined;
+    const totalTime = timer.focusDuration * 60;
+    const elapsed = totalTime - timer.timeLeft;
+    return (elapsed / totalTime) * 100;
+  }, [timer.isRunning, timer.mode, timer.timeLeft, timer.focusDuration]);
 
   // Is it break mode and timer running?
   const isBreakActive = timer.isRunning && (timer.mode === "SHORT_BREAK" || timer.mode === "LONG_BREAK");
@@ -434,6 +485,7 @@ function App() {
           particleType={particleType}
           breathCycle={breathCycle}
           isBreathing={isPlantBreathing}
+          growthPercent={growthPercent}
         />
 
         {/* Category Chips */}
@@ -637,11 +689,36 @@ function App() {
 
       <Confetti trigger={confettiTrigger} />
 
-      <Onboarding isOpen={showOnboarding} onComplete={handleOnboardingComplete} />
+      <SessionRecoveryDialog
+        isOpen={timer.needsRecoveryPrompt}
+        onResume={timer.confirmResume}
+        onDiscard={timer.discardRecovery}
+        remainingSeconds={timer.timeLeft}
+        mode={timer.mode}
+      />
+
+      <WeeklySummaryPopup
+        isOpen={showWeeklySummary && !showOnboarding}
+        onDismiss={dismissWeeklySummary}
+        focusSessions={garden.focusSessions}
+      />
+
+      <Onboarding isOpen={!showLanding && showOnboarding} onComplete={handleOnboardingComplete} />
 
       <TourGuide />
 
+      <LandingScreen
+        isOpen={showLanding}
+        onGetStarted={handleLandingGetStarted}
+        onTryDemo={handleLandingDemo}
+      />
+
       <UpgradeModal />
+
+      <HelpButton
+        visible={hasCompletedOnboarding && !isTourActive && !showOnboarding}
+        onClick={reopenOnboarding}
+      />
     </div>
   );
 }

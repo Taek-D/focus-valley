@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getToday, getYesterday } from "@/lib/date-utils";
 import { useSubscription } from "@/hooks/useSubscription";
+import { getNewlyEarnedMilestones } from "@/lib/milestones";
 
 export type PlantStage = "SEED" | "SPROUT" | "BUD" | "FLOWER" | "TREE" | "DEAD";
 export type PlantType = "DEFAULT" | "CACTUS" | "SUNFLOWER" | "PINE" | "ROSE" | "ORCHID" | "LOTUS" | "CRYSTAL" | "BAMBOO" | "SAKURA";
@@ -63,6 +64,8 @@ interface GardenState {
     pendingUnlock: PlantType | null;
     deepFocusStreak: number;
     lastFocusTimestamp: number;
+    earnedMilestones: string[];
+    pendingMilestone: string | null;
     setStage: (stage: PlantStage) => void;
     setType: (type: PlantType) => void;
     plantSeed: () => void;
@@ -70,6 +73,7 @@ interface GardenState {
     harvestPlant: () => void;
     addFocusMinutes: (minutes: number, categoryId?: string) => void;
     clearPendingUnlock: () => void;
+    clearPendingMilestone: () => void;
 }
 
 const useGardenStore = create<GardenState>()(
@@ -87,6 +91,8 @@ const useGardenStore = create<GardenState>()(
             pendingUnlock: null,
             deepFocusStreak: 0,
             lastFocusTimestamp: 0,
+            earnedMilestones: [],
+            pendingMilestone: null,
             setStage: (stage) => set({ stage }),
             setType: (type) => set({ type }),
             plantSeed: () => set((state) => ({
@@ -143,8 +149,20 @@ const useGardenStore = create<GardenState>()(
                     }
                 }
 
+                // Milestone checks
+                const newTotalMinutes = state.totalFocusMinutes + minutes;
+                const milestoneValues = {
+                    totalHours: Math.floor(newTotalMinutes / 60),
+                    harvests: state.history.length,
+                    streak: newStreak,
+                };
+                const newMilestones = getNewlyEarnedMilestones(milestoneValues, state.earnedMilestones);
+                const updatedEarned = newMilestones.length > 0
+                    ? [...state.earnedMilestones, ...newMilestones]
+                    : state.earnedMilestones;
+
                 return {
-                    totalFocusMinutes: state.totalFocusMinutes + minutes,
+                    totalFocusMinutes: newTotalMinutes,
                     focusSessions: newSessions,
                     currentStreak: newStreak,
                     bestStreak: newBestStreak,
@@ -153,9 +171,12 @@ const useGardenStore = create<GardenState>()(
                     pendingUnlock,
                     deepFocusStreak: newDeepFocusStreak,
                     lastFocusTimestamp: now,
+                    earnedMilestones: updatedEarned,
+                    pendingMilestone: newMilestones[0] ?? null,
                 };
             }),
             clearPendingUnlock: () => set({ pendingUnlock: null }),
+            clearPendingMilestone: () => set({ pendingMilestone: null }),
         }),
         {
             name: "focus-valley-garden",
@@ -194,6 +215,7 @@ export function useGarden() {
         harvest: store.harvestPlant,
         addFocusMinutes: store.addFocusMinutes,
         clearPendingUnlock: store.clearPendingUnlock,
+        clearPendingMilestone: store.clearPendingMilestone,
         grow,
         history: store.history,
         totalFocusMinutes: store.totalFocusMinutes,
@@ -202,6 +224,8 @@ export function useGarden() {
         bestStreak: store.bestStreak,
         unlockedPlants: store.unlockedPlants,
         pendingUnlock: store.pendingUnlock,
+        pendingMilestone: store.pendingMilestone,
+        earnedMilestones: store.earnedMilestones,
         deepFocusStreak: store.deepFocusStreak,
     };
 }

@@ -45,23 +45,24 @@ function clearTimerState() {
 function resolveInitialState(
     saved: PersistedTimerState | null,
     focusMinutes: number,
-): { mode: TimerMode; timeLeft: number; isRunning: boolean; isCompleted: boolean; focusCount: number; shouldStartWorker: boolean } {
+): { mode: TimerMode; timeLeft: number; isRunning: boolean; isCompleted: boolean; focusCount: number; shouldStartWorker: boolean; needsRecoveryPrompt: boolean } {
     if (!saved) {
-        return { mode: "FOCUS", timeLeft: focusMinutes * 60, isRunning: false, isCompleted: false, focusCount: 0, shouldStartWorker: false };
+        return { mode: "FOCUS", timeLeft: focusMinutes * 60, isRunning: false, isCompleted: false, focusCount: 0, shouldStartWorker: false, needsRecoveryPrompt: false };
     }
 
     if (saved.isRunning) {
         const elapsed = (Date.now() - saved.startedAt) / 1000;
         const remaining = saved.pausedTimeLeft - elapsed;
         if (remaining > 0) {
-            return { mode: saved.mode, timeLeft: Math.ceil(remaining), isRunning: true, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: true };
+            // Don't auto-resume — show recovery prompt instead
+            return { mode: saved.mode, timeLeft: Math.ceil(remaining), isRunning: false, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: false, needsRecoveryPrompt: true };
         }
         // Timer expired while away
-        return { mode: saved.mode, timeLeft: 0, isRunning: false, isCompleted: true, focusCount: saved.focusCount, shouldStartWorker: false };
+        return { mode: saved.mode, timeLeft: 0, isRunning: false, isCompleted: true, focusCount: saved.focusCount, shouldStartWorker: false, needsRecoveryPrompt: false };
     }
 
     // Was paused
-    return { mode: saved.mode, timeLeft: saved.pausedTimeLeft, isRunning: false, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: false };
+    return { mode: saved.mode, timeLeft: saved.pausedTimeLeft, isRunning: false, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: false, needsRecoveryPrompt: false };
 }
 
 export function useTimer() {
@@ -76,7 +77,9 @@ export function useTimer() {
     const [isRunning, setIsRunning] = useState(init.isRunning);
     const [isCompleted, setIsCompleted] = useState(init.isCompleted);
     const [focusCount, setFocusCount] = useState(init.focusCount);
+    const [needsRecoveryPrompt, setNeedsRecoveryPrompt] = useState(init.needsRecoveryPrompt);
 
+    const startedAtRef = useRef(Date.now());
     const workerRef = useRef<Worker | null>(null);
     const prevSettingsRef = useRef<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
 
@@ -137,6 +140,45 @@ export function useTimer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Page Visibility API: recalculate time when tab becomes visible
+    useEffect(() => {
+        const handleVisibility = () => {
+            if (document.visibilityState === "visible" && isRunning) {
+                const elapsed = (Date.now() - startedAtRef.current) / 1000;
+                const remaining = timeLeft - elapsed;
+                if (remaining <= 0) {
+                    setTimeLeft(0);
+                    setIsRunning(false);
+                    setIsCompleted(true);
+                    workerRef.current?.postMessage({ command: "STOP" });
+                }
+            }
+        };
+        document.addEventListener("visibilitychange", handleVisibility);
+        return () => document.removeEventListener("visibilitychange", handleVisibility);
+    }, [isRunning, timeLeft]);
+
+    // Track startedAt for visibility correction
+    useEffect(() => {
+        if (isRunning) startedAtRef.current = Date.now();
+    }, [isRunning]);
+
+    const confirmResume = useCallback(() => {
+        setNeedsRecoveryPrompt(false);
+        setIsRunning(true);
+        setIsCompleted(false);
+        workerRef.current?.postMessage({ command: "START" });
+    }, []);
+
+    const discardRecovery = useCallback(() => {
+        setNeedsRecoveryPrompt(false);
+        setIsRunning(false);
+        setIsCompleted(false);
+        workerRef.current?.postMessage({ command: "STOP" });
+        setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
+        clearTimerState();
+    }, [mode, focus, shortBreak, longBreak]);
+
     const start = useCallback(() => {
         if (timeLeft === 0) return;
         setIsRunning(true);
@@ -188,10 +230,13 @@ export function useTimer() {
         isCompleted,
         focusCount,
         focusDuration: focus,
+        needsRecoveryPrompt,
         start,
         pause,
         reset,
         switchMode,
         advanceToNextMode,
+        confirmResume,
+        discardRecovery,
     };
 }

@@ -315,6 +315,66 @@ const translations = {
     "footer.guide": { en: "Guide", ko: "가이드", ja: "ガイド" },
     "footer.tour": { en: "Tour", ko: "투어", ja: "ツアー" },
     "settings.restartTour": { en: "Restart Tour", ko: "투어 다시보기", ja: "ツアーを再開" },
+
+    // Session Recovery
+    "recovery.title": { en: "Resume session?", ko: "세션을 이어할까요?", ja: "セッションを再開しますか？" },
+    "recovery.message": { en: "You had a timer running. Would you like to continue where you left off?", ko: "실행 중이던 타이머가 있어요. 이어서 진행할까요?", ja: "実行中のタイマーがありました。続きから再開しますか？" },
+    "recovery.resume": { en: "Resume", ko: "이어하기", ja: "再開" },
+    "recovery.discard": { en: "Discard", ko: "버리기", ja: "破棄" },
+    "recovery.beforeunload": { en: "Your focus session is still running!", ko: "집중 세션이 아직 진행 중이에요!", ja: "集中セッションがまだ進行中です！" },
+
+    // Onboarding — new steps
+    "onboarding.timerGrowth": { en: "Timer = Growth", ko: "타이머 = 성장", ja: "タイマー = 成長" },
+    "onboarding.timerGrowthDesc": { en: "Start a focus session and your plant grows in real-time. Complete the full session to reach the harvest stage.", ko: "집중 세션을 시작하면 식물이 실시간으로 자라요. 세션을 끝까지 완료하면 수확할 수 있어요.", ja: "集中セッションを始めると植物がリアルタイムで育ちます。セッションを最後まで完了すると収穫できます。" },
+    "onboarding.withering": { en: "Give Up = Wither", ko: "중단 = 시들기", ja: "中断 = 枯れる" },
+    "onboarding.witheringDesc": { en: "If you give up during a session, your plant will wither and die. Stay focused to keep it alive!", ko: "세션 도중 포기하면 식물이 시들어 죽어요. 집중을 유지해서 식물을 지켜주세요!", ja: "セッション中に諦めると植物が枯れてしまいます。集中して植物を守りましょう！" },
+    "onboarding.recovery": { en: "Recovery", ko: "복구", ja: "復活" },
+    "onboarding.recoveryDesc": { en: "Tap a withered plant to plant a new seed. Your next focus session will bring it back to life.", ko: "시든 식물을 탭하면 새 씨앗을 심을 수 있어요. 다음 집중 세션으로 다시 살릴 수 있어요.", ja: "枯れた植物をタップして新しい種を植えましょう。次の集中セッションで復活できます。" },
+    "onboarding.soundsAndCategories": { en: "Sounds & Categories", ko: "사운드 & 카테고리", ja: "サウンド & カテゴリー" },
+    "onboarding.soundsAndCategoriesDesc": { en: "Mix ambient sounds for your perfect focus atmosphere. Tag sessions with categories to track your focus patterns in Stats.", ko: "앰비언트 사운드를 믹스해서 완벽한 집중 환경을 만들어보세요. 카테고리를 태그하면 통계에서 집중 패턴을 추적할 수 있어요.", ja: "環境音をミックスして完璧な集中環境を。カテゴリーをタグ付けして統計で集中パターンを追跡しましょう。" },
+
+    // Help button
+    "help.button": { en: "Help", ko: "도움말", ja: "ヘルプ" },
+
+    // Category hint
+    "category.hint": { en: "Track focus by category in Stats & History", ko: "카테고리별 집중 통계를 통계 & 기록에서 확인할 수 있어요", ja: "カテゴリー別の集中統計を統計 & 履歴で確認できます" },
+    "category.dismissHint": { en: "Dismiss hint", ko: "힌트 숨기기", ja: "ヒントを閉じる" },
+
+    // Milestones
+    "milestone.sproutGardener": { en: "Sprout Gardener", ko: "새싹 정원사", ja: "芽生えガーデナー" },
+    "milestone.skilledFarmer": { en: "Skilled Farmer", ko: "숙련된 농부", ja: "熟練の農家" },
+    "milestone.masterGardener": { en: "Master Gardener", ko: "마스터 정원사", ja: "マスターガーデナー" },
+    "milestone.firstHarvest": { en: "First Harvest", ko: "첫 수확", ja: "初収穫" },
+    "milestone.tenHarvests": { en: "Bountiful Harvest", ko: "풍성한 수확", ja: "豊かな収穫" },
+    "milestone.weekWarrior": { en: "Week Warrior", ko: "주간 전사", ja: "ウィークウォリアー" },
+    "milestone.streakMaster": { en: "Streak Master", ko: "스트릭 마스터", ja: "ストリークマスター" },
+    "milestone.earned": { en: "Milestone earned!", ko: "마일스톤 달성!", ja: "マイルストーン達成！" },
+
+    // Weekly Summary
+    "weeklySummary.title": { en: "Last Week Summary", ko: "지난주 요약", ja: "先週のまとめ" },
+    "weeklySummary.totalTime": { en: "Total Focus Time", ko: "총 집중 시간", ja: "合計集中時間" },
+    "weeklySummary.dailyAvg": { en: "Daily Average", ko: "일 평균", ja: "1日平均" },
+    "weeklySummary.vsLastWeek": { en: "vs previous week", ko: "전주 대비", ja: "前週比" },
+    "weeklySummary.confirm": { en: "Got it!", ko: "확인!", ja: "了解！" },
+    "weeklySummary.noData": { en: "No sessions last week", ko: "지난주 세션이 없어요", ja: "先週のセッションなし" },
+
+    // Growth percent
+    "growth.progress": { en: "Growth", ko: "성장", ja: "成長" },
+
+    // Stats — monthly view
+    "stats.week": { en: "Week", ko: "주간", ja: "週間" },
+    "stats.month": { en: "Month", ko: "월간", ja: "月間" },
+    "stats.longestSession": { en: "Longest", ko: "최장 세션", ja: "最長" },
+
+    // Landing page
+    "landing.tagline": { en: "Grow your focus, grow your garden", ko: "집중하면 정원이 자라요", ja: "集中すると庭が育つ" },
+    "landing.howItWorks": { en: "How it works", ko: "작동 방식", ja: "仕組み" },
+    "landing.step1": { en: "Start a focus timer", ko: "집중 타이머 시작", ja: "集中タイマーを開始" },
+    "landing.step2": { en: "Your plant grows in real-time", ko: "식물이 실시간으로 성장", ja: "植物がリアルタイムで成長" },
+    "landing.step3": { en: "Complete & harvest to your garden", ko: "완료 & 정원에 수확", ja: "完了 & ガーデンに収穫" },
+    "landing.tryDemo": { en: "Try 3-min demo", ko: "3분 체험하기", ja: "3分デモを試す" },
+    "landing.getStarted": { en: "Get Started", ko: "시작하기", ja: "始めましょう" },
+    "landing.demoToast": { en: "Demo mode: 3-min focus session", ko: "데모 모드: 3분 집중 세션", ja: "デモモード：3分集中セッション" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Leaf, Timer, Music, Sprout, ChevronRight, X } from "lucide-react";
+import { Leaf, Timer, AlertTriangle, Heart, Music, ChevronRight, X } from "lucide-react";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
 
 const STORAGE_KEY = "focus-valley-onboarding-done";
@@ -14,21 +14,27 @@ const STEPS: { icon: React.ReactNode; titleKey: TranslationKey; descKey: Transla
     },
     {
         icon: <Timer size={28} />,
-        titleKey: "onboarding.focusGrow",
-        descKey: "onboarding.focusGrowDesc",
+        titleKey: "onboarding.timerGrowth",
+        descKey: "onboarding.timerGrowthDesc",
         accent: "text-cyan-400",
     },
     {
-        icon: <Music size={28} />,
-        titleKey: "onboarding.sounds",
-        descKey: "onboarding.soundsDesc",
-        accent: "text-violet-400",
+        icon: <AlertTriangle size={28} />,
+        titleKey: "onboarding.withering",
+        descKey: "onboarding.witheringDesc",
+        accent: "text-rose-400",
     },
     {
-        icon: <Sprout size={28} />,
-        titleKey: "onboarding.buildGarden",
-        descKey: "onboarding.buildGardenDesc",
-        accent: "text-amber-400",
+        icon: <Heart size={28} />,
+        titleKey: "onboarding.recovery",
+        descKey: "onboarding.recoveryDesc",
+        accent: "text-pink-400",
+    },
+    {
+        icon: <Music size={28} />,
+        titleKey: "onboarding.soundsAndCategories",
+        descKey: "onboarding.soundsAndCategoriesDesc",
+        accent: "text-violet-400",
     },
 ];
 

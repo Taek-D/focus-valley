@@ -1,10 +1,10 @@
 import React, { useMemo, useCallback, useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download, Share2 } from "lucide-react";
+import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download, Share2, Timer } from "lucide-react";
 import type { PlantType, FocusSession } from "../hooks/useGarden";
 import { useTimerSettings } from "../hooks/useTimerSettings";
 import { useCategories } from "../hooks/useCategories";
-import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getCategoryBreakdown } from "../lib/stats";
+import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getCategoryBreakdown, getMonthlyBarData, getLongestSession } from "../lib/stats";
 import { PLANT_ICONS } from "../lib/constants";
 import { getDayLabel, getLast7Days, getToday, groupByDate, toLocalDateKey } from "../lib/date-utils";
 import { FREE_TIER } from "@/lib/constants";
@@ -49,6 +49,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const { categories } = useCategories();
     const [sharing, setSharing] = useState(false);
     const [exportNotice, setExportNotice] = useState(false);
+    const [chartTab, setChartTab] = useState<"week" | "month">("week");
     const exportTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
     useEffect(() => () => clearTimeout(exportTimerRef.current), []);
@@ -69,6 +70,14 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const weeklyStats = useMemo(() => getWeeklyStats(focusSessions), [focusSessions]);
 
     const categoryBreakdown = useMemo(() => getCategoryBreakdown(focusSessions, categories), [focusSessions, categories]);
+
+    const monthData = useMemo(() => {
+        const data = getMonthlyBarData(focusSessions);
+        const max = Math.max(...data.map((d) => d.minutes), dailyGoal, 1);
+        return { data, max };
+    }, [focusSessions, dailyGoal]);
+
+    const longestSession = useMemo(() => getLongestSession(focusSessions), [focusSessions]);
 
     const goalLinePercent = (dailyGoal / weekData.max) * 100;
 
@@ -164,65 +173,104 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             </AnimatePresence>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-4 gap-2 px-5 pb-4">
+            <div className="grid grid-cols-5 gap-1.5 px-5 pb-4">
                 {[
-                    { icon: <Trophy size={12} />, value: history.length, label: t("stats.harvested"), color: "text-foreground" },
-                    { icon: <Clock size={12} />, value: totalHours > 0 ? `${totalHours}h` : `${remainingMinutes}m`, label: t("stats.focus"), color: "text-foreground" },
-                    { icon: <Flame size={12} />, value: currentStreak, label: t("stats.streak"), color: "text-foreground" },
-                    { icon: <TrendingUp size={12} />, value: bestStreak, label: t("stats.best"), color: "text-foreground" },
+                    { icon: <Trophy size={12} />, value: history.length, label: t("stats.harvested") },
+                    { icon: <Clock size={12} />, value: totalHours > 0 ? `${totalHours}h` : `${remainingMinutes}m`, label: t("stats.focus") },
+                    { icon: <Flame size={12} />, value: currentStreak, label: t("stats.streak") },
+                    { icon: <TrendingUp size={12} />, value: bestStreak, label: t("stats.best") },
+                    { icon: <Timer size={12} />, value: longestSession > 0 ? `${longestSession}m` : "-", label: t("stats.longestSession") },
                 ].map((stat, i) => (
-                    <div key={i} className="rounded-2xl border border-foreground/5 p-3 text-center">
-                        <div className="text-muted-foreground/40 mx-auto mb-1.5 flex justify-center">{stat.icon}</div>
-                        <div className={`font-display text-lg ${stat.color}`} style={{ fontWeight: 400 }}>{stat.value}</div>
-                        <div className="font-body text-[9px] text-muted-foreground/40">{stat.label}</div>
+                    <div key={i} className="rounded-2xl border border-foreground/5 p-2.5 text-center">
+                        <div className="text-muted-foreground/40 mx-auto mb-1 flex justify-center">{stat.icon}</div>
+                        <div className="font-display text-base text-foreground" style={{ fontWeight: 400 }}>{stat.value}</div>
+                        <div className="font-body text-[8px] text-muted-foreground/40">{stat.label}</div>
                     </div>
                 ))}
             </div>
 
-            {/* 7-Day Focus Chart */}
+            {/* Focus Chart — Week / Month tabs */}
             <div className="px-5 pb-4">
-                <div className="font-body text-[10px] font-medium text-muted-foreground/40 tracking-[0.1em] uppercase mb-2">{t("stats.thisWeek")}</div>
-                <div className="relative flex items-end gap-1.5 h-24">
-                    {/* Goal line */}
-                    <div
-                        className="absolute left-0 right-0 border-t border-dashed border-foreground/10 pointer-events-none"
-                        style={{ bottom: `${Math.min(goalLinePercent, 100) * 0.7}%` }}
+                <div className="flex items-center gap-3 mb-2">
+                    <button
+                        onClick={() => setChartTab("week")}
+                        className={`font-body text-[10px] font-medium tracking-[0.1em] uppercase transition-colors ${chartTab === "week" ? "text-foreground" : "text-muted-foreground/30 hover:text-muted-foreground/50"}`}
                     >
-                        <span className="absolute -top-3 right-0 font-body text-[8px] text-muted-foreground/25">
-                            {dailyGoal}m {t("stats.goal")}
-                        </span>
-                    </div>
+                        {t("stats.week")}
+                    </button>
+                    <button
+                        onClick={() => setChartTab("month")}
+                        className={`font-body text-[10px] font-medium tracking-[0.1em] uppercase transition-colors ${chartTab === "month" ? "text-foreground" : "text-muted-foreground/30 hover:text-muted-foreground/50"}`}
+                    >
+                        {t("stats.month")}
+                    </button>
+                </div>
 
-                    {weekData.data.map((day, i) => {
-                        const height = day.minutes > 0 ? Math.max((day.minutes / weekData.max) * 100, 8) : 4;
-                        const isLast = i === 6;
-                        return (
-                            <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
-                                {/* Minute label */}
-                                <div className="font-body text-[8px] text-muted-foreground/40 h-3 flex items-end">
-                                    {day.minutes > 0 && `${day.minutes}m`}
+                {chartTab === "week" ? (
+                    <div className="relative flex items-end gap-1.5 h-24">
+                        {/* Goal line */}
+                        <div
+                            className="absolute left-0 right-0 border-t border-dashed border-foreground/10 pointer-events-none"
+                            style={{ bottom: `${Math.min(goalLinePercent, 100) * 0.7}%` }}
+                        >
+                            <span className="absolute -top-3 right-0 font-body text-[8px] text-muted-foreground/25">
+                                {dailyGoal}m {t("stats.goal")}
+                            </span>
+                        </div>
+
+                        {weekData.data.map((day, i) => {
+                            const height = day.minutes > 0 ? Math.max((day.minutes / weekData.max) * 100, 8) : 4;
+                            const isLast = i === 6;
+                            return (
+                                <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
+                                    <div className="font-body text-[8px] text-muted-foreground/40 h-3 flex items-end">
+                                        {day.minutes > 0 && `${day.minutes}m`}
+                                    </div>
+                                    <div className="w-full flex items-end justify-center" style={{ height: 56 }}>
+                                        <motion.div
+                                            className={`w-full max-w-[28px] rounded-t-lg ${
+                                                isLast
+                                                    ? "bg-foreground/30"
+                                                    : day.minutes > 0
+                                                    ? "bg-foreground/10"
+                                                    : "bg-foreground/4"
+                                            }`}
+                                            initial={{ height: 0 }}
+                                            animate={{ height: `${height}%` }}
+                                            transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+                                        />
+                                    </div>
+                                    <div className={`font-body text-[9px] ${isLast ? "text-foreground font-medium" : "text-muted-foreground/40"}`}>
+                                        {getDayLabel(day.date)}
+                                    </div>
                                 </div>
-                                <div className="w-full flex items-end justify-center" style={{ height: 56 }}>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div className="relative flex items-end gap-[2px] h-24">
+                        {monthData.data.map((day, i) => {
+                            const height = day.minutes > 0 ? Math.max((day.minutes / monthData.max) * 100, 4) : 2;
+                            const isToday = i === 29;
+                            return (
+                                <div key={day.date} className="flex-1 flex items-end justify-center" style={{ height: 72 }} title={`${day.date}: ${day.minutes}m`}>
                                     <motion.div
-                                        className={`w-full max-w-[28px] rounded-t-lg ${
-                                            isLast
+                                        className={`w-full rounded-t-sm ${
+                                            isToday
                                                 ? "bg-foreground/30"
                                                 : day.minutes > 0
-                                                ? "bg-foreground/10"
+                                                ? "bg-foreground/12"
                                                 : "bg-foreground/4"
                                         }`}
                                         initial={{ height: 0 }}
                                         animate={{ height: `${height}%` }}
-                                        transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+                                        transition={{ duration: 0.3, delay: i * 0.01, ease: "easeOut" }}
                                     />
                                 </div>
-                                <div className={`font-body text-[9px] ${isLast ? "text-foreground font-medium" : "text-muted-foreground/40"}`}>
-                                    {getDayLabel(day.date)}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
             {/* Activity Heatmap — 13 weeks */}

@@ -9,6 +9,12 @@ export function useOnboarding() {
         setShow(false);
     }, []);
 
-    return { showOnboarding: show, completeOnboarding: complete };
+    const reopen = useCallback(() => {
+        setShow(true);
+    }, []);
+
+    const hasCompleted = !!localStorage.getItem(STORAGE_KEY);
+
+    return { showOnboarding: show, completeOnboarding: complete, reopenOnboarding: reopen, hasCompletedOnboarding: hasCompleted };
 }
 
