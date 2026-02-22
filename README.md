@@ -8,7 +8,7 @@
 
 - **뽀모도로 타이머** — 집중 / 짧은 휴식 / 긴 휴식, 4사이클 자동 전환, 시간 커스터마이징
 - **픽셀 아트 정원** — 집중 중 식물이 5단계(씨앗 → 새싹 → 묘목 → 나무 → 꽃)로 성장, 포기 시 시들기
-- **앰비언트 사운드** — 비, 불, 카페, 시냇물, 화이트 노이즈 (mp3 루프 + Web Audio API)
+- **앰비언트 사운드** — 비, 불, 카페, 시냇물, 화이트 노이즈 + Pro 3종(천둥, 바람, 밤소리) (mp3 루프 + Web Audio API)
 - **오로라 비주얼** — 타이머 모드/계절에 따라 색이 바뀌는 홀로그래픽 오로라
 
 ### 게이미피케이션
@@ -40,6 +40,7 @@
 - **카테고리별 통계** — 카테고리별 누적 시간 비율 (Stacked bar + 상세 행)
 - **주간 요약 팝업** — 매주 월요일 첫 진입 시 지난주 요약 표시
 - **CSV 내보내기** — 세션 데이터 내보내기
+- **공유 카드** — 오늘의 집중 기록을 이미지로 생성 & 공유, 3종 테마 (Aurora 무료 / Sunset·Forest Pro)
 - **정원 컬렉션** — 모든 식물 종류, 성장 단계, 해금 조건 열람
 
 ### 온보딩 & 가이드
@@ -167,7 +168,8 @@ src/
     useTimer.ts                    # 타이머 로직 (Web Worker + 세션 복구 + Visibility API)
     useTimerSettings.ts            # 타이머 시간 설정 (Zustand)
     useGarden.ts                   # 정원 상태 (Zustand + persist + 마일스톤)
-    useAudioMixer.ts               # 오디오 믹서 (Web Audio API)
+    useAudioMixer.ts               # 오디오 믹서 (Web Audio API, 8채널)
+    useShareTheme.ts               # 공유 카드 테마 선택 (Zustand + persist)
     useAudioReactivity.ts          # 오디오 반응형 비주얼
     useAuth.ts                     # 인증 (이메일/구글)
     useSubscription.ts             # 구독 상태
@@ -197,7 +199,7 @@ src/
     sync.ts                        # 클라우드 동기화
     supabase.ts                    # Supabase 클라이언트
     notification-sound.ts          # 완료 사운드
-    share-card.ts                  # 공유 카드 생성
+    share-card.ts                  # 공유 카드 생성 (3종 테마: aurora/sunset/forest)
 
   workers/
     timer.worker.ts                # Web Worker (1초 인터벌 TICK)
@@ -213,7 +215,8 @@ remotion/
   scenes/                          # 비디오 씬 (Logo, Timer, Garden, Sounds 등)
 
 public/
-  sounds/                          # 앰비언트 사운드 (rain, fire, cafe, stream, white)
+  sounds/                          # 앰비언트 사운드 (rain, fire, cafe, stream, white + Pro: thunder, wind, night)
+    CREDITS.md                     # 사운드 출처 & 라이선스
   privacy.html                     # 개인정보처리방침
   terms.html                       # 이용약관
   offline.html                     # 오프라인 폴백
@@ -246,6 +249,7 @@ supabase/
 | `focus-valley-garden` | 식물, 세션, 스트릭, 마일스톤 |
 | `focus-valley-timer-state` | 타이머 실행 상태 |
 | `focus-valley-locale` | 언어 설정 |
+| `focus-valley-share-theme` | 공유 카드 테마 선택 |
 | `focus-valley-landing-done` | 랜딩 페이지 완료 |
 | `focus-valley-onboarding-done` | 온보딩 완료 |
 
@@ -265,7 +269,7 @@ supabase/
 
 ### 오디오 시스템
 
-Web Audio API를 사용한 mp3 오디오 루프 재생. 5개 트랙(rain, fire, cafe, stream, white) 개별 볼륨 조절 + 마스터 뮤트.
+Web Audio API를 사용한 mp3 오디오 루프 재생. 8개 트랙(rain, fire, cafe, stream, white + Pro: thunder, wind, night) 개별 볼륨 조절 + 마스터 뮤트. Pro 사운드는 Free 유저에게 잠금 처리.
 
 ## 라이선스
 
