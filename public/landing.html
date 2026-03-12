@@ -199,6 +199,42 @@
             border-color: rgba(245, 245, 247, 0.15);
         }
 
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            border-radius: 999px;
+            border: 1px solid var(--muted-ultra);
+            background: rgba(245, 245, 247, 0.03);
+        }
+
+        .lang-switch button {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Sora', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active {
+            background: rgba(245, 245, 247, 0.1);
+            color: var(--fg);
+        }
+
         /* ── Hero ──────────────────────────────── */
 
         .hero {
@@ -388,10 +424,13 @@
 
         @media (max-width: 768px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-actions { gap: 0.5rem; }
         }
 
         @media (max-width: 480px) {
             .features-grid { grid-template-columns: 1fr; }
+            .nav-actions { flex-direction: column; align-items: flex-end; }
+            .nav-cta { display: none; }
         }
 
         .feature-card {
@@ -519,6 +558,17 @@
         .plan-card.pro {
             border-color: rgba(167, 139, 250, 0.3);
             position: relative;
+        }
+
+        .plan-card.pro .plan-price {
+            font-size: 2rem;
+            font-weight: 200;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-card.pro .plan-price span {
+            font-size: 0.8rem;
+            color: var(--muted);
         }
 
         .plan-badge {
@@ -706,7 +756,13 @@
                 </svg>
                 <span>Focus Valley</span>
             </a>
-            <a href="/" class="nav-cta">Launch App &rarr;</a>
+            <div class="nav-actions">
+                <div class="lang-switch" aria-label="Language switcher">
+                    <button type="button" data-lang="ko">KO</button>
+                    <button type="button" data-lang="en">EN</button>
+                </div>
+                <a href="/" class="nav-cta"><span class="nav-cta-label">Launch App</span> &rarr;</a>
+            </div>
         </div>
     </nav>
 
@@ -716,7 +772,7 @@
         <section class="hero">
             <div class="hero-badge">
                 <span class="dot"></span>
-                Free &middot; No signup required
+                <span class="hero-badge-label">Free &middot; No signup required</span>
             </div>
 
             <h1>
@@ -732,7 +788,7 @@
 
             <div class="hero-actions">
                 <a href="/" class="btn-primary">
-                    Start Focusing
+                    <span class="btn-primary-label">Start Focusing</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
                 <a href="#pricing" class="btn-secondary">See Plans</a>
@@ -855,10 +911,10 @@
                     </ul>
                 </div>
                 <div class="plan-card pro fade-in">
-                    <span class="plan-badge">Lifetime</span>
+                    <span class="plan-badge">Preview</span>
                     <h3>Pro</h3>
-                    <div class="plan-price">₩19,900 <span>one-time</span></div>
-                    <p style="font-size:0.7rem;color:var(--muted);margin-top:-1rem;margin-bottom:1.5rem;">One-time purchase. Yours forever.</p>
+                    <div class="plan-price">Coming soon <span>preview</span></div>
+                    <p style="font-size:0.7rem;color:var(--muted);margin-top:-1rem;margin-bottom:1.5rem;">These extras are planned next. Checkout is not live in the current build.</p>
                     <ul class="plan-features">
                         <li><span class="check">&#10003;</span> Everything in Free</li>
                         <li><span class="check">&#10003;</span> 8+ rare plant types</li>
@@ -876,11 +932,11 @@
         <!-- Pro CTA -->
         <section class="pro-cta-section" id="pro-cta">
             <div class="pro-cta-card fade-in">
-                <h2>Ready to go Pro?</h2>
-                <p>Unlock premium plants, unlimited categories, full data export, and more. One-time purchase, yours forever.</p>
+                <h2>Pro preview</h2>
+                <p>Rare plants, richer stats, and more export options are planned next. This site does not offer checkout yet.</p>
 
                 <a href="/" class="btn-primary" style="display:inline-flex;margin-top:0.5rem;">
-                    Open App
+                    <span class="cta-primary-label">Open App</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
             </div>
@@ -900,17 +956,360 @@
     </footer>
 
     <script>
-        // Scroll-triggered fade-in
+        const LANDING_LOCALE_KEY = "focus-valley-landing-locale";
+        const APP_LOCALE_KEY = "focus-valley-locale";
+
+        const translations = {
+            en: {
+                title: "Focus Valley - Grow Your Garden While Growing Your Focus",
+                description: "A beautiful Pomodoro timer where plants grow as you focus. Ambient soundscapes, streak tracking, and a pixel garden to keep you motivated. Free, no signup required.",
+                shortDescription: "A beautiful Pomodoro timer where plants grow as you focus. Free, no signup.",
+                ogLocale: "en_US",
+                navCta: "Launch App",
+                heroBadge: "Free · No signup required",
+                heroTitle: "Grow your garden<br>while growing your <span class=\"gradient\">focus</span>",
+                heroBody: "A beautiful Pomodoro timer where plants grow as you focus. Ambient soundscapes, streak tracking, and a pixel garden to keep you motivated.",
+                heroPrimary: "Start Focusing",
+                heroSecondary: "See Plans",
+                scrollHint: "Discover",
+                sectionLabels: ["Features", "How it works", "Plans"],
+                sectionTitles: [
+                    "Everything you need to stay focused",
+                    "Three steps to better focus",
+                    "Simple, fair pricing",
+                ],
+                features: [
+                    {
+                        icon: "&#127756;",
+                        title: "Aurora Reactive",
+                        body: "The aurora orb shifts colors based on your timer mode, weather, and focus depth. Each session feels unique.",
+                    },
+                    {
+                        icon: "&#127788;",
+                        title: "Breathing Guide",
+                        body: "4-7-8 breathing circle syncs with the aurora to help you settle into deep focus before each session.",
+                    },
+                    {
+                        icon: "&#10024;",
+                        title: "Deep Focus Mode",
+                        body: "Consecutive sessions unlock golden aurora and rare plants. The longer you stay focused, the greater the reward.",
+                    },
+                    {
+                        icon: "&#9729;",
+                        title: "Weather Sync",
+                        body: "Aurora and ambient sounds adapt to your local weather - rain, snow, clouds, or sunshine.",
+                    },
+                    {
+                        icon: "&#127911;",
+                        title: "Ambient Sounds",
+                        body: "Mix rain, fire, cafe, stream, and white noise. Curated ambient audio loops for deep focus.",
+                    },
+                    {
+                        icon: "&#127807;",
+                        title: "Garden Collection",
+                        body: "Collect 8 unique plant types. Unlock rare plants through streaks and deep focus milestones.",
+                    },
+                ],
+                steps: [
+                    {
+                        title: "Focus",
+                        body: "Start a 25-minute Pomodoro session. Pick a category and let the timer guide your deep work.",
+                    },
+                    {
+                        title: "Grow",
+                        body: "Your pixel plant grows as you focus. Complete the session to let it bloom into a tree or flower.",
+                    },
+                    {
+                        title: "Collect",
+                        body: "Harvest your plant, build streaks, unlock rare species, and grow your personal focus garden.",
+                    },
+                ],
+                freePlan: {
+                    title: "Free",
+                    price: "$0",
+                    suffix: "forever",
+                    features: [
+                        { text: "Pomodoro timer" },
+                        { text: "4 base plant types" },
+                        { text: "5 free ambient sounds" },
+                        { text: "6 preset categories" },
+                        { text: "Basic weekly stats" },
+                        { text: "Aurora share card theme" },
+                        { text: "Dark mode" },
+                        { text: "Rare plants (8+ types)", disabled: true },
+                        { text: "Unlimited categories", disabled: true },
+                        { text: "Full data export", disabled: true },
+                    ],
+                },
+                proPlan: {
+                    badge: "Preview",
+                    title: "Pro",
+                    price: "Coming soon",
+                    suffix: "preview",
+                    lead: "These extras are planned next. Checkout is not live in the current build.",
+                    features: [
+                        { text: "Everything in Free" },
+                        { text: "8+ rare plant types" },
+                        { text: "8 ambient sound channels" },
+                        { text: "Unlimited categories" },
+                        { text: "Advanced stats & heatmap" },
+                        { text: "Full CSV export (all time)" },
+                        { text: "Custom share card themes" },
+                        { text: "Priority support" },
+                    ],
+                },
+                ctaTitle: "Pro preview",
+                ctaBody: "Rare plants, richer stats, and more export options are planned next. This site does not offer checkout yet.",
+                ctaPrimary: "Open App",
+                footerLinks: ["Privacy", "Terms", "Sound Credits"],
+                footerCopy: "&copy; 2026 Focus Valley. Built with care.",
+            },
+            ko: {
+                title: "Focus Valley - 집중이 자라는 만큼 정원도 자랍니다",
+                description: "집중할수록 식물이 자라는 감성 뽀모도로 타이머입니다. 앰비언트 사운드, 스트릭 추적, 픽셀 정원으로 몰입을 오래 이어가세요. 무료로 바로 시작할 수 있습니다.",
+                shortDescription: "집중할수록 식물이 자라는 감성 뽀모도로 타이머입니다. 무료로 바로 시작할 수 있습니다.",
+                ogLocale: "ko_KR",
+                navCta: "앱 시작하기",
+                heroBadge: "무료 · 가입 없이 시작",
+                heroTitle: "집중이 자라는 만큼<br>당신의 <span class=\"gradient\">정원</span>도 자랍니다",
+                heroBody: "집중 시간에 맞춰 식물이 자라는 감성 뽀모도로 타이머입니다. 사운드스케이프와 스트릭, 픽셀 정원이 몰입을 오래 이어가게 도와줍니다.",
+                heroPrimary: "집중 시작하기",
+                heroSecondary: "플랜 보기",
+                scrollHint: "둘러보기",
+                sectionLabels: ["기능", "작동 방식", "플랜"],
+                sectionTitles: [
+                    "집중을 이어가기 위한 핵심 기능",
+                    "더 잘 집중하는 세 단계",
+                    "가볍고 솔직한 구성",
+                ],
+                features: [
+                    {
+                        icon: "&#127756;",
+                        title: "오로라 반응형 배경",
+                        body: "타이머 모드, 날씨, 깊은 집중 상태에 따라 오로라 색이 달라져 매 세션이 조금씩 다르게 느껴집니다.",
+                    },
+                    {
+                        icon: "&#127788;",
+                        title: "호흡 가이드",
+                        body: "4-7-8 호흡 리듬이 오로라와 함께 움직여 세션 시작 전에 집중 상태로 가라앉도록 도와줍니다.",
+                    },
+                    {
+                        icon: "&#10024;",
+                        title: "딥 포커스 모드",
+                        body: "연속 세션이 쌓이면 황금 오로라와 희귀 식물이 열립니다. 오래 버틸수록 보상도 커집니다.",
+                    },
+                    {
+                        icon: "&#9729;",
+                        title: "날씨 연동",
+                        body: "오로라와 앰비언트 사운드가 비, 눈, 구름, 맑음 같은 현재 날씨에 맞춰 부드럽게 바뀝니다.",
+                    },
+                    {
+                        icon: "&#127911;",
+                        title: "앰비언트 사운드",
+                        body: "비, 불, 카페, 시냇물, 화이트 노이즈를 섞어 나만의 집중 사운드 환경을 만들 수 있습니다.",
+                    },
+                    {
+                        icon: "&#127807;",
+                        title: "정원 컬렉션",
+                        body: "8종의 식물을 모으고, 스트릭과 딥 포커스 마일스톤으로 희귀 식물을 해금할 수 있습니다.",
+                    },
+                ],
+                steps: [
+                    {
+                        title: "집중",
+                        body: "25분 포커스 세션을 시작하고 카테고리를 고른 뒤, 타이머에 맞춰 깊게 몰입합니다.",
+                    },
+                    {
+                        title: "성장",
+                        body: "집중하는 동안 픽셀 식물이 실시간으로 자랍니다. 세션을 끝까지 마치면 꽃이나 나무가 됩니다.",
+                    },
+                    {
+                        title: "수확",
+                        body: "식물을 수확하고, 스트릭을 쌓고, 희귀 종을 열면서 나만의 포커스 정원을 키워갑니다.",
+                    },
+                ],
+                freePlan: {
+                    title: "Free",
+                    price: "$0",
+                    suffix: "계속 무료",
+                    features: [
+                        { text: "뽀모도로 타이머" },
+                        { text: "기본 식물 4종" },
+                        { text: "무료 사운드 5종" },
+                        { text: "기본 카테고리 6개" },
+                        { text: "기본 주간 통계" },
+                        { text: "오로라 공유 카드 테마" },
+                        { text: "다크 모드" },
+                        { text: "희귀 식물 (8종 이상)", disabled: true },
+                        { text: "무제한 카테고리", disabled: true },
+                        { text: "전체 데이터 내보내기", disabled: true },
+                    ],
+                },
+                proPlan: {
+                    badge: "미리보기",
+                    title: "Pro",
+                    price: "곧 공개",
+                    suffix: "preview",
+                    lead: "다음 단계 기능을 준비 중입니다. 현재 빌드에는 결제 흐름이 연결되어 있지 않습니다.",
+                    features: [
+                        { text: "Free의 모든 기능" },
+                        { text: "희귀 식물 8종 이상" },
+                        { text: "앰비언트 사운드 8채널" },
+                        { text: "무제한 카테고리" },
+                        { text: "고급 통계와 히트맵" },
+                        { text: "전체 CSV 내보내기" },
+                        { text: "커스텀 공유 카드 테마" },
+                        { text: "우선 지원" },
+                    ],
+                },
+                ctaTitle: "Pro 미리보기",
+                ctaBody: "희귀 식물, 더 풍부한 통계, 확장된 내보내기 기능을 준비 중입니다. 이 페이지에서는 아직 결제를 제공하지 않습니다.",
+                ctaPrimary: "앱 열기",
+                footerLinks: ["개인정보처리방침", "이용약관", "사운드 크레딧"],
+                footerCopy: "&copy; 2026 Focus Valley. 정성껏 만들었습니다.",
+            },
+        };
+
+        function renderPlanFeatures(listElement, items) {
+            listElement.innerHTML = items.map((item) => {
+                const disabledClass = item.disabled ? " class=\"disabled\"" : "";
+                const check = item.disabled ? "&mdash;" : "&#10003;";
+                return "<li" + disabledClass + "><span class=\"check\">" + check + "</span> " + item.text + "</li>";
+            }).join("");
+        }
+
+        function persistLocale(locale) {
+            try {
+                localStorage.setItem(LANDING_LOCALE_KEY, locale);
+                localStorage.setItem(APP_LOCALE_KEY, JSON.stringify({
+                    state: { locale: locale },
+                    version: 1,
+                }));
+            } catch {
+                return;
+            }
+        }
+
+        function readStoredAppLocale() {
+            try {
+                const raw = localStorage.getItem(APP_LOCALE_KEY);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                const locale = parsed?.state?.locale;
+                return locale === "ko" ? "ko" : locale === "en" ? "en" : null;
+            } catch {
+                return null;
+            }
+        }
+
+        function resolveInitialLocale() {
+            const queryLocale = new URLSearchParams(window.location.search).get("lang");
+            if (queryLocale === "ko" || queryLocale === "en") return queryLocale;
+
+            const landingLocale = localStorage.getItem(LANDING_LOCALE_KEY);
+            if (landingLocale === "ko" || landingLocale === "en") return landingLocale;
+
+            const appLocale = readStoredAppLocale();
+            if (appLocale) return appLocale;
+
+            return navigator.language?.startsWith("ko") ? "ko" : "en";
+        }
+
+        function applyLocale(locale) {
+            const t = translations[locale] || translations.en;
+
+            document.documentElement.lang = locale;
+            document.title = t.title;
+
+            document.querySelector("meta[name=\"description\"]")?.setAttribute("content", t.description);
+            document.querySelector("meta[property=\"og:title\"]")?.setAttribute("content", t.title);
+            document.querySelector("meta[property=\"og:description\"]")?.setAttribute("content", t.shortDescription);
+            document.querySelector("meta[property=\"og:locale\"]")?.setAttribute("content", t.ogLocale);
+            document.querySelector("meta[name=\"twitter:title\"]")?.setAttribute("content", t.title);
+            document.querySelector("meta[name=\"twitter:description\"]")?.setAttribute("content", t.shortDescription);
+
+            document.querySelector(".nav-cta-label").textContent = t.navCta;
+            document.querySelector(".hero-badge-label").textContent = t.heroBadge;
+            document.querySelector(".hero h1").innerHTML = t.heroTitle;
+            document.querySelector(".hero p").textContent = t.heroBody;
+            document.querySelector(".btn-primary-label").textContent = t.heroPrimary;
+            document.querySelector(".hero .btn-secondary").textContent = t.heroSecondary;
+            document.querySelector(".scroll-hint span").textContent = t.scrollHint;
+
+            document.querySelectorAll(".section-label").forEach((element, index) => {
+                element.textContent = t.sectionLabels[index] || "";
+            });
+
+            document.querySelectorAll(".section-title").forEach((element, index) => {
+                element.textContent = t.sectionTitles[index] || "";
+            });
+
+            document.querySelectorAll(".feature-card").forEach((card, index) => {
+                const feature = t.features[index];
+                if (!feature) return;
+                card.querySelector(".feature-icon").innerHTML = feature.icon;
+                card.querySelector("h3").textContent = feature.title;
+                card.querySelector("p").textContent = feature.body;
+            });
+
+            document.querySelectorAll(".step").forEach((step, index) => {
+                const item = t.steps[index];
+                if (!item) return;
+                step.querySelector("h3").textContent = item.title;
+                step.querySelector("p").textContent = item.body;
+            });
+
+            const freePlan = document.querySelector(".plan-card:not(.pro)");
+            freePlan.querySelector("h3").textContent = t.freePlan.title;
+            freePlan.querySelector(".plan-price").innerHTML = t.freePlan.price + " <span>" + t.freePlan.suffix + "</span>";
+            renderPlanFeatures(freePlan.querySelector(".plan-features"), t.freePlan.features);
+
+            const proPlan = document.querySelector(".plan-card.pro");
+            proPlan.querySelector(".plan-badge").textContent = t.proPlan.badge;
+            proPlan.querySelector("h3").textContent = t.proPlan.title;
+            proPlan.querySelector(".plan-price").innerHTML = t.proPlan.price + " <span>" + t.proPlan.suffix + "</span>";
+            proPlan.querySelector("p").textContent = t.proPlan.lead;
+            renderPlanFeatures(proPlan.querySelector(".plan-features"), t.proPlan.features);
+
+            const ctaCard = document.querySelector(".pro-cta-card");
+            ctaCard.querySelector("h2").textContent = t.ctaTitle;
+            ctaCard.querySelector("p").textContent = t.ctaBody;
+            ctaCard.querySelector(".cta-primary-label").textContent = t.ctaPrimary;
+
+            const footerLinks = document.querySelectorAll(".footer-links a");
+            footerLinks.forEach((link, index) => {
+                link.textContent = t.footerLinks[index] || "";
+            });
+            document.querySelector(".footer-copy").innerHTML = t.footerCopy;
+
+            document.querySelectorAll("[data-lang]").forEach((button) => {
+                button.classList.toggle("active", button.getAttribute("data-lang") === locale);
+            });
+        }
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add("visible");
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
-        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+        document.querySelectorAll(".fade-in").forEach((element) => observer.observe(element));
+
+        const initialLocale = resolveInitialLocale();
+        persistLocale(initialLocale);
+        applyLocale(initialLocale);
+
+        document.querySelectorAll("[data-lang]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const locale = button.getAttribute("data-lang");
+                if (locale !== "ko" && locale !== "en") return;
+                persistLocale(locale);
+                applyLocale(locale);
+            });
+        });
     </script>
 
 </body>

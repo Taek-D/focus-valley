@@ -4,6 +4,9 @@
 > **작성일**: 2026-02-22
 > **상태**: 현재 구현 동기화 완료
 
+> Status note (March 12, 2026): This document includes older monetization and onboarding notes.
+> The current shipped app uses a preview-only Pro state with no live checkout, and first-run guidance is centered on the landing screen plus the manual tour.
+
 ---
 
 ## 1. 제품 개요
@@ -17,7 +20,7 @@
 | **타겟 사용자** | 집중력 향상이 필요한 학생, 직장인, 프리랜서 |
 | **핵심 문제** | 장시간 집중 유지의 어려움, 외부 소음에 의한 산만함 |
 | **솔루션** | 타이머 + 시각적 보상(식물 성장) + 청각적 환경(앰비언트 사운드) |
-| **차별점** | 레트로 픽셀 아트 미학, 프리미엄 프리 + Pro 원타임 결제(₩19,900), Supabase 클라우드 동기화 |
+| **차별점** | 레트로 픽셀 아트 미학, 미리보기 기반 Pro 확장 구상, Supabase 클라우드 동기화 |
 
 ---
 
@@ -93,7 +96,7 @@
 
 ### 3.6 Pro 티어
 
-- **수익화 모델**: 프리미엄 프리 + Pro 원타임 결제 (₩19,900, 평생 소유)
+- **수익화 모델**: 핵심 기능 무료 + 향후 Pro/preview 확장 검토 (현재 체크아웃 미제공)
 - **Pro 전용 기능**: 희귀 식물 8종+, 15+ 앰비언트 사운드, 무제한 카테고리, 고급 통계, 공유카드 커스텀 테마
 - **업그레이드 모달**: `UpgradeModal` 컴포넌트, `ProGate` 래퍼로 기능 게이팅
 - **구독 상태**: `useSubscription` Zustand 스토어
@@ -140,7 +143,7 @@ src/
 │   ├── GardenCollection.tsx        # 수집한 식물 갤러리
 │   ├── CategoryChips.tsx           # 카테고리 선택 칩
 │   ├── AuthModal.tsx               # 로그인/회원가입 모달
-│   ├── UpgradeModal.tsx            # Pro 업그레이드 모달 (₩19,900 원타임)
+│   ├── UpgradeModal.tsx            # Pro 미리보기 모달 (체크아웃 미연결)
 │   ├── ProGate.tsx                 # Pro 기능 게이팅 래퍼
 │   ├── Onboarding.tsx              # 4단계 온보딩 슬라이드
 │   ├── TourGuide.tsx               # 7단계 인터랙티브 투어
@@ -206,7 +209,7 @@ graph TD
 | 4 | **Cafe/Stream 사운드** | 화이트 노이즈와 동일 | 고유 노이즈 프로파일 미구현 |
 | ~~5~~ | ~~Framer Motion 활용~~ | ✅ 구현 완료 | 전체 UI 애니메이션 적용 |
 | ~~6~~ | ~~식물 종류~~ | ✅ 구현 완료 | 10종+ (스트릭/딥포커스 잠금 해제) |
-| 7 | **결제 연동** | 미구현 | Lemon Squeezy 연동 필요 (₩19,900 원타임) |
+| 7 | **결제 연동** | 미구현 | 향후 결제 연동 검토, 현재는 미리보기만 제공 |
 | 8 | **AI 집중 인사이트** | 미구현 | Pro 전용 기능으로 계획 |
 
 ### 5.2 기술 부채
@@ -258,7 +261,7 @@ graph TD
 
 ## 8. 제약 조건
 
-- **프리미엄 프리 모델**: 핵심 기능 무료, Pro 원타임 결제(₩19,900)로 고급 기능 해제
+- **확장 모델**: 핵심 기능 무료, 향후 Pro/preview 기능으로 고급 기능 확장 검토
 - **데이터 저장**: 로컬 localStorage 기본 + Supabase 클라우드 동기화 (로그인 시)
 - **프라이버시**: 분석 데이터(GA4) 비식별 수집, 민감 데이터는 Supabase Row Level Security 적용
 - **브라우저 호환성**: Web Audio API, Web Worker 지원 브라우저 필수

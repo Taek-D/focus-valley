@@ -5,18 +5,22 @@ import { initAnalytics } from './lib/analytics'
 import './index.css'
 import App from './App.tsx'
 
-Sentry.init({
-  dsn: "https://943e92eca40c46d660b31b9a8cebf9e8@o4510836478377984.ingest.de.sentry.io/4510879155683408",
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
-  ],
-  tracesSampleRate: 0.1,
-  replaysSessionSampleRate: 0,
-  replaysOnErrorSampleRate: 1.0,
-  environment: import.meta.env.MODE,
-  enabled: import.meta.env.PROD,
-})
+const sentryDsn = import.meta.env.VITE_SENTRY_DSN
+
+if (import.meta.env.PROD && sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
+    ],
+    tracesSampleRate: 0.1,
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 1.0,
+    environment: import.meta.env.MODE,
+    enabled: true,
+  })
+}
 
 initAnalytics()
 

@@ -29,7 +29,7 @@ export const useSubscription = create<SubscriptionState>((set) => ({
     initialized: false,
 
     refresh: async (user) => {
-        if (!user) {
+        if (!user || !supabase) {
             set({ plan: "free", expiresAt: null, loading: false, initialized: true });
             return;
         }

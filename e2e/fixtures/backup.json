@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "appVersion": "1.0.0",
+  "exportedAt": "2026-03-12T00:00:00.000Z",
+  "data": {
+    "schemaVersion": 2,
+    "garden": {
+      "stage": "TREE",
+      "type": "DEFAULT",
+      "history": [
+        {
+          "type": "DEFAULT",
+          "date": "2026-03-11"
+        }
+      ],
+      "totalFocusMinutes": 25,
+      "focusSessions": [
+        {
+          "id": "session-1",
+          "date": "2026-03-11",
+          "minutes": 25,
+          "categoryId": "study"
+        }
+      ],
+      "currentStreak": 1,
+      "bestStreak": 1,
+      "lastFocusDate": "2026-03-11",
+      "unlockedPlants": [
+        "DEFAULT"
+      ],
+      "deepFocusStreak": 0,
+      "lastFocusTimestamp": 1773273600000,
+      "earnedMilestones": [],
+      "updatedAt": "2026-03-12T00:00:00.000Z"
+    },
+    "settings": {
+      "focus": 25,
+      "shortBreak": 5,
+      "longBreak": 15,
+      "dailyGoal": 120,
+      "autoAdvance": false,
+      "presetId": "classic",
+      "customPreset": {
+        "focus": 25,
+        "shortBreak": 5,
+        "longBreak": 15
+      },
+      "updatedAt": "2026-03-12T00:00:00.000Z"
+    },
+    "categories": {
+      "categories": [
+        {
+          "id": "study",
+          "label": "Study",
+          "emoji": "*",
+          "color": "#9ca3af"
+        }
+      ],
+      "activeCategoryId": "study",
+      "updatedAt": "2026-03-12T00:00:00.000Z"
+    },
+    "todos": {
+      "todos": [
+        {
+          "id": "todo-1",
+          "text": "Review the backup smoke flow",
+          "completed": false,
+          "createdAt": "2026-03-12T00:00:00.000Z"
+        }
+      ],
+      "activeTodoId": "todo-1",
+      "updatedAt": "2026-03-12T00:00:00.000Z"
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ArrowRight, Timer, Sprout, Trophy, Sparkles } from "lucide-react";
 import { getPlantComponent } from "./ui/pixel-plants";
-import { useTranslation } from "@/lib/i18n";
+import { useI18n, useTranslation } from "@/lib/i18n";
 import type { PlantStage } from "@/hooks/useGarden";
 
 type LandingScreenProps = {
@@ -15,6 +15,7 @@ const GROWTH_STAGES: PlantStage[] = ["SEED", "SPROUT", "BUD", "FLOWER", "TREE"];
 
 export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreenProps) {
     const { t } = useTranslation();
+    const { locale, setLocale } = useI18n();
     const [stageIndex, setStageIndex] = useState(0);
 
     // Cycle through plant stages for the animation
@@ -45,6 +46,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.4 }}
+                    data-testid="landing-screen"
                     className="fixed inset-0 z-[70] flex flex-col items-center justify-center px-6 bg-background"
                 >
                     {/* Grain overlay */}
@@ -58,6 +60,27 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                     </div>
 
                     <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
+                        <div className="mb-4 inline-flex items-center gap-1 rounded-full border border-foreground/[0.06] bg-foreground/[0.02] p-1">
+                            <button
+                                type="button"
+                                onClick={() => setLocale("ko")}
+                                className={`rounded-full px-3 py-1 font-body text-[10px] font-medium tracking-[0.08em] uppercase transition-colors ${
+                                    locale === "ko" ? "bg-foreground/10 text-foreground" : "text-muted-foreground/45 hover:text-foreground/70"
+                                }`}
+                            >
+                                KO
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setLocale("en")}
+                                className={`rounded-full px-3 py-1 font-body text-[10px] font-medium tracking-[0.08em] uppercase transition-colors ${
+                                    locale === "en" ? "bg-foreground/10 text-foreground" : "text-muted-foreground/45 hover:text-foreground/70"
+                                }`}
+                            >
+                                EN
+                            </button>
+                        </div>
+
                         {/* Plant animation */}
                         <motion.div
                             className="mb-6"
@@ -137,7 +160,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                             </div>
                         </motion.div>
 
-                        {/* Pro pitch */}
+                        {/* Pro preview */}
                         <motion.div
                             className="flex items-center justify-center gap-1.5 mb-4"
                             initial={{ opacity: 0, y: 10 }}
@@ -146,7 +169,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                         >
                             <Sparkles size={10} className="text-muted-foreground/35 shrink-0" />
                             <span className="text-[10px] text-muted-foreground/35 font-body text-center">
-                                {t("landing.proPitch")}
+                                {t("landing.proPreview")}
                             </span>
                         </motion.div>
 
@@ -159,6 +182,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                         >
                             <button
                                 onClick={onGetStarted}
+                                data-testid="landing-get-started"
                                 className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-foreground/8 text-foreground font-body text-[12px] font-medium tracking-wide uppercase hover:bg-foreground/12 transition-all"
                             >
                                 {t("landing.getStarted")}
@@ -166,6 +190,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                             </button>
                             <button
                                 onClick={onTryDemo}
+                                data-testid="landing-try-demo"
                                 className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-muted-foreground/50 font-body text-[11px] tracking-wide hover:text-muted-foreground/70 transition-all"
                             >
                                 <Play size={12} />

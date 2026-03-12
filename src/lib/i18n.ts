@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createSafeStorage, isRecord } from "@/lib/persist";
 
 export type Locale = "en" | "ko" | "ja";
 
@@ -383,7 +384,30 @@ const translations = {
     "landing.demoToast": { en: "Demo mode: 3-min focus session", ko: "데모 모드: 3분 집중 세션", ja: "デモモード：3分集中セッション" },
 } as const;
 
-export type TranslationKey = keyof typeof translations;
+const translationOverrides = {
+    "landing.proPreview": { en: "Pro preview: extra plants, more sounds, and fuller stats are planned next.", ko: "Pro 미리보기: 추가 식물, 더 많은 사운드, 확장 통계가 준비 중입니다.", ja: "Proプレビュー: 追加の植物、より多いサウンド、拡張統計を準備中です。" },
+    "demo.badge": { en: "Demo mode", ko: "데모 모드", ja: "デモモード" },
+    "demo.restoreNote": { en: "Your usual timer will be restored.", ko: "원래 타이머 설정으로 복원됩니다.", ja: "通常のタイマー設定に戻ります。" },
+    "demo.end": { en: "End demo", ko: "데모 종료", ja: "デモ終了" },
+    "sync.reloadRequired": { en: "Reload required to apply synced data.", ko: "동기화 데이터를 적용하려면 새로고침이 필요합니다.", ja: "同期データを適用するには再読み込みが必要です。" },
+    "sync.reloadHint": { en: "We updated local data safely. Reload when you're ready.", ko: "로컬 데이터는 안전하게 반영되었습니다. 준비되면 새로고침하세요.", ja: "ローカルデータは安全に反映されました。準備ができたら再読み込みしてください。" },
+    "settings.presets": { en: "Presets", ko: "프리셋", ja: "プリセット" },
+    "settings.customPreset": { en: "Custom", ko: "커스텀", ja: "カスタム" },
+    "settings.saveCustomPreset": { en: "Save current as custom", ko: "현재 설정을 커스텀으로 저장", ja: "現在の設定をカスタム保存" },
+    "settings.backup": { en: "Backup", ko: "백업", ja: "バックアップ" },
+    "settings.exportBackup": { en: "Export", ko: "내보내기", ja: "エクスポート" },
+    "settings.importBackup": { en: "Import", ko: "가져오기", ja: "インポート" },
+    "settings.backupExported": { en: "Backup file downloaded.", ko: "백업 파일을 내려받았습니다.", ja: "バックアップファイルを保存しました。" },
+    "settings.backupImported": { en: "Backup imported. Reload to apply it safely.", ko: "백업을 가져왔습니다. 안전하게 적용하려면 새로고침하세요.", ja: "バックアップを読み込みました。安全に適用するには再読み込みしてください。" },
+    "settings.backupImportFailed": { en: "Backup import failed. Please check the file.", ko: "백업 가져오기에 실패했습니다. 파일을 확인해주세요.", ja: "バックアップの読み込みに失敗しました。ファイルを確認してください。" },
+    "settings.reloadToApply": { en: "Reload now", ko: "지금 새로고침", ja: "今すぐ再読み込み" },
+    "pro.previewMessage": { en: "These extras are planned, but checkout is not live yet.", ko: "이 기능들은 준비 중이며, 아직 결제는 열려 있지 않습니다.", ja: "これらの機能は準備中で、決済はまだ開始していません。" },
+    "pro.comingSoon": { en: "Coming soon", ko: "곧 공개", ja: "近日公開" },
+    "pro.previewOnly": { en: "Preview only. No purchase flow in this build.", ko: "현재 빌드에서는 미리보기만 제공됩니다.", ja: "このビルドではプレビューのみ利用できます。" },
+    "pro.dismissPreview": { en: "Keep using free plan", ko: "무료 플랜 계속 사용", ja: "無料プランを続ける" },
+} as const;
+
+export type TranslationKey = keyof typeof translations | keyof typeof translationOverrides;
 
 // ─── Store ────────────────────────────────────────────────
 
@@ -392,29 +416,57 @@ type I18nState = {
     setLocale: (locale: Locale) => void;
 };
 
+type PersistedI18nState = {
+    locale: string;
+};
+
 export const useI18n = create<I18nState>()(
     persist(
         (set) => ({
-            locale: (typeof navigator !== "undefined" && navigator.language?.startsWith("ko")
-                ? "ko"
-                : typeof navigator !== "undefined" && navigator.language?.startsWith("ja")
-                  ? "ja"
-                  : "en") as Locale,
+            locale: (() => {
+                if (typeof navigator !== "undefined" && navigator.language?.startsWith("ko")) {
+                    return "ko" as const;
+                }
+                if (typeof navigator !== "undefined" && navigator.language?.startsWith("ja")) {
+                    return "ja" as const;
+                }
+                return "en" as const;
+            })(),
             setLocale: (locale) => set({ locale }),
         }),
-        { name: "focus-valley-locale" }
+        {
+            name: "focus-valley-locale",
+            version: 1,
+            storage: createSafeStorage<PersistedI18nState>(),
+            migrate: (persistedState) => {
+                const state = isRecord(persistedState) ? persistedState : {};
+                return {
+                    locale: state.locale === "ko" || state.locale === "ja" || state.locale === "en"
+                        ? state.locale
+                        : "en",
+                };
+            },
+        }
     )
 );
 
 // ─── Hook ─────────────────────────────────────────────────
 
+function isUsableTranslation(value: string | undefined) {
+    return typeof value === "string" && !value.includes("?");
+}
+
 export function useTranslation() {
     const locale = useI18n((s) => s.locale);
 
     const t = useCallback((key: TranslationKey): string => {
-        const entry = translations[key];
+        const allTranslations = {
+            ...translations,
+            ...translationOverrides,
+        } as Record<TranslationKey, Record<Locale, string>>;
+        const entry = allTranslations[key];
         if (!entry) return key;
-        return entry[locale] ?? entry.en;
+        return isUsableTranslation(entry[locale]) ? entry[locale] : entry.en;
     }, [locale]);
 
     return { t, locale };

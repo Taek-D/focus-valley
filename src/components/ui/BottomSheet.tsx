@@ -1,29 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import type { ReactNode } from "react";
-import { motion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, type PanInfo, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { GESTURE } from "@/lib/constants";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 
 type BottomSheetProps = {
     isOpen: boolean;
     onClose: () => void;
     title: string;
     headerActions?: ReactNode;
+    dataTestId?: string;
     children: ReactNode;
 };
 
-export const BottomSheet = ({ isOpen, onClose, title, headerActions, children }: BottomSheetProps) => {
+export const BottomSheet = ({ isOpen, onClose, title, headerActions, dataTestId, children }: BottomSheetProps) => {
     const closeRef = useRef<HTMLButtonElement>(null);
+    const sheetRef = useRef<HTMLDivElement>(null);
+    const shouldReduceMotion = useReducedMotion();
 
-    useEffect(() => {
-        if (!isOpen) return;
-        closeRef.current?.focus();
-        const handleKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
-        };
-        document.addEventListener("keydown", handleKey);
-        return () => document.removeEventListener("keydown", handleKey);
-    }, [isOpen, onClose]);
+    useDialogA11y({
+        isOpen,
+        onClose,
+        containerRef: sheetRef,
+        initialFocusRef: closeRef,
+    });
 
     const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         if (info.offset.y > GESTURE.DRAG_DISMISS_OFFSET || info.velocity.y > GESTURE.DRAG_DISMISS_VELOCITY) {
@@ -43,10 +44,11 @@ export const BottomSheet = ({ isOpen, onClose, title, headerActions, children }:
                         onClick={onClose}
                     />
                     <motion.div
-                        initial={{ y: "100%" }}
-                        animate={{ y: 0 }}
-                        exit={{ y: "100%" }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        ref={sheetRef}
+                        initial={shouldReduceMotion ? false : { y: "100%" }}
+                        animate={shouldReduceMotion ? { y: 0 } : { y: 0 }}
+                        exit={shouldReduceMotion ? { y: 0 } : { y: "100%" }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", damping: 25, stiffness: 200 }}
                         drag="y"
                         dragConstraints={{ top: 0 }}
                         dragElastic={0.2}
@@ -54,6 +56,8 @@ export const BottomSheet = ({ isOpen, onClose, title, headerActions, children }:
                         role="dialog"
                         aria-modal="true"
                         aria-label={title}
+                        tabIndex={-1}
+                        data-testid={dataTestId}
                         className="fixed bottom-0 left-0 right-0 max-h-[85vh] glass-strong rounded-t-3xl shadow-cozy-lg z-50 flex flex-col"
                     >
                         {/* Drag Handle */}

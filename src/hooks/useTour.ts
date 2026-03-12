@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createSafeStorage, isRecord } from "@/lib/persist";
 
 export type TourStep = {
     target: string;
@@ -29,6 +30,8 @@ type TourState = {
     completeTour: () => void;
 };
 
+type PersistedTourState = Pick<TourState, "hasCompletedTour">;
+
 export const useTour = create<TourState>()(
     persist(
         (set) => ({
@@ -53,7 +56,13 @@ export const useTour = create<TourState>()(
         }),
         {
             name: "focus-valley-tour",
+            version: 1,
+            storage: createSafeStorage<PersistedTourState>(),
             partialize: (state) => ({ hasCompletedTour: state.hasCompletedTour }),
+            migrate: (persistedState) => {
+                const state = isRecord(persistedState) ? persistedState : {};
+                return { hasCompletedTour: typeof state.hasCompletedTour === "boolean" ? state.hasCompletedTour : false };
+            },
         }
     )
 );

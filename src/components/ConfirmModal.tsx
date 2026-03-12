@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 
 type ConfirmModalProps = {
     isOpen: boolean;
@@ -16,26 +17,23 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     isOpen, title, message, confirmLabel = "Yes", cancelLabel = "No", onConfirm, onCancel,
 }) => {
     const cancelRef = useRef<HTMLButtonElement>(null);
+    const dialogRef = useRef<HTMLDivElement>(null);
+    const shouldReduceMotion = useReducedMotion();
 
-    useEffect(() => {
-        if (!isOpen) return;
-
-        cancelRef.current?.focus();
-
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onCancel();
-        };
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [isOpen, onCancel]);
+    useDialogA11y({
+        isOpen,
+        onClose: onCancel,
+        containerRef: dialogRef,
+        initialFocusRef: cancelRef,
+    });
 
     return (
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    initial={{ opacity: 0 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
                     className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm"
                     onClick={onCancel}
                     role="dialog"
@@ -44,11 +42,13 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     aria-describedby="confirm-message"
                 >
                     <motion.div
-                        initial={{ scale: 0.95, opacity: 0, y: 8 }}
+                        ref={dialogRef}
+                        initial={shouldReduceMotion ? false : { scale: 0.95, opacity: 0, y: 8 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.98, opacity: 0, y: 4 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        exit={shouldReduceMotion ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.98, opacity: 0, y: 4 }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", damping: 25, stiffness: 300 }}
                         onClick={(e) => e.stopPropagation()}
+                        tabIndex={-1}
                         className="glass-strong rounded-2xl shadow-cozy-lg p-6 max-w-sm w-full mx-4 space-y-4"
                     >
                         <div className="flex items-center gap-3">

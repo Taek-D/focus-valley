@@ -62,7 +62,7 @@ export const PlantGarden = memo(function PlantGarden({
                         )}
                         onClick={onPlantClick}
                         aria-label={
-                            gardenStage === "TREE" || gardenStage === "FLOWER"
+                            gardenStage === "TREE"
                                 ? t("plant.harvestLabel")
                                 : gardenStage === "DEAD"
                                 ? t("plant.plantSeedLabel")

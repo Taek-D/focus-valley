@@ -55,6 +55,7 @@ function TrackRow({ track, mixer, locked, onLocked }: {
                     min="0"
                     max="100"
                     disabled={mixer.isMuted}
+                    data-testid={`audio-slider-${track.id}`}
                     value={mixer.volumes[track.id]}
                     onChange={(e) => {
                         if (locked) { onLocked(); return; }

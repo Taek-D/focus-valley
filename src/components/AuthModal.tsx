@@ -6,6 +6,9 @@ import { syncWithCloud, getLastSyncTime } from "@/lib/sync";
 import { useTranslation } from "@/lib/i18n";
 import { useIsPro } from "@/hooks/useSubscription";
 import { useUpgradeModal } from "@/hooks/useUpgradeModal";
+import { useSyncFeedback } from "@/hooks/useSyncFeedback";
+import { isSupabaseConfigured, SUPABASE_CONFIG_ERROR } from "@/lib/supabase";
+import { trackSyncResult } from "@/lib/analytics";
 import { BottomSheet } from "./ui/BottomSheet";
 import { Sparkles } from "lucide-react";
 
@@ -19,6 +22,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const { t } = useTranslation();
     const isPro = useIsPro();
     const openUpgrade = useUpgradeModal((s) => s.open);
+    const beginSyncFeedback = useSyncFeedback((state) => state.begin);
+    const finishSyncFeedback = useSyncFeedback((state) => state.finish);
+    const lastSyncResult = useSyncFeedback((state) => state.lastResult);
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -67,20 +73,21 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         if (!user || syncing) return;
         setSyncing(true);
         setSyncStatus(null);
+        beginSyncFeedback();
         const result = await syncWithCloud(user);
         setSyncing(false);
+        finishSyncFeedback(result);
+        trackSyncResult(result.outcome, result.requiresReload);
 
-        switch (result) {
+        switch (result.outcome) {
             case "pushed":
                 setSyncStatus(t("sync.pushed"));
                 break;
             case "pulled":
                 setSyncStatus(t("sync.pulled"));
-                setTimeout(() => window.location.reload(), 1500);
                 break;
             case "merged":
                 setSyncStatus(t("sync.merged"));
-                setTimeout(() => window.location.reload(), 1500);
                 break;
             case "noop":
                 setSyncStatus(t("sync.upToDate"));
@@ -89,7 +96,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 setSyncStatus(t("sync.failed"));
                 break;
         }
-    }, [user, syncing, t]);
+    }, [user, syncing, t, beginSyncFeedback, finishSyncFeedback]);
 
     const formatLastSync = (iso: string | null) => {
         if (!iso) return t("sync.never");
@@ -104,13 +111,30 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         return d.toLocaleDateString();
     };
 
+    if (!isSupabaseConfigured && !user) {
+        return (
+            <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.account")} dataTestId="auth-dialog">
+                <div className="px-5 pb-8 space-y-4">
+                    <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4" data-testid="auth-config-missing">
+                        <p className="font-body text-[12px] text-foreground/60 leading-relaxed">
+                            {SUPABASE_CONFIG_ERROR}
+                        </p>
+                    </div>
+                    <p className="font-body text-[11px] text-muted-foreground/40 leading-relaxed">
+                        {t("auth.syncInfo")}
+                    </p>
+                </div>
+            </BottomSheet>
+        );
+    }
+
     // Logged-in view
     if (user) {
         const displayName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
         const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
 
         return (
-            <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.account")}>
+            <BottomSheet isOpen={isOpen} onClose={onClose} title={t("auth.account")} dataTestId="auth-dialog">
                 <div className="px-5 pb-8 space-y-5">
                     {/* Profile */}
                     <div className="flex items-center gap-3 p-4 rounded-2xl border border-foreground/5">
@@ -172,6 +196,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                                 </motion.p>
                             )}
                         </AnimatePresence>
+                        {lastSyncResult?.requiresReload && (
+                            <p className="font-body text-[10px] text-center text-amber-600/80 dark:text-amber-300/80">
+                                {t("sync.reloadRequired")}
+                            </p>
+                        )}
                     </div>
 
                     {/* Subscription */}
@@ -216,7 +245,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     // Auth form
     return (
-        <BottomSheet isOpen={isOpen} onClose={onClose} title={mode === "login" ? t("auth.signIn") : t("auth.createAccount")}>
+        <BottomSheet
+            isOpen={isOpen}
+            onClose={onClose}
+            title={mode === "login" ? t("auth.signIn") : t("auth.createAccount")}
+            dataTestId="auth-dialog"
+        >
             <div className="px-5 pb-8 space-y-4">
                 {/* Signup success message */}
                 <AnimatePresence>
@@ -260,6 +294,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <button
                     onClick={handleGoogleLogin}
                     disabled={loading}
+                    data-testid="auth-google"
                     className="w-full flex items-center justify-center gap-2.5 py-3 rounded-2xl border border-foreground/8 font-body text-[12px] font-medium text-foreground hover:bg-foreground/[0.03] transition-all disabled:opacity-30"
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24">
@@ -289,6 +324,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             placeholder={t("auth.email")}
                             required
                             autoComplete="email"
+                            data-testid="auth-email"
                             className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
                         />
                     </div>
@@ -303,6 +339,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             required
                             minLength={6}
                             autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                            data-testid="auth-password"
                             className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
                         />
                     </div>

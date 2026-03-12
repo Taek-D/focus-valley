@@ -1,11 +1,15 @@
 import path from "path";
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { configDefaults, defineConfig } from "vitest/config";
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    environment: "node",
+    exclude: [...configDefaults.exclude, "e2e/**"],
+  },
   plugins: [
     tailwindcss(),
     react(),

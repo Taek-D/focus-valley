@@ -13,8 +13,10 @@ function getDuration(mode: TimerMode, focus: number, shortBreak: number, longBre
 type SettingsSnapshot = { focus: number; shortBreak: number; longBreak: number; mode: TimerMode };
 
 const STORAGE_KEY = "focus-valley-timer-state";
+const TIMER_STATE_VERSION = 1;
 
 type PersistedTimerState = {
+    version: number;
     mode: TimerMode;
     isRunning: boolean;
     focusCount: number;
@@ -32,8 +34,29 @@ function loadTimerState(): PersistedTimerState | null {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return null;
-        return JSON.parse(raw) as PersistedTimerState;
+        const parsed = JSON.parse(raw) as Partial<PersistedTimerState>;
+        if (
+            (parsed.version ?? TIMER_STATE_VERSION) !== TIMER_STATE_VERSION
+            || (parsed.mode !== "FOCUS" && parsed.mode !== "SHORT_BREAK" && parsed.mode !== "LONG_BREAK")
+            || typeof parsed.isRunning !== "boolean"
+            || typeof parsed.focusCount !== "number"
+            || typeof parsed.startedAt !== "number"
+            || typeof parsed.pausedTimeLeft !== "number"
+        ) {
+            localStorage.removeItem(STORAGE_KEY);
+            return null;
+        }
+
+        return {
+            version: TIMER_STATE_VERSION,
+            mode: parsed.mode,
+            isRunning: parsed.isRunning,
+            focusCount: parsed.focusCount,
+            startedAt: parsed.startedAt,
+            pausedTimeLeft: parsed.pausedTimeLeft,
+        };
     } catch {
+        localStorage.removeItem(STORAGE_KEY);
         return null;
     }
 }
@@ -42,7 +65,7 @@ function clearTimerState() {
     localStorage.removeItem(STORAGE_KEY);
 }
 
-function resolveInitialState(
+export function resolveInitialState(
     saved: PersistedTimerState | null,
     focusMinutes: number,
 ): { mode: TimerMode; timeLeft: number; isRunning: boolean; isCompleted: boolean; focusCount: number; shouldStartWorker: boolean; needsRecoveryPrompt: boolean } {
@@ -65,6 +88,11 @@ function resolveInitialState(
     return { mode: saved.mode, timeLeft: saved.pausedTimeLeft, isRunning: false, isCompleted: false, focusCount: saved.focusCount, shouldStartWorker: false, needsRecoveryPrompt: false };
 }
 
+export function reconcileTimeLeft(deadline: number | null, isRunning: boolean, now = Date.now()) {
+    if (!isRunning || deadline === null) return null;
+    return Math.max(0, Math.ceil((deadline - now) / 1000));
+}
+
 export function useTimer() {
     const { focus, shortBreak, longBreak } = useTimerSettings();
 
@@ -79,7 +107,7 @@ export function useTimer() {
     const [focusCount, setFocusCount] = useState(init.focusCount);
     const [needsRecoveryPrompt, setNeedsRecoveryPrompt] = useState(init.needsRecoveryPrompt);
 
-    const startedAtRef = useRef(Date.now());
+    const deadlineRef = useRef<number | null>(null);
     const workerRef = useRef<Worker | null>(null);
     const prevSettingsRef = useRef<SettingsSnapshot>({ focus, shortBreak, longBreak, mode });
 
@@ -102,10 +130,10 @@ export function useTimer() {
     // Persist timer state on every meaningful change
     useEffect(() => {
         if (isRunning) {
-            saveTimerState({ mode, isRunning: true, focusCount, startedAt: Date.now(), pausedTimeLeft: timeLeft });
+            saveTimerState({ version: TIMER_STATE_VERSION, mode, isRunning: true, focusCount, startedAt: Date.now(), pausedTimeLeft: timeLeft });
         } else if (isCompleted || timeLeft !== getDuration(mode, focus, shortBreak, longBreak)) {
             // Save paused/completed state only if it differs from default idle
-            saveTimerState({ mode, isRunning: false, focusCount, startedAt: 0, pausedTimeLeft: timeLeft });
+            saveTimerState({ version: TIMER_STATE_VERSION, mode, isRunning: false, focusCount, startedAt: 0, pausedTimeLeft: timeLeft });
         } else {
             // Idle at full duration — no need to persist
             clearTimerState();
@@ -140,40 +168,52 @@ export function useTimer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Page Visibility API: recalculate time when tab becomes visible
+    // Keep a wall-clock deadline so we can recover from hidden-tab stalls
+    useEffect(() => {
+        if (!isRunning) {
+            deadlineRef.current = null;
+            return;
+        }
+
+        deadlineRef.current = Date.now() + timeLeft * 1000;
+    }, [isRunning, timeLeft]);
+
+    // Page Visibility API: reconcile time when tab becomes visible again
     useEffect(() => {
         const handleVisibility = () => {
-            if (document.visibilityState === "visible" && isRunning) {
-                const elapsed = (Date.now() - startedAtRef.current) / 1000;
-                const remaining = timeLeft - elapsed;
-                if (remaining <= 0) {
-                    setTimeLeft(0);
-                    setIsRunning(false);
-                    setIsCompleted(true);
-                    workerRef.current?.postMessage({ command: "STOP" });
-                }
+            if (document.visibilityState !== "visible" || !isRunning || deadlineRef.current === null) {
+                return;
             }
+
+            const remaining = reconcileTimeLeft(deadlineRef.current, isRunning);
+            if (remaining === null) return;
+            if (remaining <= 0) {
+                setTimeLeft(0);
+                setIsRunning(false);
+                setIsCompleted(true);
+                workerRef.current?.postMessage({ command: "STOP" });
+                return;
+            }
+
+            setTimeLeft((prev) => (prev === remaining ? prev : remaining));
         };
         document.addEventListener("visibilitychange", handleVisibility);
         return () => document.removeEventListener("visibilitychange", handleVisibility);
-    }, [isRunning, timeLeft]);
-
-    // Track startedAt for visibility correction
-    useEffect(() => {
-        if (isRunning) startedAtRef.current = Date.now();
     }, [isRunning]);
 
     const confirmResume = useCallback(() => {
         setNeedsRecoveryPrompt(false);
         setIsRunning(true);
         setIsCompleted(false);
+        deadlineRef.current = Date.now() + timeLeft * 1000;
         workerRef.current?.postMessage({ command: "START" });
-    }, []);
+    }, [timeLeft]);
 
     const discardRecovery = useCallback(() => {
         setNeedsRecoveryPrompt(false);
         setIsRunning(false);
         setIsCompleted(false);
+        deadlineRef.current = null;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
         clearTimerState();
@@ -183,17 +223,20 @@ export function useTimer() {
         if (timeLeft === 0) return;
         setIsRunning(true);
         setIsCompleted(false);
+        deadlineRef.current = Date.now() + timeLeft * 1000;
         workerRef.current?.postMessage({ command: "START" });
     }, [timeLeft]);
 
     const pause = useCallback(() => {
         setIsRunning(false);
+        deadlineRef.current = null;
         workerRef.current?.postMessage({ command: "PAUSE" });
     }, []);
 
     const reset = useCallback(() => {
         setIsRunning(false);
         setIsCompleted(false);
+        deadlineRef.current = null;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(mode, focus, shortBreak, longBreak));
         clearTimerState();
@@ -203,6 +246,7 @@ export function useTimer() {
         setMode(newMode);
         setIsRunning(false);
         setIsCompleted(false);
+        deadlineRef.current = null;
         workerRef.current?.postMessage({ command: "STOP" });
         setTimeLeft(getDuration(newMode, focus, shortBreak, longBreak));
         clearTimerState();

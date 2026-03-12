@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTimer } from "./hooks/useTimer";
+import { useTimer, type TimerMode } from "./hooks/useTimer";
 import { useAudioMixer } from "./hooks/useAudioMixer";
 import { useAudioReactivity } from "./hooks/useAudioReactivity";
 import { useGarden, STREAK_UNLOCKS, DEEP_FOCUS_UNLOCKS } from "./hooks/useGarden";
@@ -24,11 +24,14 @@ import {
   trackPlantDied,
   trackSeedPlanted,
   trackShareCard,
+  trackSyncResult,
+  trackReloadPromptShown,
+  trackRecoveryChoice,
 } from "./lib/analytics";
 import { generateShareCard, shareOrDownload } from "./lib/share-card";
 import { getCategoryBreakdown } from "./lib/stats";
 import { getToday } from "./lib/date-utils";
-import { syncWithCloud } from "./lib/sync";
+import { syncWithCloud, type SyncResult } from "./lib/sync";
 import { useTranslation, type TranslationKey } from "./lib/i18n";
 import { getMilestoneById } from "./lib/milestones";
 import { TimerDisplay } from "./components/TimerDisplay";
@@ -44,7 +47,6 @@ import { BreathingGuide } from "./components/BreathingGuide";
 import { AuthModal } from "./components/AuthModal";
 import { UpgradeModal } from "./components/UpgradeModal";
 import { InstallBanner } from "./components/InstallBanner";
-import { Onboarding } from "./components/Onboarding";
 import { TourGuide } from "./components/TourGuide";
 import { SessionRecoveryDialog } from "./components/SessionRecoveryDialog";
 import { HelpButton } from "./components/HelpButton";
@@ -55,9 +57,9 @@ import { useLanding } from "./hooks/useLanding";
 import { useAuth } from "./hooks/useAuth";
 import { useSubscription } from "./hooks/useSubscription";
 import { useInstallPrompt } from "./hooks/useInstallPrompt";
-import { useOnboarding } from "./hooks/useOnboarding";
+import { useSyncFeedback } from "./hooks/useSyncFeedback";
 import { useTour } from "./hooks/useTour";
-import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, Share2 } from "lucide-react";
+import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, Share2, X } from "lucide-react";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -100,14 +102,17 @@ function App() {
   const { autoAdvance } = useTimerSettings();
   const activeTodo = useTodos(selectActiveTodo);
   const activeCategoryId = useCategoryStore(selectActiveCategoryId);
-  const { advanceToNextMode } = timer;
   const { user, initialize: initAuth } = useAuth();
+  const beginSyncFeedback = useSyncFeedback((state) => state.begin);
+  const finishSyncFeedback = useSyncFeedback((state) => state.finish);
+  const clearSyncFeedback = useSyncFeedback((state) => state.clear);
+  const syncFeedback = useSyncFeedback((state) => state.lastResult);
+  const syncInFlight = useSyncFeedback((state) => state.syncing);
   const refreshSubscription = useSubscription((s) => s.refresh);
   const { canInstall, install: installPwa, dismiss: dismissInstall } = useInstallPrompt();
-  const { showOnboarding, completeOnboarding, reopenOnboarding, hasCompletedOnboarding } = useOnboarding();
   const { showWeeklySummary, dismissWeeklySummary } = useWeeklySummary();
   const { showLanding, dismissLanding } = useLanding();
-  const { startTour, hasCompletedTour, isActive: isTourActive } = useTour();
+  const { startTour, isActive: isTourActive } = useTour();
   const { t } = useTranslation();
 
   const [showMixer, setShowMixer] = useState(false);
@@ -123,10 +128,14 @@ function App() {
   const [confirmModal, setConfirmModal] = useState(false);
   const [screenFlash, setScreenFlash] = useState(false);
   const [showSharePrompt, setShowSharePrompt] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // Undo plant death
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const undoInfoRef = useRef<{ stage: PlantStage; type: PlantType } | null>(null);
+  const demoRestoreFocusRef = useRef<number | null>(null);
+  const [shouldStartDemoSession, setShouldStartDemoSession] = useState(false);
+  const autoSyncUserRef = useRef<string | null>(null);
 
   // Plant particles — extracted hook
   const { trigger: particleTrigger, type: particleType, stageTransition } = usePlantParticles(garden.stage);
@@ -135,25 +144,47 @@ function App() {
     initAuth();
   }, [initAuth]);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !navigator.webdriver) return;
+
+    const handleE2ESyncFeedback = (event: Event) => {
+      const detail = (event as CustomEvent<SyncResult | null>).detail;
+      if (detail) {
+        finishSyncFeedback(detail);
+      } else {
+        clearSyncFeedback();
+      }
+    };
+
+    window.addEventListener("focus-valley:e2e-sync-feedback", handleE2ESyncFeedback as EventListener);
+    return () => {
+      window.removeEventListener("focus-valley:e2e-sync-feedback", handleE2ESyncFeedback as EventListener);
+    };
+  }, [finishSyncFeedback, clearSyncFeedback]);
+
   // Load subscription state from server-side source of truth
   useEffect(() => {
     void refreshSubscription(user);
   }, [user, refreshSubscription]);
 
-  // Auto-sync on login (reload once per session to apply pulled data)
+  // Auto-sync on login, but never force a reload mid-session.
   useEffect(() => {
-    if (user) {
-      syncWithCloud(user).then((result) => {
-        if (result === "pulled" || result === "merged") {
-          const key = "focus-valley-synced";
-          if (!sessionStorage.getItem(key)) {
-            sessionStorage.setItem(key, "1");
-            window.location.reload();
-          }
-        }
-      });
+    if (!user) {
+      autoSyncUserRef.current = null;
+      return;
     }
-  }, [user]);
+    if (autoSyncUserRef.current === user.id) return;
+
+    autoSyncUserRef.current = user.id;
+    beginSyncFeedback();
+    void syncWithCloud(user).then((result) => {
+      finishSyncFeedback(result);
+      trackSyncResult(result.outcome, result.requiresReload);
+      if (result.requiresReload) {
+        trackReloadPromptShown();
+      }
+    });
+  }, [user, beginSyncFeedback, finishSyncFeedback]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", timer.mode);
@@ -201,6 +232,28 @@ function App() {
     setToast((prev) => ({ ...prev, visible: false }));
   }, []);
 
+  const restoreDemoFocusDuration = useCallback(() => {
+    const previousFocusDuration = demoRestoreFocusRef.current;
+    if (previousFocusDuration !== null) {
+      useTimerSettings.getState().setDuration("focus", previousFocusDuration);
+      demoRestoreFocusRef.current = null;
+    }
+    setIsDemoMode(false);
+    setShouldStartDemoSession(false);
+  }, []);
+
+  const handleAdvanceToNextMode = useCallback(() => {
+    timer.advanceToNextMode();
+    restoreDemoFocusDuration();
+  }, [timer, restoreDemoFocusDuration]);
+
+  const handleSwitchMode = useCallback((newMode: TimerMode) => {
+    timer.switchMode(newMode);
+    if (newMode !== "FOCUS") {
+      restoreDemoFocusDuration();
+    }
+  }, [timer, restoreDemoFocusDuration]);
+
   useEffect(() => {
     if (timer.isRunning && timer.mode === "FOCUS") {
       const totalTime = timer.focusDuration * 60;
@@ -224,26 +277,38 @@ function App() {
         notify("Focus Valley", t("notification.focusComplete"));
         setConfettiTrigger((c) => c + 1);
         trackSessionComplete("FOCUS", timer.focusDuration, activeCategoryId);
+        restoreDemoFocusDuration();
         // Show share prompt after confetti settles
         setTimeout(() => setShowSharePrompt(true), 1500);
         // Background cloud sync after focus completion
-        if (user) setTimeout(() => syncWithCloud(user), 1000);
+        if (user) {
+          setTimeout(() => {
+            beginSyncFeedback();
+            void syncWithCloud(user).then((result) => {
+              finishSyncFeedback(result);
+              trackSyncResult(result.outcome, result.requiresReload);
+              if (result.requiresReload) {
+                trackReloadPromptShown();
+              }
+            });
+          }, 1000);
+        }
       } else {
         showToast(t("toast.breakOver"));
         notify("Focus Valley", t("notification.breakOver"));
         trackSessionComplete(timer.mode, 0);
       }
     });
-  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId, t, user]);
+  }, [timer.isCompleted, timer.mode, timer.focusDuration, showToast, addFocusMinutes, notify, activeCategoryId, t, user, restoreDemoFocusDuration, beginSyncFeedback, finishSyncFeedback]);
 
   // Auto-advance to next mode after completion (wait for share prompt to dismiss)
   useEffect(() => {
     if (!timer.isCompleted || !autoAdvance || showSharePrompt) return;
     const timeout = setTimeout(() => {
-      advanceToNextMode();
+      handleAdvanceToNextMode();
     }, ANIMATION.AUTO_ADVANCE_DELAY_MS);
     return () => clearTimeout(timeout);
-  }, [timer.isCompleted, autoAdvance, advanceToNextMode, showSharePrompt]);
+  }, [timer.isCompleted, autoAdvance, handleAdvanceToNextMode, showSharePrompt]);
 
   useEffect(() => {
     if (!garden.pendingUnlock) return;
@@ -278,6 +343,7 @@ function App() {
       setConfirmModal(true);
     } else {
       timer.reset();
+      restoreDemoFocusDuration();
     }
   };
 
@@ -293,6 +359,7 @@ function App() {
 
     garden.killPlant();
     timer.reset();
+    restoreDemoFocusDuration();
     setConfirmModal(false);
 
     // Clear any previous undo timer
@@ -321,10 +388,11 @@ function App() {
   };
 
   const handlePlantClick = () => {
-    if (garden.stage === "TREE" || garden.stage === "FLOWER") {
+    if (garden.stage === "TREE") {
       trackPlantHarvested(garden.type);
       garden.harvest();
       timer.reset();
+      restoreDemoFocusDuration();
       showToast(t("toast.harvested"));
     } else if (garden.stage === "DEAD") {
       trackSeedPlanted(garden.type);
@@ -342,26 +410,43 @@ function App() {
     }
   }, [timer, handleStart]);
 
-  const handleOnboardingComplete = useCallback(() => {
-    completeOnboarding();
-    if (!hasCompletedTour) {
-      setTimeout(() => startTour(), 500);
-    }
-  }, [completeOnboarding, hasCompletedTour, startTour]);
-
   const handleLandingGetStarted = useCallback(() => {
     dismissLanding();
   }, [dismissLanding]);
 
   const handleLandingDemo = useCallback(() => {
     dismissLanding();
-    // Set focus to 3 minutes for demo
-    useTimerSettings.getState().setDuration("focus", 3);
-    // Start timer after onboarding/tour flow settles
-    setTimeout(() => {
+    const settingsStore = useTimerSettings.getState();
+    demoRestoreFocusRef.current = settingsStore.focus === 3 ? null : settingsStore.focus;
+    settingsStore.setDuration("focus", 3);
+    setIsDemoMode(true);
+    setShouldStartDemoSession(true);
+  }, [dismissLanding]);
+
+  const handleEndDemo = useCallback(() => {
+    setShowSharePrompt(false);
+    timer.reset();
+    restoreDemoFocusDuration();
+  }, [timer, restoreDemoFocusDuration]);
+
+  useEffect(() => {
+    if (!shouldStartDemoSession || timer.isRunning) return;
+
+    if (timer.mode !== "FOCUS" || timer.timeLeft !== 180) {
+      const timeout = window.setTimeout(() => {
+        handleSwitchMode("FOCUS");
+      }, 0);
+      return () => window.clearTimeout(timeout);
+    }
+
+    const timeout = window.setTimeout(() => {
+      handleStart();
       showToast(t("landing.demoToast"));
-    }, 500);
-  }, [dismissLanding, showToast, t]);
+      setShouldStartDemoSession(false);
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, [shouldStartDemoSession, timer.isRunning, timer.mode, timer.timeLeft, handleSwitchMode, handleStart, showToast, t]);
 
   // Share prompt: auto-dismiss after 8s
   useEffect(() => {
@@ -407,8 +492,8 @@ function App() {
     isCompleted: timer.isCompleted,
     onToggle: handleToggle,
     onReset: handleReset,
-    onSkip: timer.advanceToNextMode,
-    onSwitchMode: timer.switchMode,
+    onSkip: handleAdvanceToNextMode,
+    onSwitchMode: handleSwitchMode,
     onToggleMixer: handleToggleMixer,
     onToggleShortcutGuide: handleToggleShortcutGuide,
   });
@@ -431,7 +516,7 @@ function App() {
     return () => window.removeEventListener("beforeunload", handler);
   }, [timer.isRunning, timer.mode]);
 
-  const canInteract = garden.stage === "TREE" || garden.stage === "FLOWER" || garden.stage === "DEAD";
+  const canInteract = garden.stage === "TREE" || garden.stage === "DEAD";
 
   // Plant breathing: active during FOCUS + running, cycle slows as progress increases
   const isPlantBreathing = timer.isRunning && timer.mode === "FOCUS";
@@ -460,6 +545,25 @@ function App() {
   const handleShowGarden = useCallback(() => setShowGarden(true), []);
   const handleShowHistory = useCallback(() => setShowHistory(true), []);
   const handleShowAuth = useCallback(() => setShowAuth(true), []);
+
+  const syncIndicatorState = useMemo(() => {
+    if (syncInFlight) return "syncing" as const;
+    if (syncFeedback?.outcome === "error") return "error" as const;
+    if (syncFeedback?.requiresReload) return "warning" as const;
+    if (syncFeedback) return "ok" as const;
+    return "idle" as const;
+  }, [syncFeedback, syncInFlight]);
+
+  const syncIndicatorLabel = useMemo(() => {
+    if (syncInFlight) return t("sync.syncing");
+    if (!syncFeedback) return undefined;
+    if (syncFeedback.outcome === "error") return t("sync.failed");
+    if (syncFeedback.requiresReload) return t("sync.reloadRequired");
+    if (syncFeedback.outcome === "noop") return t("sync.upToDate");
+    return syncFeedback.outcome === "merged" ? t("sync.merged")
+      : syncFeedback.outcome === "pulled" ? t("sync.pulled")
+      : t("sync.pushed");
+  }, [syncFeedback, syncInFlight, t]);
 
   return (
     <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700 dot-grid">
@@ -501,6 +605,8 @@ function App() {
         isDark={isDark}
         currentStreak={garden.currentStreak}
         user={user}
+        syncState={syncIndicatorState}
+        syncLabel={syncIndicatorLabel}
         onToggleDark={toggleDark}
         onShowSettings={handleShowSettings}
         onShowTodo={handleShowTodo}
@@ -534,6 +640,29 @@ function App() {
 
         {/* Deep Focus Badge + Breathing Button */}
         <div className="z-10 flex items-center gap-3 mb-2">
+          {isDemoMode && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              data-testid="demo-badge"
+              className="inline-flex items-center gap-2 rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1"
+            >
+              <span className="text-[10px] font-body font-medium uppercase tracking-[0.08em] text-sky-700/80 dark:text-sky-300/80">
+                {t("demo.badge")}
+              </span>
+              <span className="text-[10px] font-body text-sky-700/60 dark:text-sky-300/60">
+                {t("demo.restoreNote")}
+              </span>
+              <button
+                onClick={handleEndDemo}
+                data-testid="demo-end"
+                className="rounded-full p-1 text-sky-700/70 transition-colors hover:text-sky-900 dark:text-sky-200/80 dark:hover:text-sky-100"
+                aria-label={t("demo.end")}
+              >
+                <X size={10} />
+              </button>
+            </motion.div>
+          )}
           {garden.deepFocusStreak >= 2 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -577,8 +706,8 @@ function App() {
             onStart={handleStart}
             onPause={timer.pause}
             onReset={handleReset}
-            onSwitchMode={timer.switchMode}
-            onSkip={timer.advanceToNextMode}
+            onSwitchMode={handleSwitchMode}
+            onSkip={handleAdvanceToNextMode}
           />
         </motion.div>
       </main>
@@ -602,6 +731,38 @@ function App() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {syncFeedback?.requiresReload && !timer.isRunning && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            data-testid="sync-reload-banner"
+            className="fixed bottom-6 left-1/2 z-30 flex w-[min(92vw,28rem)] -translate-x-1/2 items-center justify-between gap-3 rounded-2xl border border-amber-500/20 bg-background/90 px-4 py-3 shadow-cozy-lg backdrop-blur-sm"
+          >
+            <div className="space-y-1">
+              <p className="font-body text-[11px] font-medium text-foreground/70">{t("sync.reloadRequired")}</p>
+              <p className="font-body text-[10px] text-muted-foreground/45">{t("sync.reloadHint")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => clearSyncFeedback()}
+                className="font-body text-[10px] uppercase tracking-[0.08em] text-muted-foreground/45 transition-colors hover:text-foreground/60"
+              >
+                {t("category.dismissHint")}
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                data-testid="sync-reload-button"
+                className="rounded-xl bg-foreground/8 px-3 py-2 font-body text-[10px] font-medium uppercase tracking-[0.08em] text-foreground/70 transition-colors hover:bg-foreground/12"
+              >
+                {t("settings.reloadToApply")}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Footer */}
       <footer className="w-full max-w-lg z-10 px-4 sm:px-6 pb-4 pt-2">
         <motion.button
@@ -609,6 +770,7 @@ function App() {
           aria-expanded={showMixer}
           aria-label={showMixer ? t("footer.hideSounds") : t("footer.openSounds")}
           data-tour="sounds-button"
+          data-testid="sound-toggle"
           className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -739,19 +901,23 @@ function App() {
 
       <SessionRecoveryDialog
         isOpen={timer.needsRecoveryPrompt}
-        onResume={timer.confirmResume}
-        onDiscard={timer.discardRecovery}
+        onResume={() => {
+          trackRecoveryChoice("resume");
+          timer.confirmResume();
+        }}
+        onDiscard={() => {
+          trackRecoveryChoice("discard");
+          timer.discardRecovery();
+        }}
         remainingSeconds={timer.timeLeft}
         mode={timer.mode}
       />
 
       <WeeklySummaryPopup
-        isOpen={showWeeklySummary && !showOnboarding}
+        isOpen={showWeeklySummary && !showLanding}
         onDismiss={dismissWeeklySummary}
         focusSessions={garden.focusSessions}
       />
-
-      <Onboarding isOpen={!showLanding && showOnboarding} onComplete={handleOnboardingComplete} />
 
       <TourGuide />
 
@@ -764,8 +930,8 @@ function App() {
       <UpgradeModal />
 
       <HelpButton
-        visible={hasCompletedOnboarding && !isTourActive && !showOnboarding}
-        onClick={reopenOnboarding}
+        visible={!showLanding && !isTourActive}
+        onClick={startTour}
       />
     </div>
   );

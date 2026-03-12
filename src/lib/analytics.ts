@@ -110,6 +110,22 @@ export function trackCsvExport() {
     track("csv_exported");
 }
 
+export function trackSyncResult(outcome: string, requiresReload: boolean) {
+    track("sync_result", { outcome, requires_reload: requiresReload });
+}
+
+export function trackReloadPromptShown() {
+    track("sync_reload_prompt_shown");
+}
+
+export function trackRecoveryChoice(action: "resume" | "discard") {
+    track("recovery_choice", { action });
+}
+
+export function trackBackupEvent(action: "export" | "import_success" | "import_error") {
+    track("backup_event", { action });
+}
+
 // ── Settings ─────────────────────────────────────────────
 
 export function trackSettingsChanged(setting: string, value: unknown) {
