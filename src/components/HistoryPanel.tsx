@@ -42,7 +42,7 @@ const HEATMAP_COLORS = [
 export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     isOpen, onClose, history, totalFocusMinutes, focusSessions, currentStreak, bestStreak,
 }) => {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
     const isPro = useIsPro();
     const { theme: shareTheme, setTheme: setShareTheme } = useShareTheme();
     const openUpgrade = useUpgradeModal((s) => s.open);
@@ -108,9 +108,12 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
     const handleShare = useCallback(async () => {
         setSharing(true);
         try {
-            const today = new Date().toLocaleDateString("en-US", {
-                weekday: "long", year: "numeric", month: "long", day: "numeric",
-            });
+            const today = new Intl.DateTimeFormat(locale, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            }).format(new Date());
             const todayKey = getToday();
             const todaySessions = focusSessions.filter((s) => s.date === todayKey);
             const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
@@ -122,14 +125,23 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 streak: currentStreak,
                 categoryBreakdown: todayBreakdown,
                 plantCount: history.length,
-            }, shareTheme);
+            }, shareTheme, {
+                brand: t("app.name").toUpperCase(),
+                focusedToday: t("share.cardFocusedToday"),
+                streak: t("share.cardStreak"),
+                grown: t("share.cardGrown"),
+                watermark: t("share.cardWatermark"),
+            });
 
-            await shareOrDownload(blob, `focus-valley-${todayKey}.png`);
+            await shareOrDownload(blob, `focus-valley-${todayKey}.png`, {
+                title: t("app.name"),
+                text: t("share.shareText"),
+            });
             trackShareCard();
         } finally {
             setSharing(false);
         }
-    }, [focusSessions, categories, currentStreak, history.length, shareTheme]);
+    }, [focusSessions, categories, currentStreak, history.length, locale, shareTheme, t]);
 
     return (
         <BottomSheet

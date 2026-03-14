@@ -380,6 +380,11 @@ const translations = {
     "share.themeAurora": { en: "Aurora", ko: "오로라", ja: "オーロラ" },
     "share.themeSunset": { en: "Sunset", ko: "석양", ja: "夕焼け" },
     "share.themeForest": { en: "Forest", ko: "숲", ja: "森" },
+    "share.cardFocusedToday": { en: "FOCUSED TODAY", ko: "오늘의 집중", ja: "今日の集中" },
+    "share.cardStreak": { en: "STREAK", ko: "연속 기록", ja: "連続記録" },
+    "share.cardGrown": { en: "GROWN", ko: "수확", ja: "育成" },
+    "share.cardWatermark": { en: "Made with Focus Valley", ko: "Focus Valley로 만든 기록", ja: "Focus Valleyで作成" },
+    "share.shareText": { en: "My focus record today!", ko: "오늘의 집중 기록이에요!", ja: "今日の集中記録です！" },
     "landing.proPitch": { en: "Go Pro: premium plants, unlimited categories & full data export — one-time purchase", ko: "Pro 업그레이드: 프리미엄 식물, 무제한 카테고리, 전체 데이터 내보내기 — 한 번 결제", ja: "Proへ: プレミアム植物・無制限カテゴリー・全データエクスポート — 一度の購入で" },
     "landing.demoToast": { en: "Demo mode: 3-min focus session", ko: "데모 모드: 3분 집중 세션", ja: "デモモード：3分集中セッション" },
 } as const;

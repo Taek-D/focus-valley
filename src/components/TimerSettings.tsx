@@ -20,7 +20,7 @@ import {
     type TimerDurations,
     type TimerPresetId,
 } from "../hooks/useTimerSettings";
-import { useTranslation, useI18n, type TranslationKey, type Locale } from "../lib/i18n";
+import { LOCALE_LABELS, useTranslation, useI18n, type TranslationKey, type Locale } from "../lib/i18n";
 import { useTour } from "../hooks/useTour";
 import { downloadBackup, restoreBackup } from "@/lib/backup";
 import { trackBackupEvent } from "@/lib/analytics";
@@ -41,12 +41,6 @@ const LOCALE_DISPLAY_LABELS: Record<Locale, string> = {
     en: "English",
     ko: "한국어",
     ja: "日本語",
-};
-
-const SAFE_LOCALE_DISPLAY_LABELS: Record<Locale, string> = {
-    en: "English",
-    ko: "Korean",
-    ja: "Japanese",
 };
 
 void LOCALE_DISPLAY_LABELS;
@@ -338,7 +332,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                                 : "text-muted-foreground/40 hover:text-muted-foreground/60"
                                         }`}
                                     >
-                                        {SAFE_LOCALE_DISPLAY_LABELS[loc]}
+                                        {LOCALE_LABELS[loc]}
                                     </button>
                                 ))}
                             </div>

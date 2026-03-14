@@ -1,0 +1,324 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1773039271201,
+  "projectRoot": "E:\\프로젝트\\완료\\focus-valley",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "react",
+        "version": "19.2.0",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.0",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "7.3.1",
+        "category": "build"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc -b && vite build",
+      "lint": "eslint .",
+      "preview": "vite preview",
+      "video:preview": "npx remotion studio remotion/index.ts",
+      "video:studio": "npx remotion studio remotion/index.ts",
+      "video:render": "npx remotion render remotion/index.ts FocusValleyIntro out/intro.mp4",
+      "video:render:all": "node remotion/render-all.mjs"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "public",
+      "scripts",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 17,
+      "lastAccessed": 1773039271113,
+      "keyFiles": [
+        "apple-touch-icon.png",
+        "favicon.svg",
+        "guide.html",
+        "index.html",
+        "landing.html"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 3,
+      "lastAccessed": 1773039271121,
+      "keyFiles": [
+        "pro-tier-proposal.md"
+      ]
+    },
+    "out": {
+      "path": "out",
+      "purpose": "Build output",
+      "fileCount": 9,
+      "lastAccessed": 1773039271122,
+      "keyFiles": [
+        "Full-Landscape.mp4",
+        "Full-Portrait.mp4",
+        "Full-Square.mp4",
+        "Shorts-Landscape.mp4",
+        "Shorts-Portrait.mp4"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 12,
+      "lastAccessed": 1773039271122,
+      "keyFiles": [
+        "apple-touch-icon.png",
+        "favicon.svg",
+        "guide.html",
+        "landing.html",
+        "offline.html"
+      ]
+    },
+    "remotion": {
+      "path": "remotion",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1773039271123,
+      "keyFiles": [
+        "FocusValleyIntro.tsx",
+        "index.ts",
+        "render-all.mjs",
+        "Root.tsx",
+        "tsconfig.json"
+      ]
+    },
+    "screenshots": {
+      "path": "screenshots",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1773039271124,
+      "keyFiles": []
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 2,
+      "lastAccessed": 1773039271125,
+      "keyFiles": [
+        "generate-sounds.cjs",
+        "trim-sounds.cjs"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 3,
+      "lastAccessed": 1773039271126,
+      "keyFiles": [
+        "App.tsx",
+        "index.css",
+        "main.tsx"
+      ]
+    },
+    "supabase": {
+      "path": "supabase",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1773039271127,
+      "keyFiles": []
+    },
+    "dist\\assets": {
+      "path": "dist\\assets",
+      "purpose": "Static assets",
+      "fileCount": 13,
+      "lastAccessed": 1773039271129,
+      "keyFiles": [
+        "AudioMixer-C27qlQ4O.js",
+        "framer-motion-B-9YpGzV.js",
+        "GardenCollection-uNZDGHhZ.js"
+      ]
+    },
+    "src\\components": {
+      "path": "src\\components",
+      "purpose": "UI components",
+      "fileCount": 29,
+      "lastAccessed": 1773039271131,
+      "keyFiles": [
+        "AppHeader.tsx",
+        "AudioMixer.tsx",
+        "AuroraBlob.tsx"
+      ]
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 11,
+      "lastAccessed": 1773039271131,
+      "keyFiles": [
+        "analytics.ts",
+        "constants.ts",
+        "date-utils.ts"
+      ]
+    },
+    "supabase\\migrations": {
+      "path": "supabase\\migrations",
+      "purpose": "Database migrations",
+      "fileCount": 2,
+      "lastAccessed": 1773039271132,
+      "keyFiles": [
+        "001_user_sync.sql",
+        "002_user_subscriptions.sql"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 1,
+      "lastAccessed": 1773039321933,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1773039322118,
+      "type": "directory"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1773039322275,
+      "type": "file"
+    },
+    {
+      "path": "src\\App.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1773039322922,
+      "type": "file"
+    },
+    {
+      "path": "src\\hooks\\useTimer.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039327534,
+      "type": "file"
+    },
+    {
+      "path": "src\\hooks\\useGarden.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039328008,
+      "type": "file"
+    },
+    {
+      "path": "src\\hooks\\useAudioMixer.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039328961,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\LandingScreen.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1773039329443,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\share-card.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039329811,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\i18n.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039330295,
+      "type": "file"
+    },
+    {
+      "path": "src\\hooks\\useSubscription.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039337922,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\sync.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039338236,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\analytics.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039338626,
+      "type": "file"
+    },
+    {
+      "path": "src\\workers\\timer.worker.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773039339138,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\pixel-plants.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1773039339825,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 1,
+      "lastAccessed": 1773039355838,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\PC\\.claude\\plugins\\cache\\my-claude-skills\\notion-project-upload\\2.1.0\\skills\\notion-project-upload\\references\\type3-template.md",
+      "accessCount": 1,
+      "lastAccessed": 1773039357178,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

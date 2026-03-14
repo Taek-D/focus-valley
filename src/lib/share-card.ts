@@ -58,6 +58,32 @@ type ShareCardData = {
     plantCount: number;
 };
 
+export type ShareCardLabels = {
+    brand: string;
+    focusedToday: string;
+    streak: string;
+    grown: string;
+    watermark: string;
+};
+
+export type SharePayload = {
+    title: string;
+    text: string;
+};
+
+const DEFAULT_SHARE_CARD_LABELS: ShareCardLabels = {
+    brand: "FOCUS VALLEY",
+    focusedToday: "FOCUSED TODAY",
+    streak: "STREAK",
+    grown: "GROWN",
+    watermark: "Made with Focus Valley",
+};
+
+const DEFAULT_SHARE_PAYLOAD: SharePayload = {
+    title: "Focus Valley",
+    text: "My focus record today!",
+};
+
 function parseHSL(hsl: string): string {
     return `hsl(${hsl})`;
 }
@@ -83,7 +109,11 @@ function drawRoundedRect(
     ctx.closePath();
 }
 
-export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "aurora"): Promise<Blob> {
+export function generateShareCard(
+    data: ShareCardData,
+    theme: ShareCardTheme = "aurora",
+    labels: ShareCardLabels = DEFAULT_SHARE_CARD_LABELS,
+): Promise<Blob> {
     return new Promise((resolve, reject) => {
         const W = 420;
         const H = 560;
@@ -123,7 +153,7 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
         ctx.font = "500 10px 'Sora', sans-serif";
         ctx.letterSpacing = "2px";
         ctx.textAlign = "center";
-        ctx.fillText("FOCUS VALLEY", W / 2, 48);
+        ctx.fillText(labels.brand, W / 2, 48);
 
         ctx.fillStyle = "hsla(0, 0%, 100%, 0.25)";
         ctx.font = "300 11px 'Sora', sans-serif";
@@ -152,7 +182,7 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
         ctx.fillStyle = "hsla(0, 0%, 100%, 0.3)";
         ctx.font = "400 11px 'Sora', sans-serif";
         ctx.letterSpacing = "1px";
-        ctx.fillText("FOCUSED TODAY", W / 2, 178);
+        ctx.fillText(labels.focusedToday, W / 2, 178);
 
         // Streak + Plants row
         const statsY = 220;
@@ -168,7 +198,7 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
         ctx.fillStyle = "hsla(0, 0%, 100%, 0.3)";
         ctx.font = "400 9px 'Sora', sans-serif";
         ctx.letterSpacing = "1px";
-        ctx.fillText("STREAK", W / 2 - statsWidth / 2, statsY + 18);
+        ctx.fillText(labels.streak, W / 2 - statsWidth / 2, statsY + 18);
 
         // Plants
         ctx.fillStyle = "hsla(0, 0%, 100%, 0.85)";
@@ -179,7 +209,7 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
         ctx.fillStyle = "hsla(0, 0%, 100%, 0.3)";
         ctx.font = "400 9px 'Sora', sans-serif";
         ctx.letterSpacing = "1px";
-        ctx.fillText("GROWN", W / 2 + statsWidth / 2, statsY + 18);
+        ctx.fillText(labels.grown, W / 2 + statsWidth / 2, statsY + 18);
 
         // Category breakdown bar
         if (data.categoryBreakdown.length > 0) {
@@ -248,7 +278,7 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
         ctx.font = "400 9px 'Sora', sans-serif";
         ctx.letterSpacing = "1px";
         ctx.textAlign = "center";
-        ctx.fillText("Made with Focus Valley", W / 2, H - 28);
+        ctx.fillText(labels.watermark, W / 2, H - 28);
 
         canvas.toBlob((blob) => {
             if (blob) resolve(blob);
@@ -257,13 +287,17 @@ export function generateShareCard(data: ShareCardData, theme: ShareCardTheme = "
     });
 }
 
-export async function shareOrDownload(blob: Blob, filename: string) {
+export async function shareOrDownload(
+    blob: Blob,
+    filename: string,
+    sharePayload: SharePayload = DEFAULT_SHARE_PAYLOAD,
+) {
     const file = new File([blob], filename, { type: "image/png" });
 
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
-            title: "Focus Valley",
-            text: "My focus record today!",
+            title: sharePayload.title,
+            text: sharePayload.text,
             files: [file],
         });
     } else {
