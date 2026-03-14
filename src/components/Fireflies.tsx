@@ -1,5 +1,5 @@
 import { useMemo, memo } from "react";
-import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 
 type Mote = {
     id: number;
@@ -11,9 +11,15 @@ type Mote = {
     opacity: number;
 };
 
+type FireflyStyle = CSSProperties & {
+    "--firefly-duration"?: string;
+    "--firefly-delay"?: string;
+    "--firefly-opacity"?: string;
+};
+
 function generateMotes(count: number): Mote[] {
-    return Array.from({ length: count }, (_, i) => ({
-        id: i,
+    return Array.from({ length: count }, (_, index) => ({
+        id: index,
         x: 15 + Math.random() * 70,
         y: 10 + Math.random() * 70,
         size: 3 + Math.random() * 5,
@@ -28,29 +34,21 @@ export const Fireflies = memo(function Fireflies() {
 
     return (
         <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden" aria-hidden="true">
-            {motes.map((m) => (
-                <motion.div
-                    key={m.id}
-                    className="absolute rounded-full"
+            {motes.map((mote) => (
+                <div
+                    key={mote.id}
+                    className="absolute rounded-full firefly-mote"
                     style={{
-                        left: `${m.x}%`,
-                        top: `${m.y}%`,
-                        width: m.size,
-                        height: m.size,
-                        background: `hsl(var(--aurora-1) / ${m.opacity})`,
-                        filter: `blur(${m.size * 0.6}px)`,
-                    }}
-                    animate={{
-                        x: [0, 30, -20, 10, 0],
-                        y: [0, -25, 15, -10, 0],
-                        opacity: [m.opacity, m.opacity * 1.8, m.opacity * 0.5, m.opacity * 1.4, m.opacity],
-                    }}
-                    transition={{
-                        duration: m.duration,
-                        delay: m.delay,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                    }}
+                        left: `${mote.x}%`,
+                        top: `${mote.y}%`,
+                        width: mote.size,
+                        height: mote.size,
+                        background: `hsl(var(--aurora-1) / ${mote.opacity})`,
+                        filter: `blur(${mote.size * 0.6}px)`,
+                        "--firefly-duration": `${mote.duration}s`,
+                        "--firefly-delay": `${mote.delay}s`,
+                        "--firefly-opacity": String(mote.opacity),
+                    } as FireflyStyle}
                 />
             ))}
         </div>

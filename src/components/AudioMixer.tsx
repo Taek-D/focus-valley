@@ -1,3 +1,4 @@
+import "@/lib/i18n-packs/feature-pack";
 import React from "react";
 import { useAudioMixer, type NoiseType } from "../hooks/useAudioMixer";
 import { Volume2, VolumeX } from "lucide-react";

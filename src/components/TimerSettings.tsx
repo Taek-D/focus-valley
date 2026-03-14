@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import "@/lib/i18n-packs/feature-pack";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
     X,
@@ -20,7 +21,7 @@ import {
     type TimerDurations,
     type TimerPresetId,
 } from "../hooks/useTimerSettings";
-import { LOCALE_LABELS, useTranslation, useI18n, type TranslationKey, type Locale } from "../lib/i18n";
+import { LOCALE_LABELS, useTranslation, useI18n, type TranslationKey } from "../lib/i18n";
 import { useTour } from "../hooks/useTour";
 import { downloadBackup, restoreBackup } from "@/lib/backup";
 import { trackBackupEvent } from "@/lib/analytics";
@@ -36,14 +37,6 @@ const FIELDS: { key: keyof TimerDurations; labelKey: TranslationKey; icon: React
     { key: "shortBreak", labelKey: "timer.shortBreak", icon: <Coffee size={14} /> },
     { key: "longBreak", labelKey: "timer.longBreak", icon: <Sunset size={14} /> },
 ];
-
-const LOCALE_DISPLAY_LABELS: Record<Locale, string> = {
-    en: "English",
-    ko: "한국어",
-    ja: "日本語",
-};
-
-void LOCALE_DISPLAY_LABELS;
 
 const DurationField: React.FC<{
     label: string;
@@ -113,7 +106,9 @@ const DurationField: React.FC<{
                             className="rounded-lg px-2 py-0.5 transition-colors hover:bg-foreground/5"
                             aria-label={`Edit ${label} value`}
                         >
-                            <span className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>{value}</span>
+                            <span className="font-display text-2xl text-foreground" style={{ fontWeight: 300 }}>
+                                {value}
+                            </span>
                         </button>
                     )}
                     <span className="ml-1 font-body text-[10px] text-muted-foreground/50">{minutesLabel}</span>
@@ -225,7 +220,9 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         className="glass-strong mx-4 w-full max-w-sm space-y-5 rounded-2xl p-6 shadow-cozy-lg"
                     >
                         <div className="flex items-center justify-between">
-                            <h3 className="font-body text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">{t("settings.settings")}</h3>
+                            <h3 className="font-body text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
+                                {t("settings.settings")}
+                            </h3>
                             <button
                                 ref={closeRef}
                                 onClick={onClose}
@@ -301,7 +298,9 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-2 text-muted-foreground/60">
                                 <SkipForward size={14} />
-                                <span className="font-body text-[10px] font-medium uppercase tracking-[0.1em]">{t("settings.autoAdvance")}</span>
+                                <span className="font-body text-[10px] font-medium uppercase tracking-[0.1em]">
+                                    {t("settings.autoAdvance")}
+                                </span>
                             </div>
                             <button
                                 onClick={() => setAutoAdvance(!autoAdvance)}
@@ -310,22 +309,26 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                     autoAdvance ? "justify-end bg-foreground/20" : "justify-start bg-foreground/5"
                                 }`}
                             >
-                                <div className={`mx-0.5 h-4 w-4 rounded-full transition-colors ${
-                                    autoAdvance ? "bg-foreground" : "bg-foreground/30"
-                                }`} />
+                                <div
+                                    className={`mx-0.5 h-4 w-4 rounded-full transition-colors ${
+                                        autoAdvance ? "bg-foreground" : "bg-foreground/30"
+                                    }`}
+                                />
                             </button>
                         </div>
 
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-2 text-muted-foreground/60">
                                 <Globe size={14} />
-                                <span className="font-body text-[10px] font-medium uppercase tracking-[0.1em]">{t("settings.language")}</span>
+                                <span className="font-body text-[10px] font-medium uppercase tracking-[0.1em]">
+                                    {t("settings.language")}
+                                </span>
                             </div>
                             <div className="flex items-center gap-1">
                                 {(["en", "ko", "ja"] as const).map((loc) => (
                                     <button
                                         key={loc}
-                                        onClick={() => setLocale(loc as Locale)}
+                                        onClick={() => setLocale(loc)}
                                         className={`rounded-lg px-2.5 py-1 font-body text-[10px] transition-all ${
                                             locale === loc
                                                 ? "bg-foreground/10 font-medium text-foreground"
@@ -369,11 +372,14 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                                 onChange={handleImportBackup}
                             />
                             {backupNotice && (
-                                <div data-testid="settings-backup-notice" className={`space-y-2 rounded-xl px-3 py-2 ${
-                                    backupNotice.tone === "error"
-                                        ? "bg-destructive/10 text-destructive"
-                                        : "bg-foreground/[0.03] text-foreground/60"
-                                }`}>
+                                <div
+                                    data-testid="settings-backup-notice"
+                                    className={`space-y-2 rounded-xl px-3 py-2 ${
+                                        backupNotice.tone === "error"
+                                            ? "bg-destructive/10 text-destructive"
+                                            : "bg-foreground/[0.03] text-foreground/60"
+                                    }`}
+                                >
                                     <p className="font-body text-[11px] leading-relaxed">{backupNotice.message}</p>
                                     {backupNotice.canReload && (
                                         <button
@@ -389,7 +395,10 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         </div>
 
                         <button
-                            onClick={() => { startTour(); onClose(); }}
+                            onClick={() => {
+                                startTour();
+                                onClose();
+                            }}
                             className="flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/5 py-2.5 font-body text-[10px] font-medium tracking-wide text-muted-foreground/50 transition-all hover:border-foreground/15 hover:text-foreground"
                         >
                             <HelpCircle size={10} />

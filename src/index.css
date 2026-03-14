@@ -279,6 +279,71 @@
 }
 
 @layer components {
+  @keyframes header-slide-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes header-slide-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes firefly-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: var(--firefly-opacity, 0.12);
+    }
+    25% {
+      transform: translate3d(24px, -18px, 0);
+      opacity: calc(var(--firefly-opacity, 0.12) * 1.8);
+    }
+    50% {
+      transform: translate3d(-18px, 12px, 0);
+      opacity: calc(var(--firefly-opacity, 0.12) * 0.6);
+    }
+    75% {
+      transform: translate3d(10px, -8px, 0);
+      opacity: calc(var(--firefly-opacity, 0.12) * 1.4);
+    }
+  }
+
+  .header-enter-left {
+    animation: header-slide-left 0.45s ease-out 0.1s both;
+  }
+
+  .header-enter-right {
+    animation: header-slide-right 0.45s ease-out 0.2s both;
+  }
+
+  .firefly-mote {
+    animation: firefly-float var(--firefly-duration, 16s) ease-in-out var(--firefly-delay, 0s) infinite;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-enter-left,
+    .header-enter-right,
+    .firefly-mote {
+      animation: none;
+      transform: none;
+      opacity: 1;
+    }
+  }
+
   /* Minimal range slider */
   input[type="range"].cozy-slider {
     -webkit-appearance: none;

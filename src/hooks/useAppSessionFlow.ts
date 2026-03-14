@@ -10,7 +10,6 @@ import {
     trackSessionStart,
     trackShareCard,
 } from "@/lib/analytics";
-import { generateShareCard, shareOrDownload } from "@/lib/share-card";
 import { getToday } from "@/lib/date-utils";
 import { getCategoryBreakdown } from "@/lib/stats";
 import { getMilestoneById } from "@/lib/milestones";
@@ -43,8 +42,27 @@ type UseAppSessionFlowArgs = {
     categories: Category[];
     locale: string;
     t: Translate;
-    syncCurrentUser: () => void;
+    syncCurrentUser: () => void | Promise<void>;
 };
+
+export function getBreathCycle(isPlantBreathing: boolean, timeLeft: number, focusDuration: number) {
+    if (!isPlantBreathing) return 4;
+    const totalTime = focusDuration * 60;
+    const elapsed = totalTime - timeLeft;
+    const progress = Math.min(elapsed / totalTime, 1);
+    return 4 + progress * 4;
+}
+
+export function getGrowthPercent(isRunning: boolean, mode: TimerMode, timeLeft: number, focusDuration: number) {
+    if (!isRunning || mode !== "FOCUS") return undefined;
+    const totalTime = focusDuration * 60;
+    const elapsed = totalTime - timeLeft;
+    return (elapsed / totalTime) * 100;
+}
+
+export function getIsBreakActive(isRunning: boolean, mode: TimerMode) {
+    return isRunning && (mode === "SHORT_BREAK" || mode === "LONG_BREAK");
+}
 
 export function useAppSessionFlow({
     timer,
@@ -335,6 +353,7 @@ export function useAppSessionFlow({
         const todaySessions = garden.focusSessions.filter((session) => session.date === todayKey);
         const todayMinutes = todaySessions.reduce((sum, session) => sum + session.minutes, 0);
         const todayBreakdown = getCategoryBreakdown(todaySessions, categories);
+        const { generateShareCard, shareOrDownload } = await import("@/lib/share-card");
 
         const blob = await generateShareCard({
             date: today,
@@ -359,22 +378,17 @@ export function useAppSessionFlow({
 
     const canInteract = garden.stage === "TREE" || garden.stage === "DEAD";
     const isPlantBreathing = timer.isRunning && timer.mode === "FOCUS";
-    const breathCycle = useMemo(() => {
-        if (!isPlantBreathing) return 4;
-        const totalTime = timer.focusDuration * 60;
-        const elapsed = totalTime - timer.timeLeft;
-        const progress = Math.min(elapsed / totalTime, 1);
-        return 4 + progress * 4;
-    }, [isPlantBreathing, timer.timeLeft, timer.focusDuration]);
+    const breathCycle = useMemo(
+        () => getBreathCycle(isPlantBreathing, timer.timeLeft, timer.focusDuration),
+        [isPlantBreathing, timer.timeLeft, timer.focusDuration],
+    );
 
-    const growthPercent = useMemo(() => {
-        if (!timer.isRunning || timer.mode !== "FOCUS") return undefined;
-        const totalTime = timer.focusDuration * 60;
-        const elapsed = totalTime - timer.timeLeft;
-        return (elapsed / totalTime) * 100;
-    }, [timer.isRunning, timer.mode, timer.timeLeft, timer.focusDuration]);
+    const growthPercent = useMemo(
+        () => getGrowthPercent(timer.isRunning, timer.mode, timer.timeLeft, timer.focusDuration),
+        [timer.isRunning, timer.mode, timer.timeLeft, timer.focusDuration],
+    );
 
-    const isBreakActive = timer.isRunning && (timer.mode === "SHORT_BREAK" || timer.mode === "LONG_BREAK");
+    const isBreakActive = getIsBreakActive(timer.isRunning, timer.mode);
 
     return {
         toast,

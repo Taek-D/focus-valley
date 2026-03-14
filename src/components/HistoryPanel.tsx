@@ -1,3 +1,4 @@
+import "@/lib/i18n-packs/feature-pack";
 import React, { useMemo, useCallback, useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Trophy, Flame, TrendingUp, TrendingDown, Calendar, Target, Download, Share2, Timer } from "lucide-react";
@@ -8,7 +9,7 @@ import { getWeeklyStats, getMonthlyHeatmap, exportSessionsCSV, downloadCSV, getC
 import { PLANT_ICONS } from "../lib/constants";
 import { getDayLabel, getLast7Days, getToday, groupByDate, toLocalDateKey } from "../lib/date-utils";
 import { FREE_TIER } from "@/lib/constants";
-import { generateShareCard, shareOrDownload, type ShareCardTheme } from "../lib/share-card";
+import type { ShareCardTheme } from "../lib/share-card";
 import { BottomSheet } from "./ui/BottomSheet";
 
 import { trackShareCard, trackCsvExport } from "../lib/analytics";
@@ -118,6 +119,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             const todaySessions = focusSessions.filter((s) => s.date === todayKey);
             const todayMinutes = todaySessions.reduce((sum, s) => sum + s.minutes, 0);
             const todayBreakdown = getCategoryBreakdown(todaySessions, categories);
+            const { generateShareCard, shareOrDownload } = await import("../lib/share-card");
 
             const blob = await generateShareCard({
                 date: today,

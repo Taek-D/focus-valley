@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { ScrollText, Moon, Sun, Leaf, Settings, Sprout, Flame, ListTodo, UserCircle, Cloud, CloudAlert, CloudOff, LoaderCircle } from "lucide-react";
 import { useTranslation } from "../lib/i18n";
 import type { User } from "@supabase/supabase-js";
@@ -19,30 +18,33 @@ type AppHeaderProps = {
 };
 
 export const AppHeader = memo(function AppHeader({
-    isDark, currentStreak, user,
-    syncState, syncLabel,
-    onToggleDark, onShowSettings, onShowTodo, onShowGarden, onShowHistory, onShowAuth,
+    isDark,
+    currentStreak,
+    user,
+    syncState,
+    syncLabel,
+    onToggleDark,
+    onShowSettings,
+    onShowTodo,
+    onShowGarden,
+    onShowHistory,
+    onShowAuth,
 }: AppHeaderProps) {
     const { t } = useTranslation();
     const syncIcon = syncState === "syncing"
         ? <LoaderCircle size={11} className="animate-spin" />
         : syncState === "warning"
-        ? <CloudAlert size={11} />
-        : syncState === "error"
-        ? <CloudOff size={11} />
-        : <Cloud size={11} />;
+          ? <CloudAlert size={11} />
+          : syncState === "error"
+            ? <CloudOff size={11} />
+            : <Cloud size={11} />;
 
     return (
         <header className="w-full max-w-lg flex justify-between items-center z-10 px-4 sm:px-6 pt-4 sm:pt-5 pb-2">
-            <motion.div
-                className="flex items-center gap-2.5"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-            >
+            <div className="flex items-center gap-2.5 header-enter-left">
                 <Leaf size={15} className="text-muted-foreground" />
                 <span className="font-display text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground">
-                    Focus Valley
+                    {t("app.name")}
                 </span>
                 {currentStreak > 0 && (
                     <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-foreground/[0.04] text-foreground/50 border border-foreground/[0.04]">
@@ -56,8 +58,8 @@ export const AppHeader = memo(function AppHeader({
                             syncState === "error"
                                 ? "border-destructive/20 bg-destructive/10 text-destructive/80"
                                 : syncState === "warning"
-                                ? "border-amber-500/20 bg-amber-500/10 text-amber-600/80 dark:text-amber-300/80"
-                                : "border-foreground/[0.04] bg-foreground/[0.04] text-foreground/50"
+                                  ? "border-amber-500/20 bg-amber-500/10 text-amber-600/80 dark:text-amber-300/80"
+                                  : "border-foreground/[0.04] bg-foreground/[0.04] text-foreground/50"
                         }`}
                         aria-label={syncLabel}
                         title={syncLabel}
@@ -65,30 +67,23 @@ export const AppHeader = memo(function AppHeader({
                         {syncIcon}
                     </span>
                 )}
-            </motion.div>
-            <motion.div
-                className="flex items-center gap-0.5"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                data-tour="header-icons"
-            >
-
+            </div>
+            <div className="flex items-center gap-0.5 header-enter-right" data-tour="header-icons">
                 {[
                     { action: onToggleDark, label: t("header.darkMode"), icon: isDark ? <Sun size={15} /> : <Moon size={15} />, testId: "header-dark-mode" },
                     { action: onShowSettings, label: t("header.settings"), icon: <Settings size={15} />, testId: "header-settings" },
                     { action: onShowTodo, label: t("header.todo"), icon: <ListTodo size={15} />, testId: "header-todo" },
                     { action: onShowGarden, label: t("header.garden"), icon: <Sprout size={15} />, testId: "header-garden" },
                     { action: onShowHistory, label: t("header.history"), icon: <ScrollText size={15} />, testId: "header-history" },
-                ].map((btn) => (
+                ].map((button) => (
                     <button
-                        key={btn.label}
-                        onClick={btn.action}
-                        data-testid={btn.testId}
+                        key={button.label}
+                        onClick={button.action}
+                        data-testid={button.testId}
                         className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label={btn.label}
+                        aria-label={button.label}
                     >
-                        {btn.icon}
+                        {button.icon}
                     </button>
                 ))}
                 <button
@@ -108,7 +103,7 @@ export const AppHeader = memo(function AppHeader({
                         <UserCircle size={15} />
                     )}
                 </button>
-            </motion.div>
+            </div>
         </header>
     );
 });

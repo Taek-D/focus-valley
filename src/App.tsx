@@ -1,3 +1,4 @@
+import "@/lib/i18n-packs/core-shell";
 import { useCallback, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, X } from "lucide-react";
@@ -90,6 +91,11 @@ function App() {
         dismissLanding();
     }, [dismissLanding]);
 
+    const handleShowAuth = useCallback(() => {
+        void syncFlow.ensureBootstrapped();
+        panels.openAuth();
+    }, [syncFlow, panels]);
+
     const handleLandingDemo = useCallback(() => {
         dismissLanding();
         session.startDemoMode();
@@ -146,7 +152,7 @@ function App() {
                 onShowTodo={panels.openTodo}
                 onShowGarden={panels.openGarden}
                 onShowHistory={panels.openHistory}
-                onShowAuth={panels.openAuth}
+                onShowAuth={handleShowAuth}
             />
 
             <main className="flex-1 flex flex-col items-center justify-center w-full max-w-lg relative z-10 px-4 sm:px-6">

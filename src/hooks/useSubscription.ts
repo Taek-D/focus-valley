@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { supabase } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
 type Plan = "free" | "pro";
@@ -29,7 +28,13 @@ export const useSubscription = create<SubscriptionState>((set) => ({
     initialized: false,
 
     refresh: async (user) => {
-        if (!user || !supabase) {
+        if (!user) {
+            set({ plan: "free", expiresAt: null, loading: false, initialized: true });
+            return;
+        }
+
+        const { supabase } = await import("@/lib/supabase");
+        if (!supabase) {
             set({ plan: "free", expiresAt: null, loading: false, initialized: true });
             return;
         }

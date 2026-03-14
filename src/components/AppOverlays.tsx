@@ -1,22 +1,19 @@
+import { lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Share2 } from "lucide-react";
 import { Toast } from "@/components/Toast";
 import { ConfirmModal } from "@/components/ConfirmModal";
-import { AuthModal } from "@/components/AuthModal";
-import { BreathingGuide } from "@/components/BreathingGuide";
-import { Confetti } from "@/components/Confetti";
-import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
-import { WeeklySummaryPopup } from "@/components/WeeklySummaryPopup";
-import { TourGuide } from "@/components/TourGuide";
-import { LandingScreen } from "@/components/LandingScreen";
-import { UpgradeModal } from "@/components/UpgradeModal";
 import { HelpButton } from "@/components/HelpButton";
-import { trackRecoveryChoice } from "@/lib/analytics";
+import { useUpgradeModal } from "@/hooks/useUpgradeModal";
 import type { TranslationKey } from "@/lib/i18n";
 import type { SyncResult } from "@/lib/sync";
 import type { useGarden } from "@/hooks/useGarden";
 import type { useTimer } from "@/hooks/useTimer";
 import type { AppSessionFlow } from "@/hooks/useAppSessionFlow";
+
+const AppLazyOverlays = lazy(() =>
+    import("@/components/AppLazyOverlays").then((module) => ({ default: module.AppLazyOverlays }))
+);
 
 type Translate = (key: TranslationKey) => string;
 
@@ -59,6 +56,17 @@ export function AppOverlays({
     isTourActive,
     t,
 }: AppOverlaysProps) {
+    const isUpgradeOpen = useUpgradeModal((state) => state.isOpen);
+    const showLazyOverlays =
+        showAuth
+        || (session.isBreakActive && showBreathing)
+        || session.confettiTrigger > 0
+        || timer.needsRecoveryPrompt
+        || (showWeeklySummary && !showLanding)
+        || isTourActive
+        || showLanding
+        || isUpgradeOpen;
+
     return (
         <>
             <AnimatePresence>
@@ -141,47 +149,26 @@ export function AppOverlays({
                 onCancel={session.closeConfirmModal}
             />
 
-            <AuthModal
-                isOpen={showAuth}
-                onClose={closeAuth}
-            />
-
-            <BreathingGuide
-                isOpen={session.isBreakActive && showBreathing}
-                onClose={closeBreathing}
-            />
-
-            <Confetti trigger={session.confettiTrigger} />
-
-            <SessionRecoveryDialog
-                isOpen={timer.needsRecoveryPrompt}
-                onResume={() => {
-                    trackRecoveryChoice("resume");
-                    timer.confirmResume();
-                }}
-                onDiscard={() => {
-                    trackRecoveryChoice("discard");
-                    timer.discardRecovery();
-                }}
-                remainingSeconds={timer.timeLeft}
-                mode={timer.mode}
-            />
-
-            <WeeklySummaryPopup
-                isOpen={showWeeklySummary && !showLanding}
-                onDismiss={dismissWeeklySummary}
-                focusSessions={garden.focusSessions}
-            />
-
-            <TourGuide />
-
-            <LandingScreen
-                isOpen={showLanding}
-                onGetStarted={onLandingGetStarted}
-                onTryDemo={onLandingDemo}
-            />
-
-            <UpgradeModal />
+            <Suspense fallback={null}>
+                {showLazyOverlays && (
+                    <AppLazyOverlays
+                        session={session}
+                        timer={timer}
+                        garden={garden}
+                        showAuth={showAuth}
+                        closeAuth={closeAuth}
+                        showBreathing={showBreathing}
+                        closeBreathing={closeBreathing}
+                        showWeeklySummary={showWeeklySummary}
+                        dismissWeeklySummary={dismissWeeklySummary}
+                        showLanding={showLanding}
+                        onLandingGetStarted={onLandingGetStarted}
+                        onLandingDemo={onLandingDemo}
+                        isTourActive={isTourActive}
+                        isUpgradeOpen={isUpgradeOpen}
+                    />
+                )}
+            </Suspense>
 
             <HelpButton
                 visible={!showLanding && !isTourActive}

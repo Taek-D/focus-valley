@@ -1,3 +1,4 @@
+import "@/lib/i18n-packs/feature-pack";
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";

@@ -1,3 +1,4 @@
+import "@/lib/i18n-packs/feature-pack";
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash2, Check, Pin } from "lucide-react";
