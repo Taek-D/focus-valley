@@ -1,0 +1,363 @@
+# Architecture Research
+
+**Domain:** Capacitor Android wrapping of existing Vite 7 + React 19 SPA
+**Researched:** 2026-03-24
+**Confidence:** HIGH (Capacitor docs + verified patterns) / MEDIUM (Web Worker background behavior)
+
+## Standard Architecture
+
+### System Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         BUILD PIPELINE                               │
+│                                                                      │
+│  vite.config.ts ──────────────────────────────────────────────────  │
+│  (IIFE_BUILD=capacitor)                                              │
+│       │                                                              │
+│  npm run build ──► dist/  ◄── webDir in capacitor.config.ts         │
+│                    index.html                                        │
+│                    assets/                                           │
+│                    sw.js (DISABLED for cap build)                    │
+│       │                                                              │
+│  npx cap sync  ──► android/app/src/main/assets/public/              │
+│                    (copy of dist/)                                   │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                         RUNTIME (Android)                            │
+│                                                                      │
+│  MainActivity (BridgeActivity)                                       │
+│       │                                                              │
+│  Android System WebView / Chrome WebView                             │
+│  ┌──────────────────────────────────────────────────────────────┐   │
+│  │  capacitor://localhost  (scheme)                              │   │
+│  │                                                               │   │
+│  │  React App (existing SPA — unchanged)                        │   │
+│  │  ├── useTimer ──► timer.worker.ts (setInterval)              │   │
+│  │  │                [foreground only — see notes]              │   │
+│  │  ├── Zustand persist ──► localStorage (transient risk)       │   │
+│  │  ├── Web Audio API ──► WORKS in WebView                      │   │
+│  │  └── Supabase client ──► HTTPS allowed                       │   │
+│  │                                                               │   │
+│  │  Capacitor Bridge (JS ↔ Native)                              │   │
+│  │  ├── LocalNotifications ──► Android notification system      │   │
+│  │  ├── Haptics ──► VibrationEffect API                         │   │
+│  │  ├── App (lifecycle events)                                  │   │
+│  │  └── StatusBar / SplashScreen                                │   │
+│  └──────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+│  Native Android Layer                                                │
+│  ├── AndroidManifest.xml (permissions)                               │
+│  ├── variables.gradle (SDK versions)                                 │
+│  └── res/ (icons, splash, strings)                                   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Component Responsibilities
+
+| Component | Responsibility | Notes |
+|-----------|----------------|-------|
+| `capacitor.config.ts` | Declares appId, appName, webDir, plugin config | Root of project, read by `cap sync` |
+| `android/` directory | Generated native Android project | Do not manually edit Gradle versions; use `variables.gradle` |
+| `android/app/src/main/java/.../MainActivity.java` | Bridge entry point (extends BridgeActivity) | Minimal — register custom plugins only |
+| `android/app/src/main/AndroidManifest.xml` | Permission declarations | Add VIBRATE, SCHEDULE_EXACT_ALARM, POST_NOTIFICATIONS |
+| `android/variables.gradle` | Centralised SDK/Gradle version pins | Only file to update for SDK bumps |
+| Vite `VITE_CAPACITOR` env flag | Conditional PWA plugin disable | Prevents SW generation for native build |
+| `npx cap sync` | Copies `dist/` → android assets, installs native deps | Must run after every `npm run build` |
+
+## Recommended Project Structure
+
+```
+focus-valley/
+├── capacitor.config.ts          # NEW — root-level, alongside vite.config.ts
+├── vite.config.ts               # MODIFIED — conditional VitePWA disable
+├── package.json                 # MODIFIED — add cap scripts
+│
+├── src/                         # UNCHANGED — all existing code stays
+│   ├── hooks/
+│   │   ├── useTimer.ts          # UNCHANGED — Web Worker works in foreground
+│   │   └── useCapacitorEvents.ts  # NEW — App lifecycle / background detection
+│   ├── lib/
+│   │   └── notifications.ts     # NEW — LocalNotifications wrapper
+│   └── workers/
+│       └── timer.worker.ts      # UNCHANGED
+│
+└── android/                     # GENERATED by `npx cap add android`
+    ├── app/
+    │   ├── build.gradle         # app-level Gradle (rarely touched)
+    │   └── src/main/
+    │       ├── AndroidManifest.xml   # MODIFIED — add permissions
+    │       ├── java/
+    │       │   └── io/focusvalley/app/
+    │       │       └── MainActivity.java   # minimal, extends BridgeActivity
+    │       ├── res/
+    │       │   ├── drawable/    # icon, splash assets
+    │       │   ├── mipmap-*/    # launcher icons (generated by capacitor-assets)
+    │       │   └── values/
+    │       │       └── strings.xml   # app_name, custom_url_scheme
+    │       └── assets/public/   # GENERATED by cap sync — copy of dist/
+    ├── build.gradle             # top-level Gradle
+    ├── variables.gradle         # SDK version pins (minSdk, compileSdk, targetSdk)
+    └── gradle/wrapper/
+        └── gradle-wrapper.properties   # Gradle tool version
+```
+
+### Structure Rationale
+
+- **`capacitor.config.ts` at root:** Capacitor CLI reads it from project root, alongside `vite.config.ts`. Do not nest it.
+- **`android/variables.gradle`:** All SDK version changes go here, not in `build.gradle`. Capacitor 7 expects minSdkVersion=23, compileSdkVersion=35, targetSdkVersion=35.
+- **`android/app/src/main/assets/public/`:** This is where `npx cap sync` writes your `dist/` contents. Never manually edit these files — they are overwritten on every sync.
+- **`src/` unchanged:** The entire existing React SPA runs as-is inside the WebView. No code needs to move or be rewritten.
+
+## Architectural Patterns
+
+### Pattern 1: Conditional PWA Plugin Disable
+
+**What:** The `vite-plugin-pwa` generates a service worker (`sw.js`) and manifest that are needed for the PWA deployment but cause problems in Capacitor. Android WebView does not register service workers reliably (assets are served from the `capacitor://localhost` scheme, not `https://`). More critically, Capacitor injects its bridge JS into the WebView and service workers can intercept this injection and block plugin calls.
+
+**When to use:** Every Capacitor build. The web (PWA) build keeps VitePWA enabled; the native build disables it.
+
+**Trade-offs:** Requires two distinct build modes. Capacitor bundles all assets locally anyway, so the service worker's offline caching purpose is redundant for native.
+
+**Example:**
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+
+const isCapacitorBuild = process.env.VITE_CAPACITOR === 'true';
+
+export default defineConfig({
+  plugins: [
+    // ...existing plugins (tailwindcss, react)...
+    !isCapacitorBuild && VitePWA({
+      // ...existing VitePWA config unchanged...
+    }),
+  ].filter(Boolean),
+});
+
+// package.json
+// "build:capacitor": "VITE_CAPACITOR=true npm run build && npx cap sync"
+// "build:pwa": "npm run build"          // existing web deploy
+```
+
+### Pattern 2: Capacitor Bridge — Calling Native from Existing Hooks
+
+**What:** Capacitor injects plugin JS into the WebView at runtime. Any component or hook can call `@capacitor/local-notifications`, `@capacitor/haptics`, etc. as regular async functions. The bridge is transparent to the existing React architecture.
+
+**When to use:** When triggering native capabilities from existing session lifecycle events (timer completion, plant growth stage advance).
+
+**Trade-offs:** Capacitor plugin calls must happen on the main thread, not inside the `timer.worker.ts` Web Worker. The worker already communicates via `postMessage`, so the main thread (`useTimer`) is the correct call site.
+
+**Example:**
+```typescript
+// src/lib/notifications.ts  (new file)
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Capacitor } from '@capacitor/core';
+
+export async function scheduleCompletionNotification(title: string, body: string) {
+  if (!Capacitor.isNativePlatform()) return; // no-op on web
+  await LocalNotifications.schedule({
+    notifications: [{ id: 1, title, body, schedule: { at: new Date(Date.now() + 500) } }],
+  });
+}
+
+// src/hooks/useTimer.ts  (add to existing onComplete handler)
+// When worker posts TICK and timeLeft reaches 0:
+scheduleCompletionNotification('Focus complete!', 'Your plant has grown.');
+```
+
+### Pattern 3: localStorage Persistence Guard
+
+**What:** Android WebView treats `localStorage` as transient — the OS can evict it when storage is low. Zustand's `persist` middleware writes to `localStorage` by default (e.g., the `focus-valley-garden` key). All garden history and settings would be lost on eviction.
+
+**When to use:** For any data that must survive app restarts on Android. In Focus Valley: garden history, settings, streak data.
+
+**Trade-offs:** The Capacitor Preferences API (key/value, backed by SharedPreferences on Android) is reliable but synchronous-looking-but-async. Zustand's `persist` middleware accepts a custom storage adapter, so the migration is localised.
+
+**Example:**
+```typescript
+// src/lib/capacitor-storage.ts  (new file)
+import { Preferences } from '@capacitor/preferences';
+import { Capacitor } from '@capacitor/core';
+import { StateStorage } from 'zustand/middleware';
+
+export const capacitorStorage: StateStorage = {
+  getItem: async (name) => {
+    const { value } = await Preferences.get({ key: name });
+    return value ?? null;
+  },
+  setItem: async (name, value) => {
+    await Preferences.set({ key: name, value });
+  },
+  removeItem: async (name) => {
+    await Preferences.remove({ key: name });
+  },
+};
+
+// Select storage based on platform
+export const persistStorage = Capacitor.isNativePlatform()
+  ? capacitorStorage
+  : localStorage; // existing behaviour for web PWA
+```
+
+### Pattern 4: Web Worker Foreground-Only Timer
+
+**What:** The existing `timer.worker.ts` uses `setInterval` for 1-second ticks. In the Android WebView, dedicated Web Workers (not service workers) are supported and `setInterval` runs correctly while the app is in the foreground. When the app moves to the background, Android throttles and eventually pauses the WebView thread — including Web Workers.
+
+**When to use:** Understand this constraint when planning background timer support.
+
+**Trade-offs:** For a Pomodoro app the foreground behavior is acceptable for v1.1. The existing Page Visibility API correction in `useTimer` already handles tab-switch drift; the same logic applies when the Android app returns to foreground. A native foreground service (persistent notification) would be needed for true background countdown, but that is out of scope for v1.1.
+
+**Example:**
+```typescript
+// src/hooks/useCapacitorEvents.ts  (new file — lifecycle bridge)
+import { App } from '@capacitor/app';
+import { useEffect } from 'react';
+
+export function useCapacitorAppLifecycle(
+  onBackground: () => void,
+  onForeground: () => void
+) {
+  useEffect(() => {
+    const bgSub = App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) onBackground();
+      else onForeground();
+    });
+    return () => { bgSub.then(h => h.remove()); };
+  }, []);
+}
+// Wire into useTimer's existing Page Visibility correction logic
+```
+
+## Data Flow
+
+### Build → Device Data Flow
+
+```
+Developer machine
+    │
+    ├── npm run build:capacitor
+    │     VITE_CAPACITOR=true → VitePWA disabled → dist/ generated (no sw.js)
+    │
+    ├── npx cap sync
+    │     dist/ → android/app/src/main/assets/public/
+    │     capacitor.config.ts → android/app/src/main/assets/capacitor.config.json
+    │     Plugin native deps resolved via Gradle
+    │
+    └── npx cap open android  (or cap build android for release APK)
+          Android Studio / Gradle builds .apk / .aab
+          WebView loads capacitor://localhost/index.html from bundled assets
+```
+
+### Runtime Request Flow (Native Plugin Call)
+
+```
+useTimer detects session complete
+    │
+    └── scheduleCompletionNotification()  [main thread]
+          │
+          Capacitor Bridge JS (injected into WebView)
+          │
+          Java Native Plugin (LocalNotificationsPlugin.java)
+          │
+          Android NotificationManager
+          │
+          System notification tray
+```
+
+### State Persistence Flow (Android)
+
+```
+Zustand action (e.g., addSession())
+    │
+    persist middleware calls storage.setItem(key, value)
+    │
+    ├── Web/PWA:   localStorage.setItem()    [existing, transient on Android]
+    └── Native:    Preferences.set()         [SharedPreferences, persistent]
+```
+
+### Key Data Flows
+
+1. **Timer TICK flow:** Unchanged. Worker posts TICK → `useTimer` decrements → `useAppSessionFlow` detects completion → local notification triggered via Capacitor bridge on main thread.
+2. **Storage read on app resume:** When Android restores the WebView after backgrounding, Zustand hydrates from Preferences (native) or localStorage (web). If the OS had evicted localStorage before the Preferences migration, there is data loss risk — mitigated by switching storage adapter before Play Store release.
+
+## Scaling Considerations
+
+| Scale | Architecture Adjustments |
+|-------|--------------------------|
+| v1.1 launch | Single-process WebView, Capacitor Preferences for storage, foreground-only timer |
+| Post-launch background timer | Add `@capawesome-team/capacitor-android-foreground-service` plugin + persistent notification to keep WebView process alive |
+| True background service | Native Android Service + `@capacitor/background-runner` for JS-based background execution; replaces Web Worker timer entirely on mobile |
+
+### Scaling Priorities
+
+1. **First bottleneck:** localStorage eviction on low-storage devices. Fix: Preferences API adapter (Pattern 3 above). High priority before Play Store launch.
+2. **Second bottleneck:** Timer stopping when app is backgrounded. Fix: Android Foreground Service plugin with persistent notification. Medium priority — depends on user complaints post-launch.
+
+## Anti-Patterns
+
+### Anti-Pattern 1: Leaving VitePWA Active for Capacitor Builds
+
+**What people do:** Use the same `npm run build` for both the web PWA deploy and the Capacitor sync.
+**Why it's wrong:** The generated `sw.js` service worker will be bundled into the app assets. On Android WebView, service worker registration silently fails (protocol mismatch), but the registration attempt in `main.tsx` can throw or log errors. More dangerously, if the WebView does register the SW on some Android versions, it can intercept the Capacitor bridge injection and block plugin calls with "Plugin not implemented" errors.
+**Do this instead:** Use a `VITE_CAPACITOR=true` env flag to conditionally exclude the VitePWA plugin for the native build. Keep two npm scripts: `build` (PWA) and `build:capacitor`.
+
+### Anti-Pattern 2: Calling Capacitor Plugins Inside timer.worker.ts
+
+**What people do:** Attempt to call `LocalNotifications.schedule()` or `Haptics.impact()` from inside the Web Worker to avoid passing data back to the main thread.
+**Why it's wrong:** The Capacitor bridge is injected into the WebView's main JS context. Inside a dedicated worker the `window` object and Capacitor's plugin namespace do not exist. The call reaches the "Web" fallback implementation (no-op) rather than the Android native layer. This is a confirmed Capacitor issue (#6309) that was closed as "not planned."
+**Do this instead:** Keep all Capacitor plugin calls on the main thread. The worker already communicates via `postMessage({ type: "TICK" })`; extend this by also posting `{ type: "SESSION_COMPLETE" }` and handling the notification dispatch in `useTimer`'s `onmessage` handler.
+
+### Anti-Pattern 3: Hardcoding SDK Versions in build.gradle
+
+**What people do:** Edit `android/app/build.gradle` directly to change `minSdkVersion`, `compileSdkVersion`, or Gradle plugin version.
+**Why it's wrong:** `npx cap sync` and `npx cap update` rewrite portions of `build.gradle` from the Capacitor template. Manual edits are overwritten. Additionally, `variables.gradle` was introduced specifically as the single source of truth for these values.
+**Do this instead:** Edit only `android/variables.gradle`. Capacitor 7 expected values: `minSdkVersion = 23`, `compileSdkVersion = 35`, `targetSdkVersion = 35`, Gradle plugin `8.7.2`, Gradle wrapper `8.11.1`.
+
+### Anti-Pattern 4: Treating localStorage as Reliable on Android
+
+**What people do:** Ship to the Play Store with Zustand's default `persist` middleware writing to `localStorage`, assuming it behaves like a browser on desktop.
+**Why it's wrong:** Android's OS-level memory management will reclaim WebView `localStorage` storage when the device is low on space. All garden history, streaks, and settings are silently wiped. This is a confirmed Capacitor issue (#636) with no workaround at the WebView layer.
+**Do this instead:** Use the platform-conditional storage adapter (Pattern 3). The Capacitor Preferences plugin uses Android `SharedPreferences`, which is backed by the app's private data directory and is not subject to OS eviction.
+
+## Integration Points
+
+### External Services
+
+| Service | Integration Pattern | Notes |
+|---------|---------------------|-------|
+| Supabase | Unchanged — `@supabase/supabase-js` HTTP client works normally in WebView | `androidScheme: 'https'` (Capacitor 7 default) means CORS is not an issue |
+| Google Play Store | APK/AAB uploaded via Play Console | Needs signing keystore; configure in `android/app/build.gradle` under `buildTypes.release` |
+| Android Notifications | `@capacitor/local-notifications` | Requires `POST_NOTIFICATIONS` permission on Android 13+; `SCHEDULE_EXACT_ALARM` for exact timing |
+| Android Haptics | `@capacitor/haptics` | Requires `VIBRATE` permission in AndroidManifest.xml |
+
+### Internal Boundaries
+
+| Boundary | Communication | Notes |
+|----------|---------------|-------|
+| Vite build ↔ Capacitor | `webDir: 'dist'` + `npx cap sync` file copy | Run `npm run build` before `cap sync`; order is mandatory |
+| Web Worker ↔ Capacitor Plugins | Main thread relay via `postMessage` | Worker cannot call Capacitor directly; route through `useTimer` onmessage handler |
+| Zustand persist ↔ Android storage | Platform-conditional storage adapter | Swap at the store definition; no component changes needed |
+| VitePWA ↔ Capacitor build | Conditional plugin exclusion via env var | PWA build and Capacitor build are mutually exclusive output targets |
+| Capacitor bridge ↔ App React code | `Capacitor.isNativePlatform()` guard | Use this check to gate any native-only code paths and keep web PWA working |
+
+## Sources
+
+- [Capacitor Configuration Docs](https://capacitorjs.com/docs/config) — HIGH confidence
+- [Capacitor Android Docs](https://capacitorjs.com/docs/android) — HIGH confidence
+- [Capacitor Android Configuration](https://capacitorjs.com/docs/android/configuration) — HIGH confidence
+- [Capacitor Updating to 7.0](https://capacitorjs.com/docs/updating/7-0) — HIGH confidence
+- [Capacitor Storage Guide](https://capacitorjs.com/docs/guides/storage) — HIGH confidence
+- [Capacitor Getting Started](https://capacitorjs.com/docs/getting-started) — HIGH confidence
+- [Capacitor Local Notifications API](https://capacitorjs.com/docs/apis/local-notifications) — HIGH confidence
+- [Capacitor Issue #636 — localStorage lost on reboot](https://github.com/ionic-team/capacitor/issues/636) — HIGH confidence (confirmed bug)
+- [Capacitor Issue #6309 — Plugins with Web Workers](https://github.com/ionic-team/capacitor/issues/6309) — HIGH confidence (closed as not planned)
+- [Capacitor Discussion #5673 — Service Worker in native WebView](https://github.com/ionic-team/capacitor/discussions/5673) — HIGH confidence
+- [Capawesome — Android Foreground Service Plugin](https://capawesome.io/plugins/android-foreground-service/) — MEDIUM confidence (community plugin)
+- [vite-plugin-pwa GitHub](https://github.com/vite-pwa/vite-plugin-pwa) — HIGH confidence
+
+---
+*Architecture research for: Capacitor Android wrapping of Vite 7 + React 19 SPA (Focus Valley v1.1)*
+*Researched: 2026-03-24*
