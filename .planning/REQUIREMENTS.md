@@ -64,26 +64,26 @@ Deferred to future milestone. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SETUP-01 | TBD | Pending |
-| SETUP-02 | TBD | Pending |
-| SETUP-03 | TBD | Pending |
-| SETUP-04 | TBD | Pending |
-| SETUP-05 | TBD | Pending |
-| NATIVE-01 | TBD | Pending |
-| NATIVE-02 | TBD | Pending |
-| NATIVE-03 | TBD | Pending |
-| NATIVE-04 | TBD | Pending |
-| AUTH-01 | TBD | Pending |
-| STORE-01 | TBD | Pending |
-| STORE-02 | TBD | Pending |
-| STORE-03 | TBD | Pending |
-| STORE-04 | TBD | Pending |
+| SETUP-01 | Phase 1 | Pending |
+| SETUP-02 | Phase 1 | Pending |
+| SETUP-03 | Phase 1 | Pending |
+| SETUP-04 | Phase 1 | Pending |
+| SETUP-05 | Phase 1 | Pending |
+| NATIVE-01 | Phase 2 | Pending |
+| NATIVE-02 | Phase 2 | Pending |
+| NATIVE-03 | Phase 2 | Pending |
+| NATIVE-04 | Phase 2 | Pending |
+| AUTH-01 | Phase 3 | Pending |
+| STORE-01 | Phase 4 | Pending |
+| STORE-02 | Phase 4 | Pending |
+| STORE-03 | Phase 4 | Pending |
+| STORE-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 14 total
-- Mapped to phases: 0
-- Unmapped: 14
+- Mapped to phases: 14
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after initial definition*
+*Last updated: 2026-03-24 after roadmap creation*

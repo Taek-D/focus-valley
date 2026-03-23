@@ -2,22 +2,56 @@
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: --
-Status: Defining requirements
-Last activity: 2026-03-24 -- Milestone v1.1 started
+Phase: 1 of 4 (Capacitor Foundation)
+Plan: 0 of TBD in current phase
+Status: Ready to plan
+Last activity: 2026-03-24 -- Roadmap created, ready to plan Phase 1
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-24)
 
-**Core value:** Accurate timer + rewarding plant growth feedback loop
-**Current focus:** Capacitor Android wrapping + Google Play Store release
+**Core value:** Accurate timer + rewarding plant growth feedback loop, now as a native Android app
+**Current focus:** Phase 1 — Capacitor Foundation
+
+## Performance Metrics
+
+**Velocity:**
+- Total plans completed: 0
+- Average duration: --
+- Total execution time: 0 hours
+
+**By Phase:**
+
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| - | - | - | - |
 
 ## Accumulated Context
 
-- Codebase mapped: .planning/codebase/ (7 documents, 1634 lines)
-- Reddit research: fireauto-output/reddit-research-report-2026-03-24.md
-- SEO audit: sitemap updated, hreflang added, JSON-LD enhanced
-- UI audit: 7 a11y issues fixed (focus:outline-none, ARIA tabs, i18n labels)
-- Security audit: 0 CRITICAL, 1 HIGH (env file management), well-secured overall
+### Decisions
+
+- Capacitor 8.2.0 over React Native: preserves existing codebase, wraps SPA as-is
+- Android first: lower barrier (no Apple Developer Program fee), faster Play Store validation
+- No in-app purchases v1.1: validate native UX first, existing Supabase Pro subscription unchanged
+
+### Pending Todos
+
+None yet.
+
+### Blockers/Concerns
+
+- CRITICAL: Service worker must be disabled before any Capacitor plugin testing (Pitfall 1)
+- CRITICAL: localStorage eviction on Android — Zustand must swap to @capacitor/preferences (Pitfall 2)
+- CRITICAL: Capacitor plugins cannot be called from inside timer.worker.ts — all calls go through main thread (Pitfall 3)
+- HIGH: Google OAuth returns 403 in WebView — needs @capacitor/browser (Chrome Custom Tab) fix in Phase 3
+- HIGH: Release keystore loss is unrecoverable — must back up immediately in Phase 4
+- MEDIUM: Edge-to-edge behavior on Android 15+ needs testing with @capacitor/status-bar (Pitfall tracked in issue #7951)
+
+## Session Continuity
+
+Last session: 2026-03-24
+Stopped at: Roadmap written, REQUIREMENTS.md traceability updated
+Resume file: None
