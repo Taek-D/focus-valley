@@ -217,7 +217,7 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                         onClick={(event) => event.stopPropagation()}
                         tabIndex={-1}
                         data-testid="settings-dialog"
-                        className="glass-strong mx-4 w-full max-w-sm space-y-5 rounded-2xl p-6 shadow-cozy-lg"
+                        className="glass-strong mx-4 w-full max-w-sm space-y-5 rounded-2xl p-6 shadow-cozy-lg max-h-[90vh] overflow-y-auto"
                     >
                         <div className="flex items-center justify-between">
                             <h3 className="font-body text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">

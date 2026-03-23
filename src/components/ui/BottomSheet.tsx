@@ -61,7 +61,11 @@ export const BottomSheet = ({ isOpen, onClose, title, headerActions, dataTestId,
                         className="fixed bottom-0 left-0 right-0 max-h-[85vh] glass-strong rounded-t-3xl shadow-cozy-lg z-50 flex flex-col"
                     >
                         {/* Drag Handle */}
-                        <div className="flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing">
+                        <div
+                            className="flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
+                            role="separator"
+                            aria-label="Drag to dismiss"
+                        >
                             <div className="w-8 h-0.5 rounded-full bg-foreground/10" />
                         </div>
 

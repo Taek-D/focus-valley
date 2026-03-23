@@ -1,6 +1,6 @@
 import "@/lib/i18n-packs/core-shell";
 import { useCallback, lazy, Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, X } from "lucide-react";
 import { useTimer } from "./hooks/useTimer";
 import { useAudioMixer } from "./hooks/useAudioMixer";
@@ -121,6 +121,7 @@ function App() {
     });
 
     return (
+        <MotionConfig reducedMotion="user">
         <div className="min-h-screen flex flex-col items-center relative overflow-hidden transition-colors duration-700 dot-grid">
             <InstallBanner canInstall={canInstall} onInstall={installPwa} onDismiss={dismissInstall} />
 
@@ -255,7 +256,7 @@ function App() {
                     aria-label={panels.showMixer ? t("footer.hideSounds") : t("footer.openSounds")}
                     data-tour="sounds-button"
                     data-testid="sound-toggle"
-                    className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
+                    className="w-full py-2.5 flex items-center justify-center gap-2 font-body text-[10px] font-medium tracking-[0.12em] uppercase text-muted-foreground/45 hover:text-muted-foreground/65 transition-colors"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.7 }}
@@ -299,34 +300,34 @@ function App() {
                         href="/guide.html"
                         target="_blank"
                         rel="noopener"
-                        className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+                        className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
                     >
                         <BookOpen size={8} />
                         {t("footer.guide")}
                     </a>
-                    <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+                    <span className="text-muted-foreground/20 text-[9px]">&middot;</span>
                     <button
                         onClick={startTour}
-                        className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+                        className="inline-flex items-center gap-1 font-body text-[9px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
                     >
                         <Navigation size={8} />
                         {t("footer.tour")}
                     </button>
-                    <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+                    <span className="text-muted-foreground/20 text-[9px]">&middot;</span>
                     <a
                         href="/privacy.html"
                         target="_blank"
                         rel="noopener"
-                        className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+                        className="font-body text-[9px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
                     >
                         {t("footer.privacy")}
                     </a>
-                    <span className="text-muted-foreground/10 text-[9px]">&middot;</span>
+                    <span className="text-muted-foreground/20 text-[9px]">&middot;</span>
                     <a
                         href="/terms.html"
                         target="_blank"
                         rel="noopener"
-                        className="font-body text-[9px] text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
+                        className="font-body text-[9px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors"
                     >
                         {t("footer.terms")}
                     </a>
@@ -373,6 +374,7 @@ function App() {
                 t={t}
             />
         </div>
+        </MotionConfig>
     );
 }
 

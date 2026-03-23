@@ -69,6 +69,7 @@ function TrackRow({ track, mixer, locked, onLocked }: {
                     aria-valuemax={100}
                     aria-valuenow={mixer.volumes[track.id]}
                     className={cn("cozy-slider w-full disabled:opacity-30", locked && "opacity-30 cursor-not-allowed")}
+                    style={{ "--slider-fill": `${mixer.volumes[track.id]}%` } as React.CSSProperties}
                 />
             </div>
             <span className={cn(

@@ -36,7 +36,7 @@ export function UpgradeModal() {
                         initial={shouldReduceMotion ? false : { opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-background/60 will-change-[opacity]"
+                        className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm will-change-[opacity]"
                         onClick={close}
                     />
                     <motion.div

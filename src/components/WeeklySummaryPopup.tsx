@@ -36,6 +36,7 @@ export function WeeklySummaryPopup({ isOpen, onDismiss, focusSessions }: WeeklyS
                     onClick={onDismiss}
                     role="dialog"
                     aria-modal="true"
+                    aria-labelledby="weekly-summary-title"
                 >
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0, y: 8 }}
@@ -47,7 +48,7 @@ export function WeeklySummaryPopup({ isOpen, onDismiss, focusSessions }: WeeklyS
                     >
                         <div className="flex items-center gap-3">
                             <Calendar size={16} className="text-foreground/60" />
-                            <h3 className="font-display text-sm font-medium text-foreground">
+                            <h3 id="weekly-summary-title" className="font-display text-sm font-medium text-foreground">
                                 {t("weeklySummary.title")}
                             </h3>
                         </div>

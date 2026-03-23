@@ -168,12 +168,13 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                     key={th}
                                     onClick={() => isLocked ? openUpgrade("share-theme") : setShareTheme(th, isPro)}
                                     aria-label={t(`share.theme${th[0].toUpperCase()}${th.slice(1)}` as TranslationKey)}
-                                    className={`relative w-3 h-3 rounded-full transition-all ${colors[th]} ${
-                                        isActive ? "ring-2 ring-foreground/40 ring-offset-1 ring-offset-background" : "opacity-50 hover:opacity-80"
+                                    className={`relative w-7 h-7 min-w-[28px] min-h-[28px] rounded-full flex items-center justify-center transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
+                                        isActive ? "ring-2 ring-foreground/40 ring-offset-1 ring-offset-background" : "opacity-60 hover:opacity-90"
                                     }`}
                                 >
+                                    <span className={`block w-3 h-3 rounded-full ${colors[th]}`} />
                                     {isLocked && (
-                                        <Lock size={6} className="absolute -top-1 -right-1 text-foreground/50" />
+                                        <Lock size={6} className="absolute -top-0.5 -right-0.5 text-foreground/50" />
                                     )}
                                 </button>
                             );
@@ -336,6 +337,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                                             : HEATMAP_COLORS[day.level]
                                     }`}
                                     title={day ? `${day.date}: ${day.minutes}m` : ""}
+                                    aria-label={day ? `${day.date}: ${day.minutes} minutes` : undefined}
+                                    role={day ? "img" : undefined}
                                 />
                             ))}
                         </div>
@@ -463,9 +466,16 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                     <div className="text-center py-10 space-y-3">
                         <div className="text-3xl opacity-40">{"\u{1F331}"}</div>
                         <p className="font-body text-xs font-medium text-muted-foreground/50">{t("stats.noHarvests")}</p>
-                        <p className="font-body text-xs text-muted-foreground/30 whitespace-pre-line">
+                        <p className="font-body text-xs text-muted-foreground/40 whitespace-pre-line">
                             {t("stats.completeSession")}
                         </p>
+                        <button
+                            onClick={onClose}
+                            className="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground/8 font-body text-[11px] font-medium text-foreground/70 hover:bg-foreground/12 transition-colors"
+                        >
+                            <Timer size={12} />
+                            {t("timer.start")}
+                        </button>
                     </div>
                 ) : (
                     sortedDates.map((date) => (

@@ -130,7 +130,7 @@ export const BreathingGuide = memo(function BreathingGuide({ isOpen, onClose }: 
                         </div>
 
                         {/* Timing hint */}
-                        <div className="font-body text-[9px] text-muted-foreground/25 tracking-[0.15em] uppercase">
+                        <div className="font-body text-[9px] text-muted-foreground/45 tracking-[0.15em] uppercase">
                             {INHALE_SEC}s · {HOLD_SEC}s · {EXHALE_SEC}s
                         </div>
                     </motion.div>

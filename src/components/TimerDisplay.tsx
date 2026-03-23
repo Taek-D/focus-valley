@@ -73,7 +73,6 @@ export const TimerDisplay = memo(function TimerDisplay({
                 data-tour="timer-display"
                 data-testid="timer-display"
                 role="timer"
-                aria-live="polite"
                 aria-label={`${pad(minutes)} minutes ${pad(seconds)} seconds remaining`}
             >
                 <ProgressRing progress={progress} />
@@ -145,7 +144,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                             onClick={onPause}
                             data-testid="timer-pause"
                             aria-label={t("timer.pause")}
-                            className="flex items-center justify-center gap-2.5 w-36 py-3.5 border border-foreground/12 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/25 active:scale-[0.98] transition-all"
+                            className="flex items-center justify-center gap-2.5 w-44 py-3.5 border border-foreground/12 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/25 active:scale-[0.98] transition-all"
                         >
                             <Pause size={13} /> {t("timer.pause")}
                         </button>

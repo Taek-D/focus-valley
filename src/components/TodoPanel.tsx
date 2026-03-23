@@ -1,7 +1,7 @@
 import "@/lib/i18n-packs/feature-pack";
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Check, Pin } from "lucide-react";
+import { Trash2, Check, Pin, Plus } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useTodos } from "../hooks/useTodos";
 import { ANIMATION } from "../lib/constants";
@@ -59,9 +59,16 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                         <p className="font-body text-xs font-medium text-muted-foreground/50">
                             {t("todo.noTasks")}
                         </p>
-                        <p className="font-body text-xs text-muted-foreground/30">
+                        <p className="font-body text-xs text-muted-foreground/40">
                             {t("todo.addPrompt")}
                         </p>
+                        <button
+                            onClick={() => inputRef.current?.focus()}
+                            className="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground/8 font-body text-[11px] font-medium text-foreground/70 hover:bg-foreground/12 transition-colors"
+                        >
+                            <Plus size={12} />
+                            {t("category.add")}
+                        </button>
                     </div>
                 ) : (
                     <AnimatePresence initial={false}>

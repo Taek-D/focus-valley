@@ -17,28 +17,28 @@ export const AuroraBlob = memo(function AuroraBlob({ audioIntensity = 0 }: Auror
                 style={{ transform: `scale(${scale})` }}
             >
                 <div
-                    className="absolute inset-0 rounded-full animate-aurora-1"
+                    className="absolute inset-0 rounded-full animate-aurora-1 will-change-transform"
                     style={{
                         background: `radial-gradient(circle at 30% 30%, hsl(var(--aurora-1) / ${0.5 + opacityBoost}), transparent 50%)`,
                         filter: `blur(${blurBase - blurReduction}px)`,
                     }}
                 />
                 <div
-                    className="absolute inset-0 rounded-full animate-aurora-2"
+                    className="absolute inset-0 rounded-full animate-aurora-2 will-change-transform"
                     style={{
                         background: `radial-gradient(circle at 75% 35%, hsl(var(--aurora-2) / ${0.45 + opacityBoost}), transparent 50%)`,
                         filter: `blur(${blurBase + 5 - blurReduction}px)`,
                     }}
                 />
                 <div
-                    className="absolute inset-0 rounded-full animate-aurora-3"
+                    className="absolute inset-0 rounded-full animate-aurora-3 will-change-transform"
                     style={{
                         background: `radial-gradient(circle at 50% 75%, hsl(var(--aurora-3) / ${0.4 + opacityBoost}), transparent 50%)`,
                         filter: `blur(${blurBase - blurReduction}px)`,
                     }}
                 />
                 <div
-                    className="absolute inset-0 rounded-full"
+                    className="absolute inset-0 rounded-full will-change-transform"
                     style={{
                         background: `radial-gradient(circle at 40% 55%, hsl(var(--aurora-4) / ${0.3 + opacityBoost}), transparent 55%)`,
                         filter: `blur(${blurBase + 10 - blurReduction}px)`,

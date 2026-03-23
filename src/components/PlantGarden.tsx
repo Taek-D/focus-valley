@@ -90,7 +90,7 @@ export const PlantGarden = memo(function PlantGarden({
             </div>
 
             {/* Stage label */}
-            <div className="font-body text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase mt-1 mb-1">
+            <div className="font-body text-[9px] text-muted-foreground/50 tracking-[0.25em] uppercase mt-1 mb-1">
                 {t(`plantType.${gardenType}` as TranslationKey)} &middot; {t(`plant.${gardenStage.toLowerCase()}` as TranslationKey)}
             </div>
 

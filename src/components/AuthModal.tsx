@@ -169,7 +169,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                                     {t("sync.title")}
                                 </span>
                             </div>
-                            <span className="font-body text-[10px] text-muted-foreground/25">
+                            <span className="font-body text-[10px] text-muted-foreground/40">
                                 {formatLastSync(lastSync)}
                             </span>
                         </div>
@@ -285,7 +285,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 {/* Sync info */}
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-foreground/[0.02]">
                     <CloudOff size={11} className="text-muted-foreground/25 shrink-0" />
-                    <p className="font-body text-[10px] text-muted-foreground/30 leading-relaxed">
+                    <p className="font-body text-[10px] text-muted-foreground/45 leading-relaxed">
                         {t("auth.syncInfo")}
                     </p>
                 </div>
@@ -309,7 +309,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 {/* Divider */}
                 <div className="flex items-center gap-3">
                     <div className="flex-1 h-px bg-foreground/5" />
-                    <span className="font-body text-[9px] text-muted-foreground/25 uppercase tracking-wider">{t("auth.or")}</span>
+                    <span className="font-body text-[9px] text-muted-foreground/40 uppercase tracking-wider">{t("auth.or")}</span>
                     <div className="flex-1 h-px bg-foreground/5" />
                 </div>
 

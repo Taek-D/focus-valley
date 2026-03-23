@@ -281,7 +281,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                 </div>
                 {!hintDismissed && (
                     <div className="flex items-center justify-center gap-1 mt-1 px-4">
-                        <span className="font-body text-[9px] text-muted-foreground/30">{t("category.hint")}</span>
+                        <span className="font-body text-[9px] text-muted-foreground/50">{t("category.hint")}</span>
                         <button
                             onClick={dismissHint}
                             className="p-0.5 rounded-full text-muted-foreground/20 hover:text-muted-foreground/40 transition-colors"
@@ -327,7 +327,7 @@ export const CategoryChips: React.FC = React.memo(() => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="fixed inset-0 bg-background/60 z-50 will-change-[opacity]"
+                                className="fixed inset-0 bg-background/60 backdrop-blur-sm z-50 will-change-[opacity]"
                                 onClick={() => setShowAddModal(false)}
                             />
                             <motion.div

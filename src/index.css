@@ -266,6 +266,25 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* M1: Global focus-visible ring for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Suppress outline for mouse/touch */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
   }
@@ -355,8 +374,12 @@
 
   input[type="range"].cozy-slider::-webkit-slider-track {
     height: 3px;
-    background: hsl(var(--muted));
     border-radius: 2px;
+    background: linear-gradient(
+      to right,
+      hsl(var(--foreground) / 0.25) var(--slider-fill, 0%),
+      hsl(var(--muted)) var(--slider-fill, 0%)
+    );
   }
 
   input[type="range"].cozy-slider::-webkit-slider-thumb {
@@ -378,9 +401,15 @@
 
   input[type="range"].cozy-slider::-moz-range-track {
     height: 3px;
-    background: hsl(var(--muted));
     border-radius: 2px;
     border: none;
+    background: hsl(var(--muted));
+  }
+
+  input[type="range"].cozy-slider::-moz-range-progress {
+    height: 3px;
+    border-radius: 2px;
+    background: hsl(var(--foreground) / 0.25);
   }
 
   input[type="range"].cozy-slider::-moz-range-thumb {
@@ -420,6 +449,16 @@
     border: 1px solid hsl(var(--border) / 0.4);
   }
 
+  /* M4: backdrop-blur fallback for unsupported browsers */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass {
+      background: hsl(var(--card) / 0.85);
+    }
+    .glass-strong {
+      background: hsl(var(--card) / 0.92);
+    }
+  }
+
   /* Shadows — very soft */
   .shadow-cozy {
     box-shadow:
@@ -438,7 +477,7 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 30;
+    z-index: 1;
     opacity: 0.015;
   }
 
