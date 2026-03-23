@@ -125,6 +125,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                         onClick={onSkip}
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
+                        aria-label={t("timer.next")}
                         className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all"
                     >
                         <SkipForward size={13} /> {t("timer.next")}
@@ -153,7 +154,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                             whileHover={{ rotate: -90 }}
                             whileTap={{ scale: 0.9 }}
                             data-testid="timer-reset"
-                            aria-label="Reset timer"
+                            aria-label={t("timer.reset")}
                             className="p-3 rounded-full border border-foreground/8 text-muted-foreground/30 hover:text-destructive hover:border-destructive/30 transition-all"
                         >
                             <RotateCcw size={13} />

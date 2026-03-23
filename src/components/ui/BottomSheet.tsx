@@ -4,6 +4,7 @@ import { motion, AnimatePresence, type PanInfo, useReducedMotion } from "framer-
 import { X } from "lucide-react";
 import { GESTURE } from "@/lib/constants";
 import { useDialogA11y } from "@/hooks/useDialogA11y";
+import { useTranslation } from "@/lib/i18n";
 
 type BottomSheetProps = {
     isOpen: boolean;
@@ -15,6 +16,7 @@ type BottomSheetProps = {
 };
 
 export const BottomSheet = ({ isOpen, onClose, title, headerActions, dataTestId, children }: BottomSheetProps) => {
+    const { t } = useTranslation();
     const closeRef = useRef<HTMLButtonElement>(null);
     const sheetRef = useRef<HTMLDivElement>(null);
     const shouldReduceMotion = useReducedMotion();
@@ -64,7 +66,7 @@ export const BottomSheet = ({ isOpen, onClose, title, headerActions, dataTestId,
                         <div
                             className="flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
                             role="separator"
-                            aria-label="Drag to dismiss"
+                            aria-label={t("bottomSheet.dragDismiss")}
                         >
                             <div className="w-8 h-0.5 rounded-full bg-foreground/10" />
                         </div>

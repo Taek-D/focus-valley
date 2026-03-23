@@ -50,6 +50,8 @@ export const coreShellTranslations = {
     "footer.guide": { en: "Guide", ko: "가이드", ja: "ガイド" },
     "footer.tour": { en: "Tour", ko: "투어", ja: "ツアー" },
 
+    "bottomSheet.dragDismiss": { en: "Drag to dismiss", ko: "드래그하여 닫기", ja: "ドラッグして閉じる" },
+
     "category.study": { en: "Study", ko: "공부", ja: "勉強" },
     "category.code": { en: "Code", ko: "코딩", ja: "コーディング" },
     "category.read": { en: "Read", ko: "독서", ja: "読書" },

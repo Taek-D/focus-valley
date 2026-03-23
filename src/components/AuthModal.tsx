@@ -142,6 +142,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <img
                                 src={avatarUrl}
                                 alt=""
+                                loading="lazy"
                                 className="w-10 h-10 rounded-full"
                                 referrerPolicy="no-referrer"
                             />
@@ -325,7 +326,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             required
                             autoComplete="email"
                             data-testid="auth-email"
-                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
+                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:border-foreground/15 transition-colors"
                         />
                     </div>
 
@@ -340,7 +341,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             minLength={6}
                             autoComplete={mode === "signup" ? "new-password" : "current-password"}
                             data-testid="auth-password"
-                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:outline-none focus:border-foreground/15 transition-colors"
+                            className="w-full pl-9 pr-3 py-3 rounded-xl bg-foreground/[0.03] border border-foreground/8 text-foreground font-body text-[12px] placeholder:text-muted-foreground/25 focus:border-foreground/15 transition-colors"
                         />
                     </div>
 

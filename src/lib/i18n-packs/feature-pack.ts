@@ -102,6 +102,7 @@ export const featurePackTranslations = {
     "stats.goal": { en: "goal", ko: "목표", ja: "目標" },
     "stats.week": { en: "Week", ko: "주간", ja: "週間" },
     "stats.month": { en: "Month", ko: "월간", ja: "月間" },
+    "stats.chartPeriod": { en: "Chart period", ko: "차트 기간", ja: "チャート期間" },
     "stats.longestSession": { en: "Longest", ko: "최장 세션", ja: "最長" },
 
     "share.themeAurora": { en: "Aurora", ko: "오로라", ja: "オーロラ" },

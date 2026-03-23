@@ -64,6 +64,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                             <button
                                 type="button"
                                 onClick={() => setLocale("ko")}
+                                aria-pressed={locale === "ko"}
                                 className={`rounded-full px-3 py-1 font-body text-[10px] font-medium tracking-[0.08em] uppercase transition-colors ${
                                     locale === "ko" ? "bg-foreground/10 text-foreground" : "text-muted-foreground/45 hover:text-foreground/70"
                                 }`}
@@ -73,6 +74,7 @@ export function LandingScreen({ isOpen, onGetStarted, onTryDemo }: LandingScreen
                             <button
                                 type="button"
                                 onClick={() => setLocale("en")}
+                                aria-pressed={locale === "en"}
                                 className={`rounded-full px-3 py-1 font-body text-[10px] font-medium tracking-[0.08em] uppercase transition-colors ${
                                     locale === "en" ? "bg-foreground/10 text-foreground" : "text-muted-foreground/45 hover:text-foreground/70"
                                 }`}

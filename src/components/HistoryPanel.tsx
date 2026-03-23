@@ -238,15 +238,19 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 
             {/* Focus Chart — Week / Month tabs */}
             <div className="px-5 pb-4">
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-2" role="tablist" aria-label={t("stats.chartPeriod")}>
                     <button
                         onClick={() => setChartTab("week")}
+                        role="tab"
+                        aria-selected={chartTab === "week"}
                         className={`font-body text-[10px] font-medium tracking-[0.1em] uppercase transition-colors ${chartTab === "week" ? "text-foreground" : "text-muted-foreground/30 hover:text-muted-foreground/50"}`}
                     >
                         {t("stats.week")}
                     </button>
                     <button
                         onClick={() => setChartTab("month")}
+                        role="tab"
+                        aria-selected={chartTab === "month"}
                         className={`font-body text-[10px] font-medium tracking-[0.1em] uppercase transition-colors ${chartTab === "month" ? "text-foreground" : "text-muted-foreground/30 hover:text-muted-foreground/50"}`}
                     >
                         {t("stats.month")}

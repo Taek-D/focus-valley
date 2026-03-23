@@ -47,7 +47,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={t("todo.placeholder")}
-                    className="w-full px-4 py-3 rounded-2xl bg-foreground/5 border border-foreground/8 text-foreground font-body text-xs placeholder:text-muted-foreground/30 focus:outline-none focus:border-foreground/20 transition-colors"
+                    className="w-full px-4 py-3 rounded-2xl bg-foreground/5 border border-foreground/8 text-foreground font-body text-xs placeholder:text-muted-foreground/30 focus:border-foreground/20 transition-colors"
                 />
             </form>
 
@@ -117,7 +117,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                             "flex-shrink-0 p-1 rounded-lg transition-all",
                                             activeTodoId === todo.id
                                                 ? "text-foreground/50"
-                                                : "text-muted-foreground/20 opacity-0 group-hover:opacity-100"
+                                                : "text-muted-foreground/20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
                                         )}
                                     >
                                         <Pin size={12} />
@@ -126,7 +126,7 @@ export const TodoPanel: React.FC<TodoPanelProps> = ({ isOpen, onClose }) => {
                                 <button
                                     onClick={() => removeTodo(todo.id)}
                                     aria-label={t("todo.removeTask")}
-                                    className="flex-shrink-0 p-1 rounded-lg text-muted-foreground/20 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all"
+                                    className="flex-shrink-0 p-1 rounded-lg text-muted-foreground/20 hover:text-destructive opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-all"
                                 >
                                     <Trash2 size={12} />
                                 </button>

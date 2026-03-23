@@ -96,6 +96,7 @@ export const AppHeader = memo(function AppHeader({
                         <img
                             src={user.user_metadata.avatar_url as string}
                             alt=""
+                            loading="lazy"
                             className="w-[18px] h-[18px] rounded-full"
                             referrerPolicy="no-referrer"
                         />
