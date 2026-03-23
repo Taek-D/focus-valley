@@ -31,7 +31,12 @@ Wrap the existing Focus Valley PWA in Capacitor 8 and ship to Google Play Store.
   3. Timer continues counting accurately after the screen locks for 5+ minutes and the device resumes — drift is corrected via wall-clock comparison
   4. Splash screen displays branded background color on cold start; status bar matches current light/dark theme
   5. Pressing the Android hardware back button during an active session does not exit the app
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Initialize Capacitor 8 with Android platform, conditionally disable VitePWA for native builds
+- [ ] 01-02-PLAN.md — Platform-conditional storage adapter (Preferences on native) and timer drift correction (appStateChange)
+- [ ] 01-03-PLAN.md — Splash screen, status bar theming, and adaptive icon configuration
 
 ### Phase 2: Native Capabilities
 **Goal**: The app feels native through timer-completion notifications and haptic feedback, and ambient audio starts correctly without user workarounds
@@ -71,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Capacitor Foundation | 0/TBD | Not started | - |
+| 1. Capacitor Foundation | 0/3 | Planning complete | - |
 | 2. Native Capabilities | 0/TBD | Not started | - |
 | 3. Auth and Deep Links | 0/TBD | Not started | - |
 | 4. Play Store Release | 0/TBD | Not started | - |
