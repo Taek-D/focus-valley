@@ -1,5 +1,5 @@
 import "@/lib/i18n-packs/core-shell";
-import { useCallback, lazy, Suspense } from "react";
+import { useCallback, lazy, Suspense, useEffect } from "react";
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, X } from "lucide-react";
 import { useTimer } from "./hooks/useTimer";
@@ -33,6 +33,10 @@ import { useAppPanels } from "./hooks/useAppPanels";
 import { useAppSyncFlow } from "./hooks/useAppSyncFlow";
 import { useAppEnvironmentEffects } from "./hooks/useAppEnvironmentEffects";
 import { useAppSessionFlow } from "./hooks/useAppSessionFlow";
+import { useBackButton } from "./hooks/useBackButton";
+import { Capacitor } from "@capacitor/core";
+import { SplashScreen } from "@capacitor/splash-screen";
+import { StatusBar, Style } from "@capacitor/status-bar";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -86,6 +90,8 @@ function App() {
         weatherMood: weather.mood,
         deepFocusStreak: garden.deepFocusStreak,
     });
+
+    useBackButton(timer.isRunning);
 
     const handleLandingGetStarted = useCallback(() => {
         dismissLanding();
