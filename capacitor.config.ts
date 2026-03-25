@@ -19,6 +19,10 @@ const config: CapacitorConfig = {
       style: 'Dark',
       backgroundColor: '#0a0f1a',
     },
+    LocalNotifications: {
+      smallIcon: 'ic_launcher_foreground',
+      iconColor: '#22c55e',
+    },
   },
 };
 

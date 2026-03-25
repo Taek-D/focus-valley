@@ -32,4 +32,8 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Android 12+: exact alarm scheduling for LocalNotifications -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- Android 13+: show notifications (runtime permission) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
