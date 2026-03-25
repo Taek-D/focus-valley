@@ -1,5 +1,5 @@
 import "@/lib/i18n-packs/core-shell";
-import { useCallback, lazy, Suspense, useEffect } from "react";
+import { useCallback, lazy, Suspense, useEffect, useState } from "react";
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Volume2, ChevronDown, ChevronUp, Wind, BookOpen, Navigation, X } from "lucide-react";
 import { useTimer } from "./hooks/useTimer";
@@ -35,8 +35,10 @@ import { useAppEnvironmentEffects } from "./hooks/useAppEnvironmentEffects";
 import { useAppSessionFlow } from "./hooks/useAppSessionFlow";
 import { useBackButton } from "./hooks/useBackButton";
 import { Capacitor } from "@capacitor/core";
+import { App as CapacitorApp } from "@capacitor/app";
 import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
+import { ConfirmModal } from "./components/ConfirmModal";
 import type { TodoState } from "./hooks/useTodos";
 
 const AudioMixer = lazy(() =>
@@ -91,9 +93,18 @@ function App() {
         deepFocusStreak: garden.deepFocusStreak,
     });
 
-    // TODO(Plan 03): replace stubs with real confirmation dialog callbacks
-    const handleShowExitConfirm = useCallback(() => {}, []);
-    const handleShowSessionGiveUpConfirm = useCallback(() => {}, []);
+    const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+    const handleShowExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+    const handleCloseExitConfirm = useCallback(() => setShowExitConfirm(false), []);
+    const handleConfirmExit = useCallback(() => {
+        setShowExitConfirm(false);
+        void CapacitorApp.exitApp();
+    }, []);
+    const handleShowSessionGiveUpConfirm = useCallback(() => {
+        session.handleReset();
+    }, [session]);
+
     useBackButton(timer.isRunning, panels, handleShowExitConfirm, handleShowSessionGiveUpConfirm);
 
     useEffect(() => {
@@ -113,6 +124,18 @@ function App() {
         });
         void StatusBar.setOverlaysWebView({ overlay: false });
     }, [isDark]);
+
+    useEffect(() => {
+        if (!Capacitor.isNativePlatform()) return;
+
+        const subscription = CapacitorApp.addListener("appStateChange", ({ isActive }) => {
+            if (isActive) {
+                mixer.resumeAudio();
+            }
+        });
+
+        return () => { subscription.then((h) => h.remove()); };
+    }, [mixer.resumeAudio]);
 
     const handleLandingGetStarted = useCallback(() => {
         dismissLanding();
@@ -399,6 +422,16 @@ function App() {
                 startTour={startTour}
                 isTourActive={isTourActive}
                 t={t}
+            />
+
+            <ConfirmModal
+                isOpen={showExitConfirm}
+                title="종료"
+                message="앱을 종료하시겠습니까?"
+                confirmLabel="종료"
+                cancelLabel="취소"
+                onConfirm={handleConfirmExit}
+                onCancel={handleCloseExitConfirm}
             />
         </div>
         </MotionConfig>
