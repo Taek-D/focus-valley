@@ -27,6 +27,7 @@ const DEFAULT_CUSTOM_PRESET: TimerDurations = {
 const DEFAULTS: TimerDurations & {
     dailyGoal: number;
     autoAdvance: boolean;
+    hapticEnabled: boolean;
     presetId: TimerPresetId;
     customPreset: TimerDurations;
     updatedAt: string;
@@ -36,6 +37,7 @@ const DEFAULTS: TimerDurations & {
     longBreak: 15,
     dailyGoal: 120,
     autoAdvance: false,
+    hapticEnabled: true,
     presetId: "classic",
     customPreset: DEFAULT_CUSTOM_PRESET,
     updatedAt: new Date().toISOString(),
@@ -51,12 +53,14 @@ export const LIMITS = {
 interface TimerSettingsState extends TimerDurations {
     dailyGoal: number;
     autoAdvance: boolean;
+    hapticEnabled: boolean;
     presetId: TimerPresetId;
     customPreset: TimerDurations;
     updatedAt: string;
     setDuration: (key: keyof TimerDurations, value: number) => void;
     setDailyGoal: (value: number) => void;
     setAutoAdvance: (value: boolean) => void;
+    setHapticEnabled: (value: boolean) => void;
     applyPreset: (presetId: TimerPresetId) => void;
     saveCustomPreset: () => void;
     resetDefaults: () => void;
@@ -64,10 +68,10 @@ interface TimerSettingsState extends TimerDurations {
 
 type PersistedTimerSettingsState = Pick<
     TimerSettingsState,
-    "focus" | "shortBreak" | "longBreak" | "dailyGoal" | "autoAdvance" | "presetId" | "customPreset" | "updatedAt"
+    "focus" | "shortBreak" | "longBreak" | "dailyGoal" | "autoAdvance" | "hapticEnabled" | "presetId" | "customPreset" | "updatedAt"
 >;
 
-const STORAGE_VERSION = 2;
+const STORAGE_VERSION = 3;
 
 function clampDuration(key: keyof TimerDurations, value: number) {
     const { min, max } = LIMITS[key];
@@ -104,6 +108,7 @@ export const useTimerSettings = create<TimerSettingsState>()(
                 });
             },
             setAutoAdvance: (value) => set({ autoAdvance: value, updatedAt: new Date().toISOString() }),
+            setHapticEnabled: (value) => set({ hapticEnabled: value, updatedAt: new Date().toISOString() }),
             applyPreset: (presetId) => set((state) => {
                 const preset = presetId === "custom"
                     ? { id: "custom" as const, label: "Custom", ...state.customPreset }
@@ -148,6 +153,7 @@ export const useTimerSettings = create<TimerSettingsState>()(
                         ? Math.max(LIMITS.dailyGoal.min, Math.min(LIMITS.dailyGoal.max, state.dailyGoal))
                         : DEFAULTS.dailyGoal,
                     autoAdvance: typeof state.autoAdvance === "boolean" ? state.autoAdvance : DEFAULTS.autoAdvance,
+                    hapticEnabled: typeof state.hapticEnabled === "boolean" ? state.hapticEnabled : DEFAULTS.hapticEnabled,
                     presetId: typeof state.presetId === "string" && ["classic", "deep", "marathon", "custom"].includes(state.presetId)
                         ? state.presetId as TimerPresetId
                         : DEFAULTS.presetId,
