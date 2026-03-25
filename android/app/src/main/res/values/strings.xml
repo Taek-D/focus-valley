@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Focus Valley - 집중 타이머</string>
+    <string name="title_activity_main">Focus Valley - 집중 타이머</string>
+    <string name="package_name">app.focusvalley.android</string>
+    <string name="custom_url_scheme">app.focusvalley.android</string>
+</resources>
