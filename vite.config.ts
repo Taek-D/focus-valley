@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { configDefaults, defineConfig } from "vitest/config";
 
+const isCapacitorBuild = process.env.CAPACITOR_BUILD === 'true';
+
 // https://vite.dev/config/
 export default defineConfig({
   test: {
@@ -13,7 +15,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react(),
-    VitePWA({
+    !isCapacitorBuild && VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
       manifest: {
@@ -70,7 +72,7 @@ export default defineConfig({
         ],
       },
     }),
-  ],
+  ].filter(Boolean),
   build: {
     rollupOptions: {
       output: {
