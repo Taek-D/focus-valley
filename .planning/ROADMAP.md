@@ -35,7 +35,7 @@ Wrap the existing Focus Valley PWA in Capacitor 8 and ship to Google Play Store.
 
 Plans:
 - [ ] 01-01-PLAN.md — Initialize Capacitor 8 with Android platform, conditionally disable VitePWA for native builds
-- [ ] 01-02-PLAN.md — Platform-conditional storage adapter (Preferences on native) and timer drift correction (appStateChange)
+- [x] 01-02-PLAN.md — Platform-conditional storage adapter (Preferences on native) and timer drift correction (appStateChange)
 - [ ] 01-03-PLAN.md — Splash screen, status bar theming, and adaptive icon configuration
 
 ### Phase 2: Native Capabilities
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Capacitor Foundation | 0/3 | Planning complete | - |
+| 1. Capacitor Foundation | 2/3 | In progress | - |
 | 2. Native Capabilities | 0/TBD | Not started | - |
 | 3. Auth and Deep Links | 0/TBD | Not started | - |
 | 4. Play Store Release | 0/TBD | Not started | - |
