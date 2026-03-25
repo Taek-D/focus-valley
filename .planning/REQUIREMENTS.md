@@ -19,8 +19,8 @@ Requirements for Capacitor Android release. Each maps to roadmap phases.
 
 - [ ] **NATIVE-01**: User receives local notification when focus/break session completes
 - [ ] **NATIVE-02**: User feels haptic feedback on plant growth stage transition, harvest, and session complete
-- [ ] **NATIVE-03**: User can close BottomSheet panels with Android hardware back button, with app exit confirmation on main screen
-- [ ] **NATIVE-04**: Ambient sound playback starts correctly in WebView without autoplay policy blocking
+- [x] **NATIVE-03**: User can close BottomSheet panels with Android hardware back button, with app exit confirmation on main screen
+- [x] **NATIVE-04**: Ambient sound playback starts correctly in WebView without autoplay policy blocking
 
 ### AUTH (Authentication)
 
@@ -71,8 +71,8 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | SETUP-05 | Phase 1 | Complete |
 | NATIVE-01 | Phase 2 | Pending |
 | NATIVE-02 | Phase 2 | Pending |
-| NATIVE-03 | Phase 2 | Pending |
-| NATIVE-04 | Phase 2 | Pending |
+| NATIVE-03 | Phase 2 | Complete |
+| NATIVE-04 | Phase 2 | Complete |
 | AUTH-01 | Phase 3 | Pending |
 | STORE-01 | Phase 4 | Pending |
 | STORE-02 | Phase 4 | Pending |

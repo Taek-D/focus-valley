@@ -50,8 +50,8 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Install notification and haptics packages, replace useNotification with native support, create useHaptic hook
-- [ ] 02-02-PLAN.md — Extend useAppPanels with LIFO open-stack, rewrite useBackButton with confirmations, add resumeAudio to useAudioMixer
+- [x] 02-01-PLAN.md — Install notification and haptics packages, replace useNotification with native support, create useHaptic hook
+- [x] 02-02-PLAN.md — Extend useAppPanels with LIFO open-stack, rewrite useBackButton with confirmations, add resumeAudio to useAudioMixer
 - [ ] 02-03-PLAN.md — Wire haptics, back button, and audio resume into App.tsx and session flow; verify on device
 
 ### Phase 3: Auth and Deep Links
@@ -82,7 +82,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
-| 2. Native Capabilities | 0/3 | Not started | - |
+| 2. Native Capabilities | 2/3 | In progress | - |
 | 3. Auth and Deep Links | 0/TBD | Not started | - |
 | 4. Play Store Release | 0/TBD | Not started | - |
 
