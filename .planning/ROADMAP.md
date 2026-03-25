@@ -14,7 +14,7 @@ Wrap the existing Focus Valley PWA in Capacitor 8 and ship to Google Play Store.
 
 **Milestone Goal:** Wrap Focus Valley in Capacitor 8, add essential native capabilities (notifications, haptics), fix Google OAuth, and publish a signed AAB to Google Play Store.
 
-- [ ] **Phase 1: Capacitor Foundation** - Initialize Capacitor 8, fix critical infrastructure pitfalls (service worker, storage, timer drift), configure splash/status bar
+- [x] **Phase 1: Capacitor Foundation** - Initialize Capacitor 8, fix critical infrastructure pitfalls (service worker, storage, timer drift), configure splash/status bar
 - [ ] **Phase 2: Native Capabilities** - Local notifications for session completion, haptic feedback on plant growth, audio autoplay fix for Android WebView
 - [ ] **Phase 3: Auth and Deep Links** - Google OAuth via Chrome Custom Tab (fixes 403 disallowed_useragent), custom URL scheme for deep link routing
 - [ ] **Phase 4: Play Store Release** - Signed AAB, store listing assets, privacy policy, Data Safety form, submission and review
@@ -34,9 +34,9 @@ Wrap the existing Focus Valley PWA in Capacitor 8 and ship to Google Play Store.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Initialize Capacitor 8 with Android platform, conditionally disable VitePWA for native builds
+- [x] 01-01-PLAN.md — Initialize Capacitor 8 with Android platform, conditionally disable VitePWA for native builds
 - [x] 01-02-PLAN.md — Platform-conditional storage adapter (Preferences on native) and timer drift correction (appStateChange)
-- [ ] 01-03-PLAN.md — Splash screen, status bar theming, and adaptive icon configuration
+- [x] 01-03-PLAN.md — Splash screen, status bar theming, and adaptive icon configuration
 
 ### Phase 2: Native Capabilities
 **Goal**: The app feels native through timer-completion notifications and haptic feedback, and ambient audio starts correctly without user workarounds
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Capacitor Foundation | 2/3 | In progress | - |
+| 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
 | 2. Native Capabilities | 0/TBD | Not started | - |
 | 3. Auth and Deep Links | 0/TBD | Not started | - |
 | 4. Play Store Release | 0/TBD | Not started | - |

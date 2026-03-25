@@ -12,7 +12,7 @@ Requirements for Capacitor Android release. Each maps to roadmap phases.
 - [ ] **SETUP-01**: Capacitor 8 project initialized with Android platform added and working WebView render
 - [ ] **SETUP-02**: VitePWA conditionally disabled when CAPACITOR_BUILD=true, web deploy unaffected
 - [x] **SETUP-03**: Zustand persist storage replaced with @capacitor/preferences adapter on native (localStorage fallback on web)
-- [ ] **SETUP-04**: Splash screen, status bar, and adaptive icon configured for Android
+- [x] **SETUP-04**: Splash screen, status bar, and adaptive icon configured for Android
 - [x] **SETUP-05**: Timer resume drift corrected via App.addListener('appStateChange') on Capacitor
 
 ### NATIVE (Native UX)
@@ -67,7 +67,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | SETUP-01 | Phase 1 | Pending |
 | SETUP-02 | Phase 1 | Pending |
 | SETUP-03 | Phase 1 | Complete |
-| SETUP-04 | Phase 1 | Pending |
+| SETUP-04 | Phase 1 | Complete |
 | SETUP-05 | Phase 1 | Complete |
 | NATIVE-01 | Phase 2 | Pending |
 | NATIVE-02 | Phase 2 | Pending |
