@@ -91,7 +91,10 @@ function App() {
         deepFocusStreak: garden.deepFocusStreak,
     });
 
-    useBackButton(timer.isRunning);
+    // TODO(Plan 03): replace stubs with real confirmation dialog callbacks
+    const handleShowExitConfirm = useCallback(() => {}, []);
+    const handleShowSessionGiveUpConfirm = useCallback(() => {}, []);
+    useBackButton(timer.isRunning, panels, handleShowExitConfirm, handleShowSessionGiveUpConfirm);
 
     useEffect(() => {
         if (Capacitor.isNativePlatform()) {
