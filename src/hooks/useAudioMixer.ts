@@ -193,12 +193,21 @@ export function useAudioMixer() {
         });
     };
 
+    const resumeAudio = useCallback(() => {
+        const ctx = contextRef.current;
+        if (!ctx) return;
+        if (ctx.state === "suspended") {
+            void ctx.resume();
+        }
+    }, []);
+
     return {
         volumes,
         setVolume,
         isMuted,
         toggleMute,
         initAudio,
+        resumeAudio,
         analyserRef,
     };
 }
