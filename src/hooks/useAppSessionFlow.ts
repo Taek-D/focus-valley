@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playCompletionSound } from "@/lib/notification-sound";
 import { ANIMATION, type Category } from "@/lib/constants";
+import { useHaptic } from "@/hooks/useHaptic";
 import {
     trackPlantDied,
     trackPlantHarvested,
@@ -75,6 +76,7 @@ export function useAppSessionFlow({
     t,
     syncCurrentUser,
 }: UseAppSessionFlowArgs) {
+    const haptic = useHaptic();
     const [toast, setToast] = useState<ToastState>({ message: "", visible: false });
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [screenFlash, setScreenFlash] = useState(false);
@@ -85,6 +87,7 @@ export function useAppSessionFlow({
     const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const undoInfoRef = useRef<{ stage: PlantStage; type: PlantType } | null>(null);
     const demoRestoreFocusRef = useRef<number | null>(null);
+    const prevStageRef = useRef(garden.stage);
 
     const showToast = useCallback((message: string, action?: ToastAction) => {
         setToast({ message, visible: true, action });
@@ -126,10 +129,19 @@ export function useAppSessionFlow({
         garden.grow(progress);
     }, [timer.timeLeft, timer.isRunning, timer.mode, timer.focusDuration, garden]);
 
+    // Haptic on plant stage transition (medium pulse, SEED excluded to avoid haptic on init/reset)
+    useEffect(() => {
+        if (prevStageRef.current !== garden.stage && garden.stage !== "SEED") {
+            void haptic.medium();
+        }
+        prevStageRef.current = garden.stage;
+    }, [garden.stage, haptic]);
+
     useEffect(() => {
         if (!timer.isCompleted) return;
 
         playCompletionSound();
+        void haptic.strong();
 
         let flashTimeout: ReturnType<typeof setTimeout> | undefined;
         let shareTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -172,6 +184,7 @@ export function useAppSessionFlow({
         t,
         restoreDemoFocusDuration,
         syncCurrentUser,
+        haptic,
     ]);
 
     useEffect(() => {
@@ -253,6 +266,7 @@ export function useAppSessionFlow({
         undoInfoRef.current = { stage: garden.stage, type: garden.type };
 
         garden.killPlant();
+        void haptic.strong();
         timer.reset();
         restoreDemoFocusDuration();
         setConfirmModalOpen(false);

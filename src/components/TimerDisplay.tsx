@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import { ProgressRing } from "./ProgressRing";
 import { useTranslation, type TranslationKey } from "../lib/i18n";
 import type { TimerMode } from "../hooks/useTimer";
+import { useHaptic } from "../hooks/useHaptic";
 
 const MODE_KEYS: Record<TimerMode, { label: TranslationKey; short: TranslationKey }> = {
     FOCUS: { label: "timer.focus", short: "timer.focus" },
@@ -31,6 +32,7 @@ export const TimerDisplay = memo(function TimerDisplay({
     onStart, onPause, onReset, onSwitchMode, onSkip,
 }: TimerDisplayProps) {
     const { t } = useTranslation();
+    const haptic = useHaptic();
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     const pad = (d: number) => d.toString().padStart(2, "0");
@@ -132,7 +134,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                     </motion.button>
                 ) : !isRunning ? (
                     <button
-                        onClick={onStart}
+                        onClick={() => { void haptic.light(); onStart(); }}
                         data-testid="timer-start"
                         aria-label={t("timer.start")}
                         className="flex items-center justify-center gap-2.5 w-44 py-3.5 bg-foreground text-background font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_2px_16px_hsl(var(--foreground)/0.08)]"
@@ -142,7 +144,7 @@ export const TimerDisplay = memo(function TimerDisplay({
                 ) : (
                     <>
                         <button
-                            onClick={onPause}
+                            onClick={() => { void haptic.light(); onPause(); }}
                             data-testid="timer-pause"
                             aria-label={t("timer.pause")}
                             className="flex items-center justify-center gap-2.5 w-44 py-3.5 border border-foreground/12 text-foreground font-body text-[11px] font-medium tracking-[0.08em] uppercase rounded-full hover:border-foreground/25 active:scale-[0.98] transition-all"
