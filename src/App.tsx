@@ -93,6 +93,24 @@ function App() {
 
     useBackButton(timer.isRunning);
 
+    useEffect(() => {
+        if (Capacitor.isNativePlatform()) {
+            void SplashScreen.hide({ fadeOutDuration: 300 });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!Capacitor.isNativePlatform()) return;
+
+        void StatusBar.setStyle({
+            style: isDark ? Style.Dark : Style.Light,
+        });
+        void StatusBar.setBackgroundColor({
+            color: isDark ? "#0a0f1a" : "#f5f5f7",
+        });
+        void StatusBar.setOverlaysWebView({ overlay: false });
+    }, [isDark]);
+
     const handleLandingGetStarted = useCallback(() => {
         dismissLanding();
     }, [dismissLanding]);
