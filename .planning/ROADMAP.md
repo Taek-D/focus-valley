@@ -47,7 +47,12 @@ Plans:
   2. User feels a distinct haptic pulse when a plant advances to the next growth stage, when a session completes, and when tapping timer start/stop
   3. Pressing the Android hardware back button closes open BottomSheet panels; pressing it on the main screen shows an exit confirmation dialog
   4. Ambient sounds begin playing on the first user tap without requiring the user to interact a second time to unmute
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Install notification and haptics packages, replace useNotification with native support, create useHaptic hook
+- [ ] 02-02-PLAN.md — Extend useAppPanels with LIFO open-stack, rewrite useBackButton with confirmations, add resumeAudio to useAudioMixer
+- [ ] 02-03-PLAN.md — Wire haptics, back button, and audio resume into App.tsx and session flow; verify on device
 
 ### Phase 3: Auth and Deep Links
 **Goal**: Existing Google-signed users can log in without error and share card links open the native app instead of the browser
@@ -77,7 +82,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
-| 2. Native Capabilities | 0/TBD | Not started | - |
+| 2. Native Capabilities | 0/3 | Not started | - |
 | 3. Auth and Deep Links | 0/TBD | Not started | - |
 | 4. Play Store Release | 0/TBD | Not started | - |
 
