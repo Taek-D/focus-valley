@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import TimerWorker from "../workers/timer.worker?worker";
 import { useTimerSettings } from "./useTimerSettings";
+import { Capacitor } from "@capacitor/core";
+import { App } from "@capacitor/app";
 
 export type TimerMode = "FOCUS" | "SHORT_BREAK" | "LONG_BREAK";
 
@@ -199,6 +201,30 @@ export function useTimer() {
         };
         document.addEventListener("visibilitychange", handleVisibility);
         return () => document.removeEventListener("visibilitychange", handleVisibility);
+    }, [isRunning]);
+
+    // Capacitor app lifecycle: reconcile time when app returns from background (Android Doze mode)
+    useEffect(() => {
+        if (!Capacitor.isNativePlatform()) return;
+
+        const subscription = App.addListener("appStateChange", ({ isActive }) => {
+            if (!isActive || !isRunning || deadlineRef.current === null) return;
+
+            const remaining = reconcileTimeLeft(deadlineRef.current, isRunning);
+            if (remaining === null) return;
+            if (remaining <= 0) {
+                setTimeLeft(0);
+                setIsRunning(false);
+                setIsCompleted(true);
+                workerRef.current?.postMessage({ command: "STOP" });
+                return;
+            }
+            setTimeLeft((prev) => (prev === remaining ? prev : remaining));
+        });
+
+        return () => {
+            subscription.then((handle) => handle.remove());
+        };
     }, [isRunning]);
 
     const confirmResume = useCallback(() => {
