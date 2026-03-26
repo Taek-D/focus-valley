@@ -53,6 +53,11 @@ supabase/.temp/
 # OAuth credentials
 Focus-Valley-OAuth.txt
 
+# Android release signing
+android/keystore.properties
+android/*.jks
+android/*.keystore
+
 # Playwright MCP
 .playwright-mcp/
 

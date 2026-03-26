@@ -71,7 +71,7 @@
     <a href="/" class="back">&larr; Back to Focus Valley</a>
 
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: February 22, 2026</p>
+    <p class="updated">Last updated: March 26, 2026</p>
 
     <p>Focus Valley ("we", "us", "our") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.</p>
 
@@ -86,13 +86,13 @@
         <li>Category configurations</li>
         <li>Sound mixer preferences</li>
     </ul>
-    <p>This data is stored in your browser's localStorage. If you sign in, it is also synced to our cloud (Supabase) for cross-device access.</p>
+    <p>On the web app, this data is stored in your browser's localStorage. On the Android app, local data is stored via Android SharedPreferences — the same data categories apply. If you sign in, your data is also synced to our cloud (Supabase) for cross-device access.</p>
 
     <p><strong>Account information (optional):</strong></p>
     <ul>
         <li>If you create an account, we collect your email address via email/password or Google sign-in (Supabase Auth)</li>
         <li>Your account enables cloud sync across devices</li>
-        <li>You can delete your account and associated data at any time</li>
+        <li>You can delete your account directly from the app's Settings panel. This removes your account and all associated cloud data immediately.</li>
     </ul>
 
     <p><strong>Analytics data:</strong></p>
@@ -107,6 +107,7 @@
     <ul>
         <li>We use Sentry to detect and diagnose application errors</li>
         <li>Error reports may include browser type, OS, and stack traces — no personal data</li>
+        <li>On the Android app, error reports may also include device model and Android OS version</li>
     </ul>
 
     <p><strong>Location data:</strong></p>
@@ -134,15 +135,15 @@
     </ul>
 
     <h2>4. Data Retention</h2>
-    <p>Local data persists until you clear your browser storage. Cloud-synced data is retained as long as your account is active; you may request deletion at any time. Analytics data is retained per Google Analytics' default retention settings (14 months).</p>
+    <p>Local data persists until you clear your browser storage (web) or uninstall the app (Android). Cloud-synced data is retained as long as your account is active; you may delete your account and all associated data at any time via the app's Settings panel. Analytics data is retained per Google Analytics' default retention settings (14 months).</p>
 
     <h2>5. Your Rights</h2>
     <p>You have the right to:</p>
     <ul>
         <li>Access your local data (it's already on your device)</li>
         <li>Export your data via the CSV export feature</li>
-        <li>Delete your local data by clearing browser storage</li>
-        <li>Request deletion of your cloud account and all associated data</li>
+        <li>Delete your local data by clearing browser storage or uninstalling the app</li>
+        <li>Delete your account and all cloud data via the Settings panel in the app</li>
         <li>Opt out of analytics by using browser extensions like Google Analytics Opt-out</li>
     </ul>
 
@@ -151,6 +152,10 @@
 
     <h2>7. Changes to This Policy</h2>
     <p>We may update this policy from time to time. Changes will be posted on this page with an updated date.</p>
+
+    <h2>8. Account Deletion</h2>
+    <p>You can delete your account and all associated data at any time using the "Delete Account" button in the app's Settings. Upon deletion, your authentication credentials, synced garden data, session history, and todo items are permanently removed from our servers. Local data on your device can be cleared by uninstalling the app.</p>
+    <p>If you no longer have access to the app, you can request account deletion by contacting <a href="mailto:privacy@focusvalley.app">privacy@focusvalley.app</a>.</p>
 
     <hr class="divider" />
 
