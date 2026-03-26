@@ -110,3 +110,13 @@ export const useAuth = create<AuthState>((set) => ({
 
     clearError: () => set({ error: null }),
 }));
+
+/**
+ * Handles the OAuth callback deep link URL.
+ * Extracts the authorization code from focusvalley://auth/callback?code=X
+ * and exchanges it for a session via PKCE.
+ * Full implementation in Plan 02 (03-02).
+ */
+export async function handleAuthCallback(_url: string): Promise<void> {
+    // Stub — implemented in Plan 02
+}
