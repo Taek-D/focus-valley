@@ -80,6 +80,12 @@ export const featurePackTranslations = {
     "settings.backupImported": { en: "Backup imported. Reload to apply it safely.", ko: "백업을 가져왔습니다. 안전하게 적용하려면 새로고침하세요.", ja: "バックアップを読み込みました。安全に適用するには再読み込みしてください。" },
     "settings.backupImportFailed": { en: "Backup import failed. Please check the file.", ko: "백업 가져오기에 실패했습니다. 파일을 확인해주세요.", ja: "バックアップの読み込みに失敗しました。ファイルを確認してください。" },
     "settings.resetDefaults": { en: "Reset to Defaults", ko: "기본값으로 초기화", ja: "デフォルトに戻す" },
+    "settings.reloadToApply": { en: "Reload to apply", ko: "적용하려면 새로고침", ja: "適用するには再読み込み" },
+    "settings.dangerZone": { en: "Danger Zone", ko: "위험 구역", ja: "危険ゾーン" },
+    "settings.deleteAccount": { en: "Delete Account", ko: "계정 삭제", ja: "アカウント削除" },
+    "settings.deleteAccountConfirm": { en: "This will permanently delete your account and all synced data. This action cannot be undone.", ko: "계정과 모든 동기화된 데이터가 영구적으로 삭제됩니다. 이 작업은 취소할 수 없습니다.", ja: "アカウントと同期されたすべてのデータが完全に削除されます。この操作は取り消せません。" },
+    "settings.deleteAccountCancel": { en: "Cancel", ko: "취소", ja: "キャンセル" },
+    "settings.deleteAccountConfirmButton": { en: "Delete My Account", ko: "내 계정 삭제", ja: "アカウントを削除" },
 
     "stats.title": { en: "Stats & History", ko: "통계 & 기록", ja: "統計 & 履歴" },
     "stats.harvested": { en: "Harvested", ko: "수확", ja: "収穫" },

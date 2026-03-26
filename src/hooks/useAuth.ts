@@ -15,6 +15,7 @@ type AuthState = {
     signInWithEmail: (email: string, password: string) => Promise<boolean>;
     signInWithGoogle: () => Promise<void>;
     signOut: () => Promise<void>;
+    deleteAccount: () => Promise<void>;
     clearError: () => void;
 };
 
@@ -136,6 +137,26 @@ export const useAuth = create<AuthState>((set) => ({
             return;
         }
         set({ loading: true, error: null });
+        await supabase.auth.signOut();
+        set({ user: null, loading: false });
+    },
+
+    deleteAccount: async () => {
+        if (!supabase) return;
+        set({ loading: true, error: null });
+
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+            set({ loading: false });
+            return;
+        }
+
+        const { error } = await supabase.functions.invoke("delete-account");
+        if (error) {
+            set({ loading: false, error: "Account deletion failed. Please try again." });
+            return;
+        }
+
         await supabase.auth.signOut();
         set({ user: null, loading: false });
     },

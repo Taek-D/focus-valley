@@ -13,7 +13,9 @@ import {
     HelpCircle,
     Download,
     Upload,
+    Trash2,
 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import {
     useTimerSettings,
     LIMITS,
@@ -157,6 +159,9 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
         message: string;
         canReload?: boolean;
     } | null>(null);
+    const user = useAuth((state) => state.user);
+    const deleteAccount = useAuth((state) => state.deleteAccount);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     useDialogA11y({
         isOpen,
@@ -412,6 +417,46 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ isOpen, onClose })
                             <RotateCcw size={10} />
                             {t("settings.resetDefaults")}
                         </button>
+
+                        {user !== null && (
+                            <div className="rounded-2xl border border-destructive/20 p-4 space-y-3">
+                                <span className="font-body text-[10px] font-medium uppercase tracking-[0.1em] text-destructive/60">
+                                    {t("settings.dangerZone")}
+                                </span>
+                                {!showDeleteConfirm ? (
+                                    <button
+                                        onClick={() => setShowDeleteConfirm(true)}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-destructive/20 py-2.5 font-body text-[10px] font-medium tracking-wide text-destructive/60 transition-all hover:border-destructive/40 hover:text-destructive"
+                                    >
+                                        <Trash2 size={10} />
+                                        {t("settings.deleteAccount")}
+                                    </button>
+                                ) : (
+                                    <div className="space-y-3">
+                                        <p className="font-body text-[10px] text-destructive/60 leading-relaxed">
+                                            {t("settings.deleteAccountConfirm")}
+                                        </p>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <button
+                                                onClick={() => setShowDeleteConfirm(false)}
+                                                className="rounded-xl border border-foreground/10 py-2 font-body text-[10px] font-medium text-muted-foreground/50 transition-all hover:border-foreground/20 hover:text-foreground"
+                                            >
+                                                {t("settings.deleteAccountCancel")}
+                                            </button>
+                                            <button
+                                                onClick={async () => {
+                                                    await deleteAccount();
+                                                    onClose();
+                                                }}
+                                                className="rounded-xl border border-destructive/30 bg-destructive/10 py-2 font-body text-[10px] font-medium text-destructive/80 transition-all hover:bg-destructive/20 hover:text-destructive"
+                                            >
+                                                {t("settings.deleteAccountConfirmButton")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </motion.div>
                 </motion.div>
             )}
