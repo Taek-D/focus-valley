@@ -1,0 +1,28 @@
+Focus Valley is a pomodoro timer with a twist — every focus session you complete helps your pixel art garden grow. 🌱
+
+Stay focused. Watch your garden bloom.
+
+THE GARDEN THAT GROWS WITH YOU
+Plant seeds at the start of each session. Work through your timer and the plant grows, stage by stage, into a full-grown pixel art flower or tree. Give up early? The plant withers. Your garden is a living record of your focus streaks — keep your plants healthy by finishing what you start.
+
+Collect different plant species as you hit milestones and build your very own pixel art garden over time.
+
+A TIMER YOU CAN ACTUALLY TRUST
+Most browser-based timers slow down when your screen is off or the app moves to the background. Focus Valley uses a background-safe timer that keeps ticking accurately even when the app is minimized — so your 25-minute session is always 25 minutes, no matter what.
+
+FEATURES
+- Pomodoro timer with customizable work and break intervals
+- Pixel art garden that grows in real time during focus sessions
+- Plants wither if you give up mid-session — stay committed!
+- Garden collection — unlock new plant species as you focus more
+- Ambient soundscape mixer — blend rain, forest, and white noise
+- Dark mode for late-night focus sessions
+- Session statistics to track your productivity over time
+- Todo list to plan your session tasks
+- Cloud sync with Google sign-in — your garden saves across devices
+- CSV export for your session data
+
+PERFECT FOR
+Students, remote workers, writers, developers, and anyone who wants to build better focus habits — one session at a time.
+
+Download Focus Valley and start growing today.
