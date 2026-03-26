@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Capacitor Android
 status: executing
-stopped_at: "04-01 complete — ready for 04-02 Play Store submission"
-last_updated: "2026-03-26T08:00:00.000Z"
-last_activity: 2026-03-26 -- Completed 04-01 (Task 3 resolved: keystore generated, Edge Function deployed, signed AAB built)
+stopped_at: "04-02 Task 1 complete, Task 2 checkpoint (Play Console submission) pending"
+last_updated: "2026-03-26T08:40:00.000Z"
+last_activity: 2026-03-26 -- 04-02 Task 1 committed (store listing text), Task 2 checkpoint pending (Play Console submission)
 progress:
   total_phases: 4
   completed_phases: 3
@@ -19,9 +19,9 @@ progress:
 ## Current Position
 
 Phase: 4 of 4 (Play Store Release) — IN PROGRESS
-Plan: 2 of 2 in current phase (04-01 complete, 04-02 next)
-Status: Executing
-Last activity: 2026-03-26 -- Completed 04-01 (keystore generated, Edge Function deployed, signed AAB built at 6.5 MB)
+Plan: 2 of 2 in current phase (04-01 complete, 04-02 in progress — Task 1/2 done)
+Status: Executing (paused for Play Console submission)
+Last activity: 2026-03-26 -- 04-02 Task 1 committed (store listing text assets), Task 2 checkpoint pending (Play Console manual submission)
 
 Progress: [█████████░] 89%
 
@@ -93,10 +93,20 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 - RESOLVED: Edge-to-edge behavior on Android 15+ — StatusBar.setOverlaysWebView(false) added in 01-03
 - RESOLVED: useHaptic.ts TypeScript error (hapticEnabled missing from TimerSettingsState) — fixed in 02-01 retroactive execution, STORAGE_VERSION bumped to 3
 - RESOLVED: Google OAuth returns 403 in WebView — Chrome Custom Tab via Browser.open() implemented in 03-02
-- HIGH: Release keystore loss is unrecoverable — must back up immediately in Phase 4
+- RESOLVED: Release keystore generated at android/focusvalley-upload.jks — password in keystore.properties — BACK UP IMMEDIATELY
+- NOTE: Supabase Edge Function delete-account deployed to project yidyxlwrongecctifiis
+- NOTE: Signed AAB at android/app/build/outputs/bundle/release/app-release.aab (6.5MB)
+- NOTE: PLAY-STORE-SUBMISSION-GUIDE.md created with detailed Play Console submission steps
+- NOTE: Gradle bundleRelease requires JAVA_HOME="/c/Program Files/Android/Android Studio/jbr" (JDK 21) — system JDK 25 is incompatible with Gradle 8.14.3
 
 ## Session Continuity
 
-Last session: 2026-03-26T08:00:00.000Z
-Stopped at: 04-01 complete — ready for 04-02 Play Store submission
+Last session: 2026-03-26T08:40:00.000Z
+Stopped at: 04-02 Task 1 complete, Task 2 checkpoint (Play Console submission) pending
 Resume file: .planning/phases/04-play-store-release/04-02-PLAN.md
+Resume instructions: |
+  1. Open PLAY-STORE-SUBMISSION-GUIDE.md for detailed submission steps
+  2. Complete Play Console submission (Task 2 of Plan 04-02)
+  3. Type "submitted" to continue
+  4. Plan 04-02 SUMMARY will be created, then phase verification runs
+  5. After verification → phase complete → milestone v1.1 done
