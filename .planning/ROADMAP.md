@@ -76,7 +76,11 @@ Plans:
   2. Play Store listing has app title, short description, full description, minimum 2 phone screenshots, and feature graphic
   3. Privacy policy is live at a public URL and the Data Safety form is submitted in Play Console
   4. App passes Google Play review and reaches "Published" status in the Play Console
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Release signing config, account deletion (Edge Function + UI), privacy policy update
+- [ ] 04-02-PLAN.md — Store listing text assets, Play Console submission
 
 ## Progress
 
@@ -88,7 +92,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
 | 2. Native Capabilities | 3/3 | Complete | 2026-03-26 |
 | 3. Auth and Deep Links | 2/2 | Complete | 2026-03-26 |
-| 4. Play Store Release | 0/TBD | Not started | - |
+| 4. Play Store Release | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-24*
