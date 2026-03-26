@@ -9,5 +9,10 @@ export const SUPABASE_CONFIG_ERROR =
 export const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 export const supabase = isSupabaseConfigured
-    ? createClient(SUPABASE_URL!, SUPABASE_ANON_KEY!)
+    ? createClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
+          auth: {
+              flowType: "pkce",
+              detectSessionInUrl: false,
+          },
+      })
     : null;
