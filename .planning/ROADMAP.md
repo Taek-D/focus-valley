@@ -52,7 +52,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Install notification and haptics packages, replace useNotification with native support, create useHaptic hook
 - [x] 02-02-PLAN.md — Extend useAppPanels with LIFO open-stack, rewrite useBackButton with confirmations, add resumeAudio to useAudioMixer
-- [ ] 02-03-PLAN.md — Wire haptics, back button, and audio resume into App.tsx and session flow; verify on device
+- [x] 02-03-PLAN.md — Wire haptics, back button, and audio resume into App.tsx and session flow; verify on device
 
 ### Phase 3: Auth and Deep Links
 **Goal**: Existing Google-signed users can log in without error and share card links open the native app instead of the browser
@@ -61,7 +61,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can tap "Sign in with Google", complete the OAuth flow in Chrome Custom Tab, and return to the app authenticated — no 403 disallowed_useragent error
   2. Tapping a Focus Valley share card link on an Android device that has the app installed opens the native app directly
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Install @capacitor/browser, configure Supabase PKCE flow, add focusvalley:// intent-filter, create auth test scaffold
+- [ ] 03-02-PLAN.md — Rewrite signInWithGoogle for Chrome Custom Tab, extract handleAuthCallback, wire appUrlOpen listener
 
 ### Phase 4: Play Store Release
 **Goal**: A signed AAB is submitted to Google Play and the listing passes review with complete assets, privacy policy, and Data Safety form
@@ -82,8 +86,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
-| 2. Native Capabilities | 2/3 | In progress | - |
-| 3. Auth and Deep Links | 0/TBD | Not started | - |
+| 2. Native Capabilities | 3/3 | Complete | 2026-03-26 |
+| 3. Auth and Deep Links | 0/2 | Planning complete | - |
 | 4. Play Store Release | 0/TBD | Not started | - |
 
 ---
