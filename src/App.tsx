@@ -34,6 +34,7 @@ import { useAppSyncFlow } from "./hooks/useAppSyncFlow";
 import { useAppEnvironmentEffects } from "./hooks/useAppEnvironmentEffects";
 import { useAppSessionFlow } from "./hooks/useAppSessionFlow";
 import { useBackButton } from "./hooks/useBackButton";
+import { handleAuthCallback } from "./hooks/useAuth";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 import { SplashScreen } from "@capacitor/splash-screen";
@@ -131,11 +132,23 @@ function App() {
         const subscription = CapacitorApp.addListener("appStateChange", ({ isActive }) => {
             if (isActive) {
                 mixer.resumeAudio();
+            } else {
+                mixer.suspendAudio();
             }
         });
 
         return () => { subscription.then((h) => h.remove()); };
-    }, [mixer.resumeAudio]);
+    }, [mixer.resumeAudio, mixer.suspendAudio]);
+
+    useEffect(() => {
+        if (!Capacitor.isNativePlatform()) return;
+
+        const subscription = CapacitorApp.addListener("appUrlOpen", (event) => {
+            void handleAuthCallback(event.url);
+        });
+
+        return () => { subscription.then((h) => h.remove()); };
+    }, []);
 
     const handleLandingGetStarted = useCallback(() => {
         dismissLanding();
