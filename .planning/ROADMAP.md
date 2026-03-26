@@ -16,7 +16,7 @@ Wrap the existing Focus Valley PWA in Capacitor 8 and ship to Google Play Store.
 
 - [x] **Phase 1: Capacitor Foundation** - Initialize Capacitor 8, fix critical infrastructure pitfalls (service worker, storage, timer drift), configure splash/status bar
 - [ ] **Phase 2: Native Capabilities** - Local notifications for session completion, haptic feedback on plant growth, audio autoplay fix for Android WebView
-- [ ] **Phase 3: Auth and Deep Links** - Google OAuth via Chrome Custom Tab (fixes 403 disallowed_useragent), custom URL scheme for deep link routing
+- [x] **Phase 3: Auth and Deep Links** - Google OAuth via Chrome Custom Tab (fixes 403 disallowed_useragent), custom URL scheme for deep link routing
 - [ ] **Phase 4: Play Store Release** - Signed AAB, store listing assets, privacy policy, Data Safety form, submission and review
 
 ## Phase Details
@@ -61,11 +61,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can tap "Sign in with Google", complete the OAuth flow in Chrome Custom Tab, and return to the app authenticated — no 403 disallowed_useragent error
   2. Tapping a Focus Valley share card link on an Android device that has the app installed opens the native app directly
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed
 
 Plans:
-- [ ] 03-01-PLAN.md — Install @capacitor/browser, configure Supabase PKCE flow, add focusvalley:// intent-filter, create auth test scaffold
-- [ ] 03-02-PLAN.md — Rewrite signInWithGoogle for Chrome Custom Tab, extract handleAuthCallback, wire appUrlOpen listener
+- [x] 03-01-PLAN.md — Install @capacitor/browser, configure Supabase PKCE flow, add focusvalley:// intent-filter, create auth test scaffold
+- [x] 03-02-PLAN.md — Rewrite signInWithGoogle for Chrome Custom Tab, extract handleAuthCallback, wire appUrlOpen listener
 
 ### Phase 4: Play Store Release
 **Goal**: A signed AAB is submitted to Google Play and the listing passes review with complete assets, privacy policy, and Data Safety form
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
 | 2. Native Capabilities | 3/3 | Complete | 2026-03-26 |
-| 3. Auth and Deep Links | 1/2 | In Progress|  |
+| 3. Auth and Deep Links | 2/2 | Complete | 2026-03-26 |
 | 4. Play Store Release | 0/TBD | Not started | - |
 
 ---

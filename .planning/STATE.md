@@ -3,27 +3,27 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Capacitor Android
 status: executing
-stopped_at: "Completed 03-01: auth infrastructure setup"
+stopped_at: "Completed 03-02: Chrome Custom Tab OAuth and deep link wiring"
 last_updated: "2026-03-26"
-last_activity: 2026-03-26 -- Completed 03-01 (PKCE config, deep link scheme, auth test scaffold)
+last_activity: 2026-03-26 -- Completed 03-02 (Chrome Custom Tab OAuth, handleAuthCallback, appUrlOpen listener)
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
-  percent: 55
+  completed_plans: 8
+  percent: 75
 ---
 
 # State
 
 ## Current Position
 
-Phase: 3 of 4 (Auth and Deep Links)
-Plan: 1 of 2 in current phase (03-01 complete)
+Phase: 3 of 4 (Auth and Deep Links) — COMPLETE
+Plan: 2 of 2 in current phase (03-02 complete)
 Status: Executing
-Last activity: 2026-03-26 -- Completed 03-01 (PKCE config, deep link scheme, auth test scaffold)
+Last activity: 2026-03-26 -- Completed 03-02 (Chrome Custom Tab OAuth, handleAuthCallback, appUrlOpen listener)
 
-Progress: [██████░░░░] 55%
+Progress: [████████░░] 75%
 
 ## Project Reference
 
@@ -35,9 +35,9 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: ~13 min
-- Total execution time: ~1.2 hours
+- Total plans completed: 8
+- Average duration: ~12 min
+- Total execution time: ~1.4 hours
 
 **By Phase:**
 
@@ -45,7 +45,7 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 |-------|-------|-------|----------|
 | 01-capacitor-foundation | 3/3 | ~55 min | ~18 min |
 | 02-native-capabilities | 3/3 | ~45 min | ~15 min |
-| 03-auth-and-deep-links | 1/2 | ~6 min | ~6 min |
+| 03-auth-and-deep-links | 2/2 | ~16 min | ~8 min |
 
 ## Accumulated Context
 
@@ -72,6 +72,9 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 - PKCE flow with detectSessionInUrl: false prevents race with manual exchangeCodeForSession in Plan 02 (03-02)
 - Custom URL scheme (focusvalley://) only — no android:autoVerify (App Links require HTTPS domain ownership)
 - handleAuthCallback stub exported from useAuth.ts for compile-time safety; full implementation in Plan 02 (03-02)
+- Custom URL scheme URL parsing: new URL("focusvalley://auth/callback") yields host="auth" pathname="/callback" — check both fields, not full path
+- browserFinished listener registered BEFORE Browser.open() — avoids race where very fast tab close is missed
+- appUrlOpen listener gated by isNativePlatform() in App.tsx — web OAuth redirect flow is completely unchanged
 
 ### Pending Todos
 
@@ -85,11 +88,11 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 - RESOLVED: Back button exits app during session — useBackButton hook wired in App.tsx (01-02)
 - RESOLVED: Edge-to-edge behavior on Android 15+ — StatusBar.setOverlaysWebView(false) added in 01-03
 - RESOLVED: useHaptic.ts TypeScript error (hapticEnabled missing from TimerSettingsState) — fixed in 02-01 retroactive execution, STORAGE_VERSION bumped to 3
-- HIGH: Google OAuth returns 403 in WebView — needs @capacitor/browser (Chrome Custom Tab) fix in Phase 3
+- RESOLVED: Google OAuth returns 403 in WebView — Chrome Custom Tab via Browser.open() implemented in 03-02
 - HIGH: Release keystore loss is unrecoverable — must back up immediately in Phase 4
 
 ## Session Continuity
 
 Last session: 2026-03-26
-Stopped at: Completed 03-01-PLAN.md
-Resume file: .planning/phases/03-auth-and-deep-links/03-02-PLAN.md
+Stopped at: Completed 03-02-PLAN.md
+Resume file: .planning/phases/04-play-store-release/ (Phase 4 — first plan)
