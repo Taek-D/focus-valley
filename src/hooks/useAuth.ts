@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { supabase, SUPABASE_CONFIG_ERROR } from "@/lib/supabase";
 import type { User, AuthError } from "@supabase/supabase-js";
+import { Browser } from "@capacitor/browser";
+import { Capacitor } from "@capacitor/core";
 
 type AuthState = {
     user: User | null;
@@ -88,14 +90,44 @@ export const useAuth = create<AuthState>((set) => ({
             return;
         }
         set({ loading: true, error: null });
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: { redirectTo: window.location.origin },
-        });
-        if (error) {
-            set({ loading: false, error: friendlyError(error) });
+
+        if (Capacitor.isNativePlatform()) {
+            // Native path: use Chrome Custom Tab to avoid WebView 403 error
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: "focusvalley://auth/callback",
+                    skipBrowserRedirect: true,
+                },
+            });
+            if (error) {
+                set({ loading: false, error: friendlyError(error) });
+                return;
+            }
+            if (!data.url) {
+                set({ loading: false, error: "Unable to start sign-in. Please try again." });
+                return;
+            }
+            // Register browserFinished handler BEFORE Browser.open() to catch user cancellations
+            const browserHandle = Browser.addListener("browserFinished", () => {
+                if (useAuth.getState().loading) {
+                    useAuth.setState({ loading: false, error: null });
+                }
+                void browserHandle.then((h) => h.remove());
+            });
+            await Browser.open({ url: data.url });
+            // Loading stays true — appUrlOpen listener or browserFinished will resolve it
+        } else {
+            // Web path: keep existing behavior unchanged
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: { redirectTo: window.location.origin },
+            });
+            if (error) {
+                set({ loading: false, error: friendlyError(error) });
+            }
+            // Loading stays true — redirect will happen
         }
-        // Loading stays true — redirect will happen
     },
 
     signOut: async () => {
@@ -115,8 +147,28 @@ export const useAuth = create<AuthState>((set) => ({
  * Handles the OAuth callback deep link URL.
  * Extracts the authorization code from focusvalley://auth/callback?code=X
  * and exchanges it for a session via PKCE.
- * Full implementation in Plan 02 (03-02).
+ * Called from App.tsx's appUrlOpen listener.
  */
-export async function handleAuthCallback(_url: string): Promise<void> {
-    // Stub — implemented in Plan 02
+export async function handleAuthCallback(url: string): Promise<void> {
+    const parsed = new URL(url);
+
+    if (parsed.host === "auth" && parsed.pathname === "/callback") {
+        const code = parsed.searchParams.get("code");
+        if (code && supabase) {
+            const { error } = await supabase.auth.exchangeCodeForSession(code);
+            if (error) {
+                useAuth.setState({ loading: false, error: "Sign-in failed. Please try again." });
+            } else {
+                // onAuthStateChange fires automatically and updates user state
+                useAuth.setState({ loading: false });
+            }
+        } else {
+            // No code param — user cancelled or error in OAuth flow
+            useAuth.setState({ loading: false, error: null });
+        }
+        return;
+    }
+
+    // Any other focusvalley:// URL is a share link — no routing needed per user decision
+    // Main screen is already shown, so this is a no-op
 }
