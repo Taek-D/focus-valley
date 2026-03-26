@@ -3,34 +3,34 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Capacitor Android
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-26T06:43:21.427Z"
-last_activity: 2026-03-26 -- Completed 03-02 (Chrome Custom Tab OAuth, handleAuthCallback, appUrlOpen listener)
+stopped_at: "04-01 Task 3 checkpoint:human-action — keystore generation, Edge Function deploy, signed AAB build"
+last_updated: "2026-03-26T07:27:00.000Z"
+last_activity: 2026-03-26 -- Completed 04-01 Tasks 1-2 (account deletion, release signing config, privacy policy)
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 8
+  total_plans: 9
   completed_plans: 8
-  percent: 75
+  percent: 78
 ---
 
 # State
 
 ## Current Position
 
-Phase: 3 of 4 (Auth and Deep Links) — COMPLETE
-Plan: 2 of 2 in current phase (03-02 complete)
+Phase: 4 of 4 (Play Store Release) — IN PROGRESS
+Plan: 1 of 2 in current phase (04-01 Tasks 1-2 complete, Task 3 awaiting human action)
 Status: Executing
-Last activity: 2026-03-26 -- Completed 03-02 (Chrome Custom Tab OAuth, handleAuthCallback, appUrlOpen listener)
+Last activity: 2026-03-26 -- Completed 04-01 Tasks 1-2 (account deletion Edge Function, release signing config, privacy policy)
 
-Progress: [████████░░] 75%
+Progress: [████████░░] 78%
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-24)
 
 **Core value:** Accurate timer + rewarding plant growth feedback loop, now as a native Android app
-**Current focus:** Phase 3 — Auth and Deep Links
+**Current focus:** Phase 4 — Play Store Release
 
 ## Performance Metrics
 
@@ -75,6 +75,10 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 - Custom URL scheme URL parsing: new URL("focusvalley://auth/callback") yields host="auth" pathname="/callback" — check both fields, not full path
 - browserFinished listener registered BEFORE Browser.open() — avoids race where very fast tab close is missed
 - appUrlOpen listener gated by isNativePlatform() in App.tsx — web OAuth redirect flow is completely unchanged
+- deleteAccount invokes Edge Function via supabase.functions.invoke() — SDK auto-includes auth header, no manual token passing needed
+- build.gradle signingConfig conditional on keystorePropertiesFile.exists() — debug builds never break without keystore
+- keystore.properties is gitignored; template created locally as developer reference but never committed
+- settings.reloadToApply i18n key was referenced in TimerSettings but missing from feature-pack — added as auto-fix (Rule 1)
 
 ### Pending Todos
 
@@ -93,6 +97,6 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 
 ## Session Continuity
 
-Last session: 2026-03-26T06:43:21.425Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-play-store-release/04-CONTEXT.md
+Last session: 2026-03-26T07:27:00.000Z
+Stopped at: 04-01 Task 3 checkpoint:human-action — keystore generation, Edge Function deploy, signed AAB build
+Resume file: .planning/phases/04-play-store-release/04-01-PLAN.md

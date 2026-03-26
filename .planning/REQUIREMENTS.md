@@ -28,9 +28,9 @@ Requirements for Capacitor Android release. Each maps to roadmap phases.
 
 ### STORE (Play Store Release)
 
-- [ ] **STORE-01**: Signed AAB built with release keystore and Gradle signing config
+- [x] **STORE-01**: Signed AAB built with release keystore and Gradle signing config
 - [ ] **STORE-02**: Play Store listing complete with screenshots, feature graphic, descriptions, and category
-- [ ] **STORE-03**: Privacy policy hosted and Data Safety form submitted
+- [x] **STORE-03**: Privacy policy hosted and Data Safety form submitted
 - [ ] **STORE-04**: App submitted to Google Play Store and passes review
 
 ## v2 Requirements
@@ -74,9 +74,9 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | NATIVE-03 | Phase 2 | Complete |
 | NATIVE-04 | Phase 2 | Complete |
 | AUTH-01 | Phase 3 | Complete |
-| STORE-01 | Phase 4 | Pending |
+| STORE-01 | Phase 4 | Complete |
 | STORE-02 | Phase 4 | Pending |
-| STORE-03 | Phase 4 | Pending |
+| STORE-03 | Phase 4 | Complete |
 | STORE-04 | Phase 4 | Pending |
 
 **Coverage:**
