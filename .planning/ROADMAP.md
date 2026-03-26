@@ -79,7 +79,7 @@ Plans:
 **Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 04-01-PLAN.md — Release signing config, account deletion (Edge Function + UI), privacy policy update
+- [x] 04-01-PLAN.md — Release signing config, account deletion (Edge Function + UI), privacy policy update
 - [ ] 04-02-PLAN.md — Store listing text assets, Play Console submission
 
 ## Progress
@@ -92,7 +92,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
 | 2. Native Capabilities | 3/3 | Complete | 2026-03-26 |
 | 3. Auth and Deep Links | 2/2 | Complete | 2026-03-26 |
-| 4. Play Store Release | 1/2 | In Progress|  |
+| 4. Play Store Release | 1/2 | In Progress | |
 
 ---
 *Roadmap created: 2026-03-24*

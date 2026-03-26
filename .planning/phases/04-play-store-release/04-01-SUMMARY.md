@@ -49,7 +49,7 @@ patterns-established:
 
 requirements-completed: [STORE-01, STORE-03]
 
-duration: 11min
+duration: ~20min
 completed: 2026-03-26
 ---
 
@@ -62,7 +62,7 @@ completed: 2026-03-26
 - **Duration:** 11 min
 - **Started:** 2026-03-26T07:15:44Z
 - **Completed:** 2026-03-26T07:26:44Z
-- **Tasks:** 2 of 3 (Task 3 is a human-action checkpoint for keystore generation and AAB build)
+- **Tasks:** 3 of 3
 - **Files modified:** 7
 
 ## Accomplishments
@@ -78,7 +78,7 @@ Each task was committed atomically:
 
 1. **Task 1: Implement account deletion (Edge Function + useAuth + UI)** - `f263872` (feat)
 2. **Task 2: Configure release signing and update privacy policy** - `829b08c` (feat)
-3. **Task 3: Generate keystore, deploy Edge Function, build signed AAB** - PENDING (human-action checkpoint)
+3. **Task 3: Generate keystore, deploy Edge Function, build signed AAB** - COMPLETE (human-action, resolved by user)
 
 ## Files Created/Modified
 - `supabase/functions/delete-account/index.ts` - Deno Edge Function: reads JWT, calls auth.admin.deleteUser, returns 200/401/500
@@ -118,19 +118,16 @@ Each task was committed atomically:
 - PowerShell on Windows doesn't support `&&` chaining in `-Command` flag — ran tsc and lint as separate commands
 
 ## User Setup Required
-Task 3 (human-action checkpoint) requires:
-1. Generate upload keystore via `keytool -genkey` in android/ directory
-2. Update android/keystore.properties with real passwords
-3. Back up keystore to secure location (loss = cannot update app on Play Store)
-4. Deploy Edge Function: `npx supabase functions deploy delete-account`
-5. Set SUPABASE_SERVICE_ROLE_KEY in Supabase project Edge Functions environment variables
-6. Build signed AAB: `npm run build && npx cap sync android && cd android && ./gradlew bundleRelease`
-7. Verify output at: android/app/build/outputs/bundle/release/app-release.aab
+
+All manual steps completed:
+- Upload keystore generated at `android/focusvalley-upload.jks`
+- `android/keystore.properties` updated with real passwords
+- Edge Function `delete-account` deployed to Supabase project (yidyxlwrongecctifiis)
+- Signed AAB built successfully: `android/app/build/outputs/bundle/release/app-release.aab` (6.5 MB)
 
 ## Next Phase Readiness
-- Code is complete: deleteAccount implemented and tested, signing config wired, privacy policy updated
-- Blocked on human-action Task 3: keystore must be generated before signed AAB can be built
-- Once Task 3 is complete, plan 04-01 is fully done and play store submission (04-02) can proceed
+- Plan 04-01 fully complete: account deletion implemented and tested, signing config wired, privacy policy updated, signed AAB produced
+- Ready for 04-02: Play Store listing assets, Play Console submission
 
 ---
 *Phase: 04-play-store-release*
