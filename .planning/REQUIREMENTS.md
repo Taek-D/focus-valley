@@ -24,7 +24,7 @@ Requirements for Capacitor Android release. Each maps to roadmap phases.
 
 ### AUTH (Authentication)
 
-- [ ] **AUTH-01**: User can sign in with Google OAuth via @capacitor/browser (Chrome Custom Tab) without 403 error
+- [x] **AUTH-01**: User can sign in with Google OAuth via @capacitor/browser (Chrome Custom Tab) without 403 error
 
 ### STORE (Play Store Release)
 
@@ -73,7 +73,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | NATIVE-02 | Phase 2 | Complete |
 | NATIVE-03 | Phase 2 | Complete |
 | NATIVE-04 | Phase 2 | Complete |
-| AUTH-01 | Phase 3 | Pending |
+| AUTH-01 | Phase 3 | Complete |
 | STORE-01 | Phase 4 | Pending |
 | STORE-02 | Phase 4 | Pending |
 | STORE-03 | Phase 4 | Pending |

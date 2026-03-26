@@ -2,49 +2,50 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Capacitor Android
-status: in_progress
-stopped_at: Completed 02-02 (useAppPanels LIFO stack, useBackButton rewrite, resumeAudio)
-last_updated: "2026-03-25T14:22:00Z"
-last_activity: 2026-03-25 -- Completed 02-02 (LIFO panel stack, useBackButton rewrite, resumeAudio)
+status: executing
+stopped_at: "Completed 03-01: auth infrastructure setup"
+last_updated: "2026-03-26"
+last_activity: 2026-03-26 -- Completed 03-01 (PKCE config, deep link scheme, auth test scaffold)
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 6
-  completed_plans: 5
-  percent: 42
+  completed_phases: 2
+  total_plans: 8
+  completed_plans: 7
+  percent: 55
 ---
 
 # State
 
 ## Current Position
 
-Phase: 2 of 4 (Native Capabilities)
-Plan: 2 of 3 in current phase
-Status: In progress (02-02 complete, 02-03 next)
-Last activity: 2026-03-25 -- Completed 02-02 (LIFO panel stack, useBackButton rewrite, resumeAudio)
+Phase: 3 of 4 (Auth and Deep Links)
+Plan: 1 of 2 in current phase (03-01 complete)
+Status: Executing
+Last activity: 2026-03-26 -- Completed 03-01 (PKCE config, deep link scheme, auth test scaffold)
 
-Progress: [████░░░░░░] 42%
+Progress: [██████░░░░] 55%
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-03-24)
 
 **Core value:** Accurate timer + rewarding plant growth feedback loop, now as a native Android app
-**Current focus:** Phase 2 — Native Capabilities
+**Current focus:** Phase 3 — Auth and Deep Links
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~15 min
-- Total execution time: ~1.1 hours
+- Total plans completed: 7
+- Average duration: ~13 min
+- Total execution time: ~1.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-capacitor-foundation | 3/3 | ~55 min | ~18 min |
-| 02-native-capabilities | 2/3 | ~20 min | ~10 min |
+| 02-native-capabilities | 3/3 | ~45 min | ~15 min |
+| 03-auth-and-deep-links | 1/2 | ~6 min | ~6 min |
 
 ## Accumulated Context
 
@@ -68,6 +69,9 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 - Toggle panels (mixer, shortcuts) use functional setState pattern to read current bool inside setter before updating stack
 - resolveBackAction extracted as pure function — enables testing back button decision logic without any Capacitor mocks
 - App.tsx wired with stub callbacks for Plan 03 — confirmation dialogs not yet implemented
+- PKCE flow with detectSessionInUrl: false prevents race with manual exchangeCodeForSession in Plan 02 (03-02)
+- Custom URL scheme (focusvalley://) only — no android:autoVerify (App Links require HTTPS domain ownership)
+- handleAuthCallback stub exported from useAuth.ts for compile-time safety; full implementation in Plan 02 (03-02)
 
 ### Pending Todos
 
@@ -86,6 +90,6 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 
 ## Session Continuity
 
-Last session: 2026-03-25T14:22:52Z
-Stopped at: Completed 02-01 (local-notifications, haptics, useNotification replacement, useHaptic hook)
-Resume file: .planning/phases/02-native-capabilities/02-03-PLAN.md
+Last session: 2026-03-26
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-auth-and-deep-links/03-02-PLAN.md

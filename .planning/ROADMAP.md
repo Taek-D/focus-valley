@@ -61,7 +61,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can tap "Sign in with Google", complete the OAuth flow in Chrome Custom Tab, and return to the app authenticated — no 403 disallowed_useragent error
   2. Tapping a Focus Valley share card link on an Android device that has the app installed opens the native app directly
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 03-01-PLAN.md — Install @capacitor/browser, configure Supabase PKCE flow, add focusvalley:// intent-filter, create auth test scaffold
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Capacitor Foundation | 3/3 | Complete | 2026-03-25 |
 | 2. Native Capabilities | 3/3 | Complete | 2026-03-26 |
-| 3. Auth and Deep Links | 0/2 | Planning complete | - |
+| 3. Auth and Deep Links | 1/2 | In Progress|  |
 | 4. Play Store Release | 0/TBD | Not started | - |
 
 ---
