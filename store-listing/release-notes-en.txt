@@ -1,0 +1,1 @@
+Initial Android release of Focus Valley. Stay focused, grow your pixel art garden, and keep your timer running accurately in the background.

@@ -3,6 +3,8 @@
 > 최종 업데이트: 2026-03-26
 > 대상: Focus Valley v1.1.0 (Capacitor Android)
 
+빠른 제출 순서가 필요하면 [docs/play-console-5-minute-runbook.md](docs/play-console-5-minute-runbook.md)를 먼저 보세요.
+
 ---
 
 ## 목차
