@@ -19,9 +19,12 @@
     "video:render": "npx remotion render remotion/index.ts FocusValleyIntro out/intro.mp4",
     "video:render:all": "node remotion/render-all.mjs",
     "build:android": "npm run android:check-jdk && cross-env CAPACITOR_BUILD=true npm run build && npx cap sync android",
+    "bundle:android": "npm run build:android && powershell -ExecutionPolicy Bypass -Command \"Set-Location android; .\\gradlew.bat bundleRelease\"",
     "build:android:debug": "npm run android:check-jdk && cross-env CAPACITOR_BUILD=true CAPACITOR_SOURCEMAP=true npm run build && npx cap sync android",
     "qa:android": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -UseDemo -NotificationAction deny",
     "qa:android:notification": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -UseDemo -NotificationAction allow -VerifyBackgroundNotification",
+    "qa:android:release": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -Variant Release -UseDemo -NotificationAction deny",
+    "qa:android:release:notification": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -Variant Release -UseDemo -NotificationAction allow -VerifyBackgroundNotification",
     "cap:open": "npx cap open android"
   },
   "dependencies": {

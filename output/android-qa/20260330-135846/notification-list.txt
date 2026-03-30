@@ -1,0 +1,5 @@
+﻿0|com.google.android.apps.wellbeing|12|null|10159
+0|com.android.systemui|1397773634|public:253,80|10194
+0|android|2345|ChFBbmRyb2lkTG9ja1NjcmVlbhIRTm9TY3JlZW5Mb2NrSXNzdWUYAA==|1000
+0|com.google.android.apps.wellbeing|1|0|com.google.android.apps.wellbeing|g:Aggregate_SilentSection|10159|0|com.google.android.apps.wellbeing|g:Aggregate_SilentSection
+0|android|2345|ChRBbmRyb2lkSWRlbnRpdHlDaGVjaxIbSWRlbnRpdHlDaGVja1Byb21vQ2FyZElzc3VlGAA=|1000

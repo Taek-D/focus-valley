@@ -29,6 +29,7 @@
 
 ### 빌드 아티팩트
 - [ ] 서명된 AAB 파일: `android/app/build/outputs/bundle/release/app-release.aab` (6.5MB)
+- [ ] `npm run qa:android:release` 산출물 확인 (`output/android-qa/<timestamp>/summary.txt`에 `variant=Release`)
 - [ ] versionCode: 1, versionName: "1.1.0"
 - [ ] targetSdkVersion: 36 (Android 15+ 요구사항 충족 - 2025년 8월 기준 API 35 이상 필수)
 - [ ] minSdkVersion: 24
@@ -59,7 +60,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| 앱 이름 | `Focus Valley - 포모도로 타이머` |
+| 앱 이름 | `Focus Valley - 집중 타이머` |
 | 기본 언어 | English (United States) - en-US |
 | 앱 또는 게임 | 앱 |
 | 유료 또는 무료 | 무료 |
@@ -83,7 +84,7 @@
 
 | 필드 | 내용 | 제한 |
 |------|------|------|
-| 앱 이름 | `Focus Valley - 포모도로 타이머` | 최대 50자 |
+| 앱 이름 | `Focus Valley - 집중 타이머` | 최대 50자 |
 | 짧은 설명 | `store-listing/short-description-en.txt` 내용 복사 | 최대 80자 |
 | 자세한 설명 | `store-listing/full-description-en.txt` 내용 복사 | 최대 4,000자 |
 
@@ -386,6 +387,7 @@ Play Console 대시보드에서 **모든 섹션이 녹색 체크** 표시인지 
 - [ ] 금융 기능 선언 완료
 - [ ] 앱 콘텐츠 설정 (광고, 대상 연령, 뉴스 등)
 - [ ] 개인정보처리방침 URL 입력
+- [ ] 프로덕션 트랙 자격 확인 완료 또는 내부/비공개 테스트 트랙으로 목표 전환 완료
 - [ ] 앱 액세스 (로그인 필요 시 테스트 계정 제공)
 - [ ] AAB 업로드 완료
 
