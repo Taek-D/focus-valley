@@ -64,6 +64,10 @@ android/*.keystore
 # Remotion output
 out/
 
+# Generated QA artifacts
+output/android-qa/
+output/playwright/
+
 # Dev artifacts & planning docs
 screenshots/
 take-screenshots.mjs
