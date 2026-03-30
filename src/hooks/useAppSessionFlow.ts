@@ -88,6 +88,7 @@ export function useAppSessionFlow({
     const undoInfoRef = useRef<{ stage: PlantStage; type: PlantType } | null>(null);
     const demoRestoreFocusRef = useRef<number | null>(null);
     const prevStageRef = useRef(garden.stage);
+    const completionHandledRef = useRef(false);
 
     const showToast = useCallback((message: string, action?: ToastAction) => {
         setToast({ message, visible: true, action });
@@ -138,7 +139,12 @@ export function useAppSessionFlow({
     }, [garden.stage, haptic]);
 
     useEffect(() => {
-        if (!timer.isCompleted) return;
+        if (!timer.isCompleted) {
+            completionHandledRef.current = false;
+            return;
+        }
+        if (completionHandledRef.current) return;
+        completionHandledRef.current = true;
 
         playCompletionSound();
         void haptic.strong();

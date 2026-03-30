@@ -9,12 +9,16 @@ type ConfirmModalProps = {
     message: string;
     confirmLabel?: string;
     cancelLabel?: string;
+    testId?: string;
+    confirmTestId?: string;
+    cancelTestId?: string;
     onConfirm: () => void;
     onCancel: () => void;
 };
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     isOpen, title, message, confirmLabel = "Yes", cancelLabel = "No", onConfirm, onCancel,
+    testId, confirmTestId, cancelTestId,
 }) => {
     const cancelRef = useRef<HTMLButtonElement>(null);
     const dialogRef = useRef<HTMLDivElement>(null);
@@ -36,6 +40,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
                     className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm"
                     onClick={onCancel}
+                    data-testid={testId}
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="confirm-title"
@@ -60,12 +65,14 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                             <button
                                 ref={cancelRef}
                                 onClick={onCancel}
+                                data-testid={cancelTestId}
                                 className="px-5 py-2 font-body text-xs font-medium text-foreground rounded-xl border border-foreground/10 hover:border-foreground/20 transition-all"
                             >
                                 {cancelLabel}
                             </button>
                             <button
                                 onClick={onConfirm}
+                                data-testid={confirmTestId}
                                 className="px-5 py-2 font-body text-xs font-medium bg-destructive text-destructive-foreground rounded-xl hover:opacity-90 active:scale-[0.98] transition-all"
                             >
                                 {confirmLabel}

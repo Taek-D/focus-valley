@@ -74,6 +74,7 @@ export default defineConfig({
     }),
   ].filter(Boolean),
   build: {
+    sourcemap: process.env.CAPACITOR_SOURCEMAP === "true",
     rollupOptions: {
       output: {
         manualChunks: {

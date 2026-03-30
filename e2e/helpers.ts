@@ -29,14 +29,26 @@ const GEO_ERROR = {
     TIMEOUT: 3,
 };
 
+function getMondayKey(): string {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = day === 0 ? 6 : day - 1;
+    const monday = new Date(now);
+    monday.setDate(monday.getDate() - diff);
+    return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, "0")}-${String(monday.getDate()).padStart(2, "0")}`;
+}
+
 export async function prepareApp(page: Page, options: AppSetupOptions = {}) {
+    const weeklySummaryKey = `focus-valley-weekly-summary-${getMondayKey()}`;
+
     await page.addInitScript(
-        ({ landingDone, timerState, e2eInitKey, geoError }) => {
-            if (!localStorage.getItem(e2eInitKey)) {
+        ({ landingDone, timerState, e2eInitKey, geoError, weeklySummaryStorageKey }) => {
+            if (!sessionStorage.getItem(e2eInitKey)) {
                 localStorage.clear();
                 sessionStorage.clear();
-                localStorage.setItem(e2eInitKey, "1");
+                sessionStorage.setItem(e2eInitKey, "1");
                 localStorage.setItem("focus-valley-install-dismissed", "1");
+                localStorage.setItem(weeklySummaryStorageKey, "1");
                 localStorage.setItem("focus-valley-locale", JSON.stringify({
                     state: { locale: "ko" },
                     version: 1,
@@ -90,6 +102,7 @@ export async function prepareApp(page: Page, options: AppSetupOptions = {}) {
             timerState: options.timerState ?? null,
             e2eInitKey: E2E_INIT_KEY,
             geoError: GEO_ERROR,
+            weeklySummaryStorageKey: weeklySummaryKey,
         },
     );
 }

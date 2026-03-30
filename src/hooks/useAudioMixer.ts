@@ -201,6 +201,14 @@ export function useAudioMixer() {
         }
     }, []);
 
+    const suspendAudio = useCallback(() => {
+        const ctx = contextRef.current;
+        if (!ctx) return;
+        if (ctx.state === "running") {
+            void ctx.suspend();
+        }
+    }, []);
+
     return {
         volumes,
         setVolume,
@@ -208,6 +216,7 @@ export function useAudioMixer() {
         toggleMute,
         initAudio,
         resumeAudio,
+        suspendAudio,
         analyserRef,
     };
 }

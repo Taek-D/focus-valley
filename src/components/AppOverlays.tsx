@@ -145,6 +145,9 @@ export function AppOverlays({
                 message={t("confirm.giveUpMessage")}
                 confirmLabel={t("confirm.giveUp")}
                 cancelLabel={t("confirm.keepGoing")}
+                testId="session-giveup-dialog"
+                confirmTestId="session-giveup-confirm"
+                cancelTestId="session-giveup-cancel"
                 onConfirm={session.confirmGiveUp}
                 onCancel={session.closeConfirmModal}
             />

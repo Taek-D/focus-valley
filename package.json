@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "android:check-jdk": "node scripts/check-android-jdk.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -17,7 +18,10 @@
     "video:studio": "npx remotion studio remotion/index.ts",
     "video:render": "npx remotion render remotion/index.ts FocusValleyIntro out/intro.mp4",
     "video:render:all": "node remotion/render-all.mjs",
-    "build:android": "cross-env CAPACITOR_BUILD=true npm run build && npx cap sync android",
+    "build:android": "npm run android:check-jdk && cross-env CAPACITOR_BUILD=true npm run build && npx cap sync android",
+    "build:android:debug": "npm run android:check-jdk && cross-env CAPACITOR_BUILD=true CAPACITOR_SOURCEMAP=true npm run build && npx cap sync android",
+    "qa:android": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -UseDemo -NotificationAction deny",
+    "qa:android:notification": "powershell -ExecutionPolicy Bypass -File .\\scripts\\android-qa.ps1 -UseDemo -NotificationAction allow -VerifyBackgroundNotification",
     "cap:open": "npx cap open android"
   },
   "dependencies": {

@@ -8,6 +8,7 @@ import {
     getNow,
     setLastSyncTime,
 } from "./sync-storage";
+import { warnDev } from "./logger";
 
 type CloudRow = {
     user_id: string;
@@ -42,7 +43,7 @@ export async function pushToCloud(user: User): Promise<boolean> {
         .upsert({ user_id: user.id, data, updated_at: now }, { onConflict: "user_id" });
 
     if (error) {
-        console.warn("[sync] push failed:", error.message);
+        warnDev("[sync] push failed:", error.message);
         return false;
     }
 
@@ -60,7 +61,7 @@ export async function pullFromCloud(user: User): Promise<boolean> {
 
     if (error) {
         if (error.code === "PGRST116") return false;
-        console.warn("[sync] pull failed:", error.message);
+        warnDev("[sync] pull failed:", error.message);
         return false;
     }
 
@@ -86,7 +87,7 @@ export async function syncWithCloud(user: User): Promise<import("./sync-contract
         .single<CloudRow>();
 
     if (error && error.code !== "PGRST116") {
-        console.warn("[sync] fetch failed:", error.message);
+        warnDev("[sync] fetch failed:", error.message);
         return { outcome: "error", requiresReload: false, syncedAt: null };
     }
 
@@ -122,7 +123,7 @@ export async function syncWithCloud(user: User): Promise<import("./sync-contract
         .upsert({ user_id: user.id, data: merged, updated_at: now }, { onConflict: "user_id" });
 
     if (pushError) {
-        console.warn("[sync] push after merge failed:", pushError.message);
+        warnDev("[sync] push after merge failed:", pushError.message);
         return {
             outcome: localChanged ? "pulled" : "error",
             requiresReload: localChanged,

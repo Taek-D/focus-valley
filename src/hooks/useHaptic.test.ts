@@ -6,6 +6,8 @@ import { renderHook, act } from "@testing-library/react";
 const mocks = vi.hoisted(() => ({
     isNativePlatform: vi.fn(() => true),
     hapticsImpact: vi.fn(),
+    hapticsNotification: vi.fn(),
+    hapticsVibrate: vi.fn(),
     hapticEnabled: vi.fn(() => true),
 }));
 
@@ -14,11 +16,20 @@ vi.mock("@capacitor/core", () => ({
 }));
 
 vi.mock("@capacitor/haptics", () => ({
-    Haptics: { impact: mocks.hapticsImpact },
+    Haptics: {
+        impact: mocks.hapticsImpact,
+        notification: mocks.hapticsNotification,
+        vibrate: mocks.hapticsVibrate,
+    },
     ImpactStyle: {
         Light: "LIGHT",
         Medium: "MEDIUM",
         Heavy: "HEAVY",
+    },
+    NotificationType: {
+        Success: "SUCCESS",
+        Warning: "WARNING",
+        Error: "ERROR",
     },
 }));
 
@@ -51,7 +62,7 @@ describe("useHaptic", () => {
         });
     });
 
-    describe("Test 2: medium() calls Haptics.impact(ImpactStyle.Medium) when native and enabled", () => {
+    describe("Test 2: medium() calls Haptics.notification(Warning) when native and enabled", () => {
         it("fires medium haptic on native with hapticEnabled=true", async () => {
             const { result } = renderHook(() => useHaptic());
 
@@ -59,12 +70,12 @@ describe("useHaptic", () => {
                 await result.current.medium();
             });
 
-            expect(mocks.hapticsImpact).toHaveBeenCalledTimes(1);
-            expect(mocks.hapticsImpact).toHaveBeenCalledWith({ style: "MEDIUM" });
+            expect(mocks.hapticsNotification).toHaveBeenCalledTimes(1);
+            expect(mocks.hapticsNotification).toHaveBeenCalledWith({ type: "WARNING" });
         });
     });
 
-    describe("Test 3: strong() calls Haptics.impact(ImpactStyle.Heavy) when native and enabled", () => {
+    describe("Test 3: strong() calls Haptics.vibrate(400ms) when native and enabled", () => {
         it("fires strong haptic on native with hapticEnabled=true", async () => {
             const { result } = renderHook(() => useHaptic());
 
@@ -72,8 +83,8 @@ describe("useHaptic", () => {
                 await result.current.strong();
             });
 
-            expect(mocks.hapticsImpact).toHaveBeenCalledTimes(1);
-            expect(mocks.hapticsImpact).toHaveBeenCalledWith({ style: "HEAVY" });
+            expect(mocks.hapticsVibrate).toHaveBeenCalledTimes(1);
+            expect(mocks.hapticsVibrate).toHaveBeenCalledWith({ duration: 400 });
         });
     });
 
@@ -99,7 +110,7 @@ describe("useHaptic", () => {
                 await result.current.medium();
             });
 
-            expect(mocks.hapticsImpact).not.toHaveBeenCalled();
+            expect(mocks.hapticsNotification).not.toHaveBeenCalled();
         });
 
         it("strong() is a no-op when hapticEnabled=false", async () => {
@@ -111,11 +122,11 @@ describe("useHaptic", () => {
                 await result.current.strong();
             });
 
-            expect(mocks.hapticsImpact).not.toHaveBeenCalled();
+            expect(mocks.hapticsVibrate).not.toHaveBeenCalled();
         });
     });
 
-    describe("Test 5: light/medium/strong() do NOT call Haptics.impact when isNativePlatform()=false", () => {
+    describe("Test 5: light/medium/strong() do NOT call Haptics when isNativePlatform()=false", () => {
         it("light() is a no-op on non-native platform", async () => {
             mocks.isNativePlatform.mockReturnValue(false);
 
@@ -137,7 +148,7 @@ describe("useHaptic", () => {
                 await result.current.medium();
             });
 
-            expect(mocks.hapticsImpact).not.toHaveBeenCalled();
+            expect(mocks.hapticsNotification).not.toHaveBeenCalled();
         });
 
         it("strong() is a no-op on non-native platform", async () => {
@@ -149,7 +160,7 @@ describe("useHaptic", () => {
                 await result.current.strong();
             });
 
-            expect(mocks.hapticsImpact).not.toHaveBeenCalled();
+            expect(mocks.hapticsVibrate).not.toHaveBeenCalled();
         });
     });
 });

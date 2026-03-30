@@ -1,0 +1,5 @@
+﻿serial=emulator-5554
+useDemo=True
+notificationAction=deny
+verifyBackgroundNotification=False
+display=1080x2400

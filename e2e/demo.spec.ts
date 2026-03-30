@@ -11,6 +11,10 @@ test("demo mode starts cleanly, decreases time, and restores the default timer",
     await expect(page.getByTestId("demo-badge")).toBeVisible();
 
     const timer = page.getByTestId("timer-display");
+    await expect
+        .poll(async () => readTimerSeconds(timer), { timeout: 8_000 })
+        .toBeLessThanOrEqual(180);
+
     const initialSeconds = await readTimerSeconds(timer);
     expect(initialSeconds).toBeGreaterThanOrEqual(175);
     expect(initialSeconds).toBeLessThanOrEqual(180);

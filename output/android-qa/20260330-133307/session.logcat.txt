@@ -1,0 +1,884 @@
+﻿--------- beginning of main
+03-30 04:33:19.315  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.316  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.323  1664  1844 I AiAiEcho: #remoteViewsTwiddler: feature disabled.
+03-30 04:33:19.323   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.325   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.325   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.325   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.325   808   808 I AppSearchManagerService: Handling android.intent.action.PACKAGE_DATA_CLEARED broadcast on package: app.focusvalley.android
+03-30 04:33:19.329  1664  1844 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface ambientcue with targets# 0 (types=[])
+03-30 04:33:19.332  1664  1844 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+03-30 04:33:19.336  1664  1844 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+03-30 04:33:19.337  1078  1199 I AmbientCueRepository: Receiving SmartSpace targets # 0
+03-30 04:33:19.338   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.338   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.338   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.342  1243  1243 D SsBaseTemplateCard: Passed-in item info is null
+03-30 04:33:19.343  1243  1243 D SsBaseTemplateCard: Passed-in item info is null
+03-30 04:33:19.343  1243  1243 D SsBaseTemplateCard: Passed-in item info is null
+03-30 04:33:19.343  1243  1243 D SsBaseTemplateCard: Passed-in item info is null
+03-30 04:33:19.343  1243  1243 I SsBaseTemplateCard: Secondary card pane is null
+03-30 04:33:19.345  3209  3311 I Finsky:background: [50] RECEIVER_ENGAGE_PACKAGE_CHANGED#logWorkEndAndFinishGoAsync: SUCCESS
+03-30 04:33:19.345   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.346   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.346   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.346  3209  3280 I Finsky:background: [45] Current account updated in PVS
+03-30 04:33:19.350  1078  1078 W SsPagerDots: Total number of pages invalid: 0. Assuming 1 page.
+03-30 04:33:19.351   808   808 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.363   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.363   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.367  1240  1240 D CarrierSvcBindHelper: onHandleForceStop: [app.focusvalley.android]
+03-30 04:33:19.368  1240  1240 D CarrierSvcBindHelper: No carrier app for: 0
+03-30 04:33:19.376  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.379  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.380  2127  2127 I Finsky  : [2] ahsm - Received: android.intent.action.PACKAGE_ADDED, [I5iqtaLjcxGiOiryVBlLhdimliSJffZDJJKM8ay_Xm0]
+03-30 04:33:19.381  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.382 11679 12833 W libbinder.IPCThreadState: Transaction failed because process frozen.
+03-30 04:33:19.382 11679 12833 E libbinder.IPCThreadState: Binder transaction failure. id: 5242976, cmd: BR_FROZEN_REPLY (29202), error: 0 (Success)
+03-30 04:33:19.382 11679 12833 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 332)
+--------- beginning of system
+03-30 04:33:19.382 11679 12833 I ActivityThread: Removing dead content provider:android.content.ContentProviderProxy@e5557be
+03-30 04:33:19.383   808   897 W libbinder.IPCThreadState: Transaction failed because process frozen.
+03-30 04:33:19.383   808   897 E libbinder.IPCThreadState: Binder transaction failure. id: 5242984, cmd: BR_FROZEN_REPLY (29202), error: 0 (Success)
+03-30 04:33:19.383   808  1156 W ActivityManager: pid 11679 com.google.android.documentsui sent binder code 1 with flags 2 and got error -2147483646
+03-30 04:33:19.383   808  1156 D ActivityManager: Too many transaction errors, throttling freezer binder callback.
+03-30 04:33:19.384   808   897 I ActivityManager: Process com.google.android.apps.docs (pid 15545) early provider death
+03-30 04:33:19.384  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.384  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.385  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.385  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.385   808   897 I ActivityManager: Process com.google.android.apps.docs (pid 15545) has died: cch CEM 
+03-30 04:33:19.390 11679 12833 W ProvidersCache: Failed to load some roots from com.google.android.apps.docs.storage
+03-30 04:33:19.390 11679 12833 W ProvidersCache: android.os.DeadObjectException: Transaction failed on small parcel; remote process probably died, but this could also be caused by running out of binder buffer space
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.os.BinderProxy.transactNative(Native Method)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.os.BinderProxy.transact(BinderProxy.java:599)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.content.ContentProviderProxy.query(ContentProviderNative.java:493)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.content.ContentProviderClient.query(ContentProviderClient.java:196)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.content.ContentProviderClient.query(ContentProviderClient.java:178)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at android.content.ContentProviderClient.query(ContentProviderClient.java:168)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache.loadRootsForAuthority(ProvidersCache.java:409)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache.-$$Nest$mloadRootsForAuthority(ProvidersCache.java:0)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache$MultiProviderUpdateTask.handleDocumentsProvider(ProvidersCache.java:701)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache$MultiProviderUpdateTask.startSingleProviderUpdateTask(ProvidersCache.java:677)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache$MultiProviderUpdateTask.lambda$doInBackground$0(ProvidersCache.java:623)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache$MultiProviderUpdateTask.$r8$lambda$mnJpmgdZARm40VapREkQeOExLF8(ProvidersCache.java:0)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at com.android.documentsui.roots.ProvidersCache$MultiProviderUpdateTask$$ExternalSyntheticLambda0.run(R8$$SyntheticClass:0)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:520)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1154)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:652)
+03-30 04:33:19.390 11679 12833 W ProvidersCache: 	at java.lang.Thread.run(Thread.java:1563)
+03-30 04:33:19.398   808   846 W AppSearchManagerService: Received persistToDisk call. Use AppSearchManagerService persistence schedule.
+03-30 04:33:19.400  1640  1640 I MediaServiceV2: Creating work for intent Intent { act=android.intent.action.PACKAGE_DATA_CLEARED dat=package: flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaServiceV2 (has extras) }
+03-30 04:33:19.402  2127  2127 I Finsky  : [2] ahsm - Deduping intent android.intent.action.PACKAGE_ADDED
+03-30 04:33:19.402  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.403  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.404  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.405  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.406  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.406  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.406  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.414  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.417  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.417  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.418  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.418  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.419  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.419  1640  1640 I MediaServiceV2: Work enqueued for intent: Intent { act=android.intent.action.PACKAGE_DATA_CLEARED dat=package: flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaServiceV2 (has extras) }
+03-30 04:33:19.420  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.429   581   581 I Zygote  : Process 15545 exited due to signal 9 (Killed)
+03-30 04:33:19.430  1403 22985 I Fitness : (REDACTED) FitCleanupIntentOperation received Intent %s
+03-30 04:33:19.433   808   980 D ConnectivityService: releasing NetworkRequest [ REQUEST id=316, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10163 RequestorUid: 10163 RequestorPkg: com.google.android.apps.docs UnderlyingNetworks: Null] ] (release request)
+03-30 04:33:19.437   808  1830 V ActivityManager: Got obituary of 15545:com.google.android.apps.docs
+03-30 04:33:19.443   808   849 I libprocessgroup: Removed cgroup /sys/fs/cgroup/apps/uid_10163/pid_15545
+03-30 04:33:19.450  2127  2127 I Finsky  : [2] ahsm - Received: android.intent.action.PACKAGE_ADDED, [I5iqtaLjcxGiOiryVBlLhdimliSJffZDJJKM8ay_Xm0]
+03-30 04:33:19.450  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.451  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.451  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.451  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.452  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.452  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.452  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.452  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.454  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.458  1243  1243 D ScalingWorkspaceRevealAnim: onAnimationEnd, workspace and hotseat are visible
+03-30 04:33:19.459  1243  1243 V BaseDepthController: Applying blur: 0 to Surface(name=com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity#2306)/@0x19060db applyImmediately: false
+03-30 04:33:19.459  1243  1243 D BaseDepthController: shouldBlurWorkspace: false targetState: Normal currentStableState: Normal mCurrentBlur: 0 mLauncher.getDepthBlurTargets(): [com.android.launcher3.Workspace{c5e2778 V.ED..... ......ID 0,0-1080,2400 #7f0a049d app:id/workspace}, com.android.launcher3.Hotseat{2ed8e51 V.ED..... ......ID 0,1905-1080,2400 #7f0a01ee app:id/hotseat}]
+03-30 04:33:19.464   808  1989 W ActivityTaskManager: callingPackage for (uid=2000, pid=22999) has no WPC
+03-30 04:33:19.466   808  1989 V WindowManager: DesktopModeLaunchParamsModifier: phase= 0 task=null activity=null display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 task null, skipping
+03-30 04:33:19.466   808  1989 V WindowManager: TaskLaunchParamsModifier:phase=0 task=null activity=null display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461
+03-30 04:33:19.468  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.468  1078  1089 V WindowManagerShell: Received remote transition finished callback for (#190)
+03-30 04:33:19.469  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.469  1078  1136 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#190) android.os.BinderProxy@3b0985f@0
+03-30 04:33:19.473   808  1989 V GrammaticalInflectionUtils: AttributionSource: android.content.AttributionSource@2683ad82 does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+03-30 04:33:19.474   808  1989 V WindowManager: DesktopModeLaunchParamsModifier: phase= 0 task=null activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 task null, skipping
+03-30 04:33:19.474   808  1989 V WindowManager: TaskLaunchParamsModifier:phase=0 task=null activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity t-1} display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461
+03-30 04:33:19.474   808  1989 V WindowManager: DesktopModeLaunchParamsModifier: phase= 3 task=null activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity t-1} display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 task null, skipping
+03-30 04:33:19.474   808  1989 V WindowManager: TaskLaunchParamsModifier:phase=3 task=null activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity t-1} display-area-from-current-params=null display-area-from-default-fallback=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 non-freeform-task-display-area display-area=DefaultTaskDisplayArea@140050461 skip-bounds-fullscreen
+03-30 04:33:19.480   808  1989 V WindowManager: DesktopModeLaunchParamsModifier: phase= 3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity t-1} display-from-task=0 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 not entering desktop mode, skipping
+03-30 04:33:19.480   808  1989 V WindowManager: TaskLaunchParamsModifier:phase=3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{152721807 u0 app.focusvalley.android/.MainActivity t-1} display-from-task=0 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 inherit-from-task=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@140050461 skip-bounds-fullscreen
+03-30 04:33:19.481  1765 22979 W SQLiteLog: (28) double-quoted string literal: "app.focusvalley.android"
+03-30 04:33:19.485   808  1989 I ActivityTaskManager: START u0 {flg=0x10000000 xflg=0x5 cmp=app.focusvalley.android/.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (com.android.shell) (BAL_ALLOW_PERMISSION) result code=0
+03-30 04:33:19.487   648  1319 I libbinder.BpBinder: onLastStrongRef automatically unlinking death recipients for descriptor: '(not cached)'
+03-30 04:33:19.487   808   837 V WindowManager: Finish Transition (#190): created at 03-30 04:33:18.329 collect-started=0.032ms request-sent=0.102ms started=10.215ms ready=94.808ms sent=98.279ms commit=29.496ms finished=1156.949ms
+03-30 04:33:19.488  1403 22970 I ProximityAuth: [RecentAppsMediator] Package added: (user=UserHandle{0}) app.focusvalley.android
+03-30 04:33:19.493  1640  1717 W JobInfo : Requested important-while-foreground flag for job24 is ignored and takes no effect
+03-30 04:33:19.497   808   896 E libbinder.IPCThreadState: Binder transaction failure. id: 5243393, cmd: BR_DEAD_REPLY (29189), error: -22 (Invalid argument)
+03-30 04:33:19.497   808   896 W ActivityManager: pid 808 system sent binder code 7 with flags 1 and got error -32
+03-30 04:33:19.497   808   896 D ActivityManager: Too many transaction errors, throttling freezer binder callback.
+03-30 04:33:19.499   808   833 E AppOps  : attributionTag VCN not declared in manifest of android
+03-30 04:33:19.506  1765  1765 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS xflg=0x4 pkg=com.google.android.gms }
+03-30 04:33:19.506  1765  1765 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS xflg=0x4 pkg=com.google.android.gms }
+03-30 04:33:19.507  2127  2127 I Finsky  : [2] ahsm - Deduping intent android.intent.action.PACKAGE_ADDED
+03-30 04:33:19.507  2127  2127 I Finsky  : [2] Memory trim requested to level 40
+03-30 04:33:19.507  2127  2127 I Finsky  : [2] Flushing in-memory image cache
+03-30 04:33:19.507  2127  2127 I Finsky  : [2] Memory trim requested to level 40
+03-30 04:33:19.507  2127  2127 I Finsky  : [2] Flushing in-memory image cache
+03-30 04:33:19.508  2127  2127 D ActivityThread: Package [app.focusvalley.android] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-30 04:33:19.509   808  1744 D SafetySourceDataValidat: No cert check requested for package com.google.android.permissioncontroller
+03-30 04:33:19.511  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.512  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.512  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.513  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.513  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.514  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.514  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.515  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.515  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.516  2127  2127 D ActivityThread: Package [app.focusvalley.android] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-30 04:33:19.516  2127  2241 I Finsky  : [46] RECEIVER_PACKAGE_MONITOR#logWorkEndAndFinishGoAsync: SUCCESS
+03-30 04:33:19.521  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.523  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.524  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.525   808   896 W WindowManager: Exception thrown during dispatchAppVisibility Window{ac73405 u0 app.focusvalley.android/app.focusvalley.android.MainActivity EXITING}
+03-30 04:33:19.525   808   896 W WindowManager: android.os.DeadObjectException
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:599)
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:535)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3266)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1218)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:394)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.ActivityRecord.commitVisibility(ActivityRecord.java:5626)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.Transition.finishTransition(Transition.java:1500)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.TransitionController.finishTransition(TransitionController.java:1096)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.finishTransition(WindowOrganizerController.java:518)
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.window.IWindowOrganizerController$Stub.onTransact(IWindowOrganizerController.java:270)
+03-30 04:33:19.525   808   896 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.onTransact(WindowOrganizerController.java:233)
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.os.Binder.execTransactInternal(Binder.java:1478)
+03-30 04:33:19.525   808   896 W WindowManager: 	at android.os.Binder.execTransact(Binder.java:1418)
+03-30 04:33:19.527  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.528  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.530   808   896 W Process : Unable to open /proc/21831/status
+03-30 04:33:19.530  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.531  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.531  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.531  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.531  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.531  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.532  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.533  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.533  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.535  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.538  1243  1243 D BaseActivity: Launcher flags updated: [state_started|state_resumed|state_deferred_resumed|state_window_focused] -[state_user_active]
+03-30 04:33:19.539  1078  1136 V WindowManagerShell: Track 0 became idle
+03-30 04:33:19.539  1078  1136 V WindowManagerShell: All active transition animations finished
+03-30 04:33:19.540  1640  1717 D WM-SystemJobScheduler: Scheduling work ID 47f9482a-1acd-48ab-b4c2-920116014497Job ID 24
+03-30 04:33:19.542  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.544  1243  1243 D BaseActivity: Launcher flags updated: [state_started|state_window_focused] -[state_resumed|state_deferred_resumed]
+03-30 04:33:19.545  1243  1243 W SplitSelectStateCtor: Missing session instanceIds
+03-30 04:33:19.545   808   840 V GrammaticalInflectionUtils: AttributionSource: android.content.AttributionSource@2683ad82 does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+03-30 04:33:19.545  1243  1243 D StatsLog: LAUNCHER_SPLIT_SELECTION_EXIT_INTERRUPTED
+03-30 04:33:19.546  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.550   808  1997 V WindowManager: Defer transition id=191 for TaskFragmentTransaction=android.os.Binder@a429b98
+03-30 04:33:19.552  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.553   808  1997 V WindowManager: deferTransitionReady deferReadyDepth=1 stack=com.android.server.wm.TransitionController.deferTransitionReady:1061 com.android.server.wm.TaskFragmentOrganizerController$TaskFragmentOrganizerState.dispatchTransaction:517 com.android.server.wm.TaskFragmentOrganizerController.dispatchPendingEvents:1259 com.android.server.wm.TaskFragmentOrganizerController.dispatchPendingEvents:1228 com.android.server.wm.RootWindowContainer.performSurfacePlacement:777 
+03-30 04:33:19.553  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.553  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.553  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.554  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.555  1078  1136 V WindowManagerShell: Transition requested (#191): android.os.BinderProxy@e7a9cc8 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=1 lastActiveTime=26381801 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@a9e161} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{d06b486 app.focusvalley.android.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 191 }
+03-30 04:33:19.555  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.555  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.555  1078  1136 D ShellSplitScreen: logExit: no-op, mLoggerSessionId is null
+03-30 04:33:19.555  1078  1136 V ShellDesktopMode: DesktopTasksController: handleRequest request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=1 lastActiveTime=26381801 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@a9e161} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{d06b486 app.focusvalley.android.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 191 }
+03-30 04:33:19.556  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.556  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.557  1078  1136 V ShellDesktopMode: DesktopTasksController: skipping handleRequest reason=triggerTask's display doesn't support desktop mode
+03-30 04:33:19.557  1243  1243 D RecentsView: onTaskDisplayChanged: 28, new displayId = 0
+03-30 04:33:19.561   808   896 V WindowManager: Continue transition id=191 for TaskFragmentTransaction=android.os.Binder@a429b98
+03-30 04:33:19.561  1078  1136 V ShellTaskOrganizer: Task vanished taskId=27
+03-30 04:33:19.562   808   896 V WindowManager: continueTransitionReady deferReadyDepth=0 stack=com.android.server.wm.TransitionController.continueTransitionReady:1071 com.android.server.wm.TaskFragmentOrganizerController$TaskFragmentOrganizerState.onTransactionFinished:546 com.android.server.wm.TaskFragmentOrganizerController.onTransactionHandled:740 android.window.ITaskFragmentOrganizerController$Stub.onTransact:225 android.os.Binder.execTransactInternal:1473 
+03-30 04:33:19.562   808   896 D CompatChangeReporter: Compat change id reported: 377864165; UID 10228; state: ENABLED
+03-30 04:33:19.566  1078  1136 V ShellTaskOrganizer: Fullscreen Task Vanished: #27
+03-30 04:33:19.570  1078  1136 V ShellDesktopMode: Task Vanished: #27 closed=true
+03-30 04:33:19.571  1243  1243 D b/417220811: invalidateLoadedTasks - previous requestLoadId: -1
+03-30 04:33:19.575  1078  1136 D ShellDesktopMode: AppToWebRepository: Task 27 is vanishing. Removing task data from repository
+03-30 04:33:19.579  1078  1136 V AppCompat: SingleSurfaceLetterboxController: []
+03-30 04:33:19.579  1078  1136 V AppCompat: MultiSurfaceLetterboxController: []
+03-30 04:33:19.579  1078  1136 V AppCompat: LetterboxInputController: []
+03-30 04:33:19.579  1078  1136 V AppCompat: RoundedCornersLetterboxController: {}
+03-30 04:33:19.581  1078  1136 D WindowManagerShell: setLauncherKeepClearAreaHeight: visible=false, height=495
+03-30 04:33:19.582  1243  1243 D b/417220811: invalidateLoadedTasks - previous requestLoadId: -1
+03-30 04:33:19.586  1243  1243 D BaseActivity: Launcher flags updated: [state_started] -[state_window_focused]
+03-30 04:33:19.597  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.598  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.598  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.601   581   581 D Zygote  : Forked child process 23011
+03-30 04:33:19.601   808   848 W ActivityManager: Slow operation: 56ms so far, now at startProcess: returned from zygote!
+03-30 04:33:19.628   808   848 W ActivityManager: Slow operation: 83ms so far, now at startProcess: done updating battery stats
+03-30 04:33:19.628   808   848 W ActivityManager: Slow operation: 83ms so far, now at startProcess: building log message
+03-30 04:33:19.628   808   848 I ActivityManager: Start proc 23011:app.focusvalley.android/u0a228 for next-top-activity {app.focusvalley.android/app.focusvalley.android.MainActivity}
+03-30 04:33:19.628   808   848 W ActivityManager: Slow operation: 83ms so far, now at startProcess: starting to update pids map
+03-30 04:33:19.631 23011 23011 I Zygote  : Process 23011 created for app.focusvalley.android
+03-30 04:33:19.632   808   848 W ActivityManager: Slow operation: 88ms so far, now at startProcess: done updating pids map
+03-30 04:33:19.634  1640  1640 D WM-SystemJobService: onStartJob for WorkGenerationalId(workSpecId=47f9482a-1acd-48ab-b4c2-920116014497, generation=0)
+03-30 04:33:19.634 23011 23011 I svalley.android: Late-enabling -Xcheck:jni
+03-30 04:33:19.644  1640  1717 D WM-GreedyScheduler: Ignoring {WorkSpec: 4d18ab42-12a3-4029-9be2-29a0ec16b4d2}. Requires device idle.
+03-30 04:33:19.645  1640  1717 D WM-GreedyScheduler: Ignoring {WorkSpec: 1b0f6d90-2f5e-43da-b8a8-a129cb6c03b3}. Requires device idle.
+03-30 04:33:19.645  1640  1717 D WM-GreedyScheduler: Ignoring {WorkSpec: 76d4ccbf-f0d3-41e8-90df-d0d2a2ccb21a}. Requires device idle.
+03-30 04:33:19.645  1640  1717 D WM-GreedyScheduler: Ignoring {WorkSpec: d8ac2f24-3e1a-4129-a36d-d41d78d19c8a}. Requires device idle.
+03-30 04:33:19.645  1640  1717 D WM-GreedyScheduler: Starting work for 47f9482a-1acd-48ab-b4c2-920116014497
+03-30 04:33:19.651   808   837 V WindowManager: Sent Transition (#191) createdAt=03-30 04:33:19.474 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=1 lastActiveTime=26381801 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{a9dc199 Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{b7e3c5e app.focusvalley.android.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 191 }
+03-30 04:33:19.651  1765 22979 I Auth    : (REDACTED) [SupervisedAccountIntentOperation] onHandleIntent: %s
+03-30 04:33:19.652   808   837 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+03-30 04:33:19.652   808   837 V WindowManager:     info={id=191 t=OPEN f=0x0 trk=1 r=[0@Point(0, 0)] c=[
+03-30 04:33:19.652   808   837 V WindowManager:         {WCT{RemoteToken{a9dc199 Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android}}} m=OPEN f=NONE leash=Surface(name=Task=28#2314)/@0x624c0e3 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},
+03-30 04:33:19.652   808   837 V WindowManager:         {WCT{RemoteToken{13e2c7a Task{f4041f2 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1#44)/@0x627ee4a sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},
+03-30 04:33:19.652   808   837 V WindowManager:         {m=TO_BACK f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{59bc6c}#61)/@0x9de1b96 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0}
+03-30 04:33:19.652   808   837 V WindowManager:     ]}
+03-30 04:33:19.653  3209  3209 I Finsky:background: [2] Memory trim requested to level 40
+03-30 04:33:19.654  3209  3280 I Finsky:background: [45] Current account updated in PVS
+03-30 04:33:19.654  2127  2127 I Finsky  : [2] Memory trim requested to level 40
+03-30 04:33:19.654  2127  2127 I Finsky  : [2] Flushing in-memory image cache
+03-30 04:33:19.655  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.655   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:19.657  1078  1136 V ShellTaskOrganizer: Task appeared taskId=28 listener=FullscreenTaskListener
+03-30 04:33:19.657  1078  1136 V ShellTaskOrganizer: Fullscreen Task Appeared: #28
+03-30 04:33:19.657  1640  1751 D WM-Processor: Processor: processing WorkGenerationalId(workSpecId=47f9482a-1acd-48ab-b4c2-920116014497, generation=0)
+03-30 04:33:19.662   808  1048 V SafetySourceDataValidat: Package: com.android.vending has expected signature
+03-30 04:33:19.663   808  1048 V SafetySourceDataValidat: Package: com.android.vending has expected signature
+03-30 04:33:19.663  1640  1759 D WM-Processor: Work WorkGenerationalId(workSpecId=47f9482a-1acd-48ab-b4c2-920116014497, generation=0) is already enqueued for processing
+03-30 04:33:19.664  1243  1243 D RecentsView: onTaskRemoved: 27, not handling task stack changes
+03-30 04:33:19.664  1243  1243 D RecentsView: onTaskRemoved: 27, not handling task stack changes
+03-30 04:33:19.667   701 11583 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.667   701 11583 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:19.672  1078  1089 V WindowManagerShell: onTransitionReady(transaction=3470333592086)
+03-30 04:33:19.673  1078  1136 V WindowManagerShell: onTransitionReady (#191) android.os.BinderProxy@e7a9cc8: {id=191 t=OPEN f=0x0 trk=1 r=[0@Point(0, 0)] c=[
+03-30 04:33:19.673  1078  1136 V WindowManagerShell:         {m=OPEN f=NONE leash=Surface(name=Task=28#2314)/@0x73005d4 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},
+03-30 04:33:19.673  1078  1136 V WindowManagerShell:         {m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1#44)/@0x731437d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},
+03-30 04:33:19.673  1078  1136 V WindowManagerShell:         {m=TO_BACK f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{59bc6c}#61)/@0x2380272 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0}
+03-30 04:33:19.673  1078  1136 V WindowManagerShell:     ]}
+03-30 04:33:19.673  1765 22974 I NearbyDiscovery: (REDACTED) processGrantSlicePermission: %s
+03-30 04:33:19.675  1640  1640 D WM-WorkerWrapper: Starting work for com.android.providers.media.MediaServiceV2
+03-30 04:33:19.678  1078  1136 V WindowManagerShell: Playing animation for (#191) android.os.BinderProxy@e7a9cc8@1
+03-30 04:33:19.678  1078  1136 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+03-30 04:33:19.678  1078  1136 V ShellDesktopMode: DesktopMixedTransitionHandler: No pending desktop transition
+03-30 04:33:19.678  1078  1136 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=191 t=OPEN f=0x0 trk=1 r=[0@Point(0, 0)] c=[{m=OPEN f=NONE leash=Surface(name=Task=28#2314)/@0x73005d4 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1#44)/@0x731437d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{59bc6c}#61)/@0x2380272 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0}]}
+03-30 04:33:19.678  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@ea71b4a windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@cb35abb, appThread = android.app.IApplicationThread$Stub$Proxy@5a4cbd8, debugName = overlayBackTransition }}
+03-30 04:33:19.679  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@e56cb31, appThread = android.app.IApplicationThread$Stub$Proxy@5c3a216, debugName = LauncherToDream }}
+03-30 04:33:19.679  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@2b2e797, appThread = android.app.IApplicationThread$Stub$Proxy@e86cd84, debugName = QuickstepLaunchHome }}
+03-30 04:33:19.679  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[OPEN,TO_FRONT] flags=0x0] notFlags=0x0 checks=[{atype=standard independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=freeform isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@5ee08dc, appThread = null, debugName = DesktopWindowLimitUnminimize }}
+03-30 04:33:19.679  1078  1136 V WindowManagerShell:  Delegate animation for (#191) to null
+03-30 04:33:19.679  1078  1136 V WindowManagerShell: start default transition animation, info = {id=191 t=OPEN f=0x0 trk=1 r=[0@Point(0, 0)] c=[{m=OPEN f=NONE leash=Surface(name=Task=28#2314)/@0x73005d4 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1#44)/@0x731437d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{59bc6c}#61)/@0x2380272 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0}]}
+03-30 04:33:19.683  2186  2186 D PersistedStoragePackageUninstalledReceiver: Received android.intent.action.PACKAGE_DATA_CLEARED for app.focusvalley.android for u0
+03-30 04:33:19.685  1403 22970 I FontLog : (REDACTED) Package %s has no metadata
+03-30 04:33:19.688  1640 23014 I MediaServiceV2: Work initiated for action [ android.intent.action.PACKAGE_DATA_CLEARED ]
+03-30 04:33:19.688  1403 22988 I Fitness : (REDACTED) FitCleanupIntentOperation received Intent %s
+03-30 04:33:19.689  1243  1243 D b/417220811: invalidateLoadedTasks - previous requestLoadId: -1
+03-30 04:33:19.689  1640 23014 D MediaProvider: Deleted 0 Android/media items belonging to app.focusvalley.android on /data/user/0/com.google.android.providers.media.module/databases/external.db
+03-30 04:33:19.701  1078  1136 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@5653c1f animAttr=0x13 type=OPEN isEntrance=false
+03-30 04:33:19.706  1765 22959 I Blockstore: [PackageIntentOperation] Checking IS_RESTORE extra. [CONTEXT service_id=258 ]
+03-30 04:33:19.708  1078  1136 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@3663b6c animAttr=0x12 type=OPEN isEntrance=true
+03-30 04:33:19.710  1078  1136 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@4025242
+03-30 04:33:19.709  1243  1243 D b/417220811: invalidateLoadedTasks - previous requestLoadId: -1
+03-30 04:33:19.743 23011 23011 I svalley.android: Using CollectorTypeCMC GC.
+03-30 04:33:19.746 23011 23011 W svalley.android: Unexpected CPU variant for x86: x86_64.
+03-30 04:33:19.746 23011 23011 W svalley.android: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, default
+03-30 04:33:19.751  1640 23014 I FuseDaemon: Successfully deleted rows in leveldb for owner_id:  and ownerPackageIdentifier: app.focusvalley.android::0
+03-30 04:33:19.753  1765  1765 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.backup.GMS_MODULE_RESTORE dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsInternalBoundBrokerService }
+03-30 04:33:19.753  1765  1765 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.backup.GMS_MODULE_RESTORE dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsInternalBoundBrokerService }
+03-30 04:33:19.762  1640 23014 D MediaGrants: Removed 0 media_grants for 0 user for [app.focusvalley.android, app.focusvalley.android]. Reason: Package orphaned
+03-30 04:33:19.764  1640 23014 I MediaServiceV2: Work ended for action [ android.intent.action.PACKAGE_DATA_CLEARED ]
+03-30 04:33:19.769  1640  1759 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=47f9482a-1acd-48ab-b4c2-920116014497, tags={ com.android.providers.media.MediaServiceV2 } ]
+03-30 04:33:19.772  1640  1640 D WM-Processor: Processor 47f9482a-1acd-48ab-b4c2-920116014497 executed; reschedule = false
+03-30 04:33:19.772  1640  1640 D WM-SystemJobService: 47f9482a-1acd-48ab-b4c2-920116014497 executed on JobScheduler
+03-30 04:33:19.775  1765 22958 I NearbyDiscovery: (REDACTED) processGrantSlicePermission: %s
+03-30 04:33:19.783   652   683 I adbd    : jdwp connection from 23011
+03-30 04:33:19.813  1640  1759 D WM-GreedyScheduler: Cancelling work ID 47f9482a-1acd-48ab-b4c2-920116014497
+03-30 04:33:19.815  1640  1759 D WM-GreedyScheduler: Ignoring {WorkSpec: 4d18ab42-12a3-4029-9be2-29a0ec16b4d2}. Requires device idle.
+03-30 04:33:19.815  1640  1759 D WM-GreedyScheduler: Ignoring {WorkSpec: 1b0f6d90-2f5e-43da-b8a8-a129cb6c03b3}. Requires device idle.
+03-30 04:33:19.815  1640  1759 D WM-GreedyScheduler: Ignoring {WorkSpec: 76d4ccbf-f0d3-41e8-90df-d0d2a2ccb21a}. Requires device idle.
+03-30 04:33:19.815  1640  1759 D WM-GreedyScheduler: Ignoring {WorkSpec: d8ac2f24-3e1a-4129-a36d-d41d78d19c8a}. Requires device idle.
+03-30 04:33:19.823  2127  2131 W android.vending: Reducing the number of considered missed Gc histogram windows from 216 to 100
+03-30 04:33:19.825  1243  1253 I s.nexuslauncher: NativeAlloc concurrent mark compact GC freed 1026KB AllocSpace bytes, 3(224KB) LOS objects, 49% free, 6197KB/12MB, paused 7.053ms,1.823ms total 115.577ms
+03-30 04:33:19.827  1243  1255 W System  : A resource failed to call release. 
+03-30 04:33:19.827  1243  1255 W System  : A resource failed to call release. 
+03-30 04:33:19.827  1243  1255 W System  : A resource failed to call release. 
+03-30 04:33:19.845 23011 23011 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+03-30 04:33:19.852  1765  4147 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=AppsCorpus serviceId=36
+03-30 04:33:19.885  1765 22967 I Icing   : doRemovePackageData app.focusvalley.android
+03-30 04:33:19.906   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:19.925  1765  1772 W gle.android.gms: Reducing the number of considered missed Gc histogram windows from 216 to 100
+03-30 04:33:19.933  1765  2787 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30
+03-30 04:33:19.943  1765 22967 I Icing   : Usage reports ok 2, Failed Usage reports 0, indexed 0, rejected 0
+03-30 04:33:19.970  1765 22967 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+03-30 04:33:19.974  1765 22967 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+03-30 04:33:19.979  2127  2240 I Finsky  : [45] Current account updated in PVS
+03-30 04:33:19.980  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.980  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:19.982  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.983  2127  2324 E Finsky  : [57] ItemStore: getItems RPC failed for item app.focusvalley.android
+03-30 04:33:19.983  2127  2313 E Finsky  : [56] ItemStore: getItems RPC failed for item app.focusvalley.android
+03-30 04:33:19.984  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.984  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.985  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.985  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.988  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.990  2127  2259 I Finsky  : [50] Current account updated in PVS
+03-30 04:33:19.990  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:19.991  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.991  2127  2261 I Finsky  : [52] Current account updated in PVS
+03-30 04:33:19.992  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:20.000  1765 22967 I Icing   : Indexing done com.google.android.gms-apps
+03-30 04:33:20.023 23011 23011 D nativeloader: Configuring clns-9 for other apk /data/app/~~1N4VzATVgdnfKTBx7Lu69A==/app.focusvalley.android-A1GE8ai_FFlorh8NS7Umig==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~1N4VzATVgdnfKTBx7Lu69A==/app.focusvalley.android-A1GE8ai_FFlorh8NS7Umig==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/app.focusvalley.android
+03-30 04:33:20.025  1078  1136 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#191) android.os.BinderProxy@e7a9cc8@1
+03-30 04:33:20.030   808   837 V WindowManager: Finish Transition (#191): created at 03-30 04:33:19.474 collect-started=0.055ms request-sent=11.357ms started=84.941ms ready=166.308ms sent=174.063ms commit=78.027ms finished=556.241ms
+03-30 04:33:20.033  1078  1382 D WallpaperService: onVisibilityChanged(false): com.android.systemui.wallpapers.ImageWallpaper$CanvasEngine@2f6a32c
+03-30 04:33:20.033  1243  1243 D VRI[NexusLauncherActivity]: visibilityChanged oldVisibility=true newVisibility=false
+03-30 04:33:20.035  1078  1136 V WindowManagerShell: Track 1 became idle
+03-30 04:33:20.035  1078  1136 V WindowManagerShell: All active transition animations finished
+03-30 04:33:20.041  1243  1243 D NexusLauncherModelDelegate: notifySmartspaceEvent: SmartspaceTargetEvent{mSmartspaceTarget=null, mSmartspaceActionId='null', mEventType=7}
+03-30 04:33:20.042   648   648 E BpTransactionCompletedListener: Failed to transact (-32)
+03-30 04:33:20.043  1078  1136 D Bubbles : onLocusVisibilityChanged=Overview|DISABLED visible=false taskId=1
+03-30 04:33:20.047 23011 23011 V GraphicsEnvironment: Currently set values for:
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment: app.focusvalley.android is not listed in per-application setting
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment: ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+03-30 04:33:20.048 23011 23011 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+03-30 04:33:20.107   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:20.113 23011 23039 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+03-30 04:33:20.115   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:20.174 23011 23011 D DesktopExperienceFlags: Toggle override initialized to: false
+03-30 04:33:20.179 23011 23039 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv1_CM_emulation.so
+03-30 04:33:20.180 23011 23039 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv2_emulation.so
+03-30 04:33:20.186 23011 23039 W HWUI    : Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+03-30 04:33:20.186 23011 23039 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+03-30 04:33:20.196 23011 23011 D AppCompatDelegate: Checking for metadata for AppLocalesMetadataHolderService : Service not found
+03-30 04:33:20.200  2081 20047 W libbinder.Binder: Binder transaction to android.content.IContentProvider code 21 took 1513ms. Data bytes: 488 Reply bytes: 440 Flags: 18
+03-30 04:33:20.201  1243  2046 D WellbeingModel: ....actionId: pause, packages: app.focusvalley.android
+03-30 04:33:20.201  1243  2046 I WellbeingModel: retrieveActions(): finished
+03-30 04:33:20.212 23011 23011 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+03-30 04:33:20.297 23011 23011 D CompatChangeReporter: Compat change id reported: 377864165; UID 10228; state: ENABLED
+03-30 04:33:20.297 23011 23011 D DesktopModeFlags: Toggle override initialized to: OVERRIDE_UNSET
+03-30 04:33:20.329 23011 23011 I svalley.android: hiddenapi: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/appcompat/widget/ViewUtils; (domain=app, TargetSdkVersion=36) using reflection: allowed
+03-30 04:33:20.345 23011 23011 I WebViewFactory: Loading com.google.android.webview version 145.0.7632.79 (code 763207908)
+03-30 04:33:20.349 23011 23011 V ResourcesManager: The following library key has been added: ResourcesKey{ mHash=8d2d5792 mResDir=null mSplitDirs=[] mOverlayDirs=[] mLibDirs=[/data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk,/system/framework/android.test.base.jar,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v36 mCompatInfo={420dpi always-compat} mLoaders=[]}
+03-30 04:33:20.350 23011 23011 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+03-30 04:33:20.350 23011 23011 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+03-30 04:33:20.353   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:20.354 23011 23011 D nativeloader: Configuring clns-10 for other apk /data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/lib/x86_64:/data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+03-30 04:33:20.424 23011 23011 I cr_WVCFactoryProvider: version=145.0.7632.79 (763207908) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+03-30 04:33:20.441 23011 23011 D nativeloader: Load /data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk!/lib/x86_64/libwebviewchromium.so using class loader ns clns-10 (caller=/data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk): ok
+03-30 04:33:20.453 23011 23011 D nativeloader: Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-10 (caller=/data/app/~~YwK2yNIiJuKfta7B9vK-Og==/com.google.android.webview-nJNc0qZp_E40rHkx1LI7IQ==/base.apk): ok
+03-30 04:33:20.473 23011 23046 I chromium: [0330/043320.463999:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+03-30 04:33:20.473 23011 23046 I chromium: [0330/043320.473947:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+03-30 04:33:20.490 23011 23011 I cr_LibraryLoader: Successfully loaded native library
+03-30 04:33:20.493 23011 23011 I cr_CachingUmaRecorder: Flushed 20 samples from 20 histograms, 0 samples were dropped.
+03-30 04:33:20.504 23011 23011 I cr_ChildProcLH: ScopedServiceBindingBatch.tryActivate: false
+03-30 04:33:20.506 23011 23011 I cr_CombinedPProvider: #registerProvider() provider:WV.qk@977bf47 isPolicyCacheEnabled:false policyProvidersSize:0
+03-30 04:33:20.508 23011 23011 I cr_PolicyProvider: #setManagerAndSource() 0
+03-30 04:33:20.519 23011 23011 I cr_DisplayManager: Is Display Topology available: false
+03-30 04:33:20.530   808  1048 V GrammaticalInflectionUtils: AttributionSource: android.content.AttributionSource@22c810b does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+03-30 04:33:20.543  4497  4497 D Zygote  : Forked child process 23052
+03-30 04:33:20.547 23052 23052 I Zygote  : Process 23052 created for com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+03-30 04:33:20.548 23052 23052 I ocessService0:0: Using CollectorTypeCMC GC.
+03-30 04:33:20.549 23052 23052 W ocessService0:0: Unexpected CPU variant for x86: x86_64.
+03-30 04:33:20.549 23052 23052 W ocessService0:0: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, default
+03-30 04:33:20.554 23052 23052 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+03-30 04:33:20.560   808   896 I ActivityManager: Start proc 23052:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i19 for  {app.focusvalley.android/org.chromium.content.app.SandboxedProcessService0:0}
+03-30 04:33:20.570 23011 23011 I cr_CombinedPProvider: #linkNativeInternal() 1
+03-30 04:33:20.576 23011 23011 I cr_AppResProvider: #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+03-30 04:33:20.576 23011 23011 I cr_PolicyProvider: #notifySettingsAvailable() 0
+03-30 04:33:20.578 23011 23011 I cr_CombinedPProvider: #onSettingsAvailable() 0
+03-30 04:33:20.578 23011 23011 I cr_CombinedPProvider: #flushPolicies()
+03-30 04:33:20.581 23052 23052 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+03-30 04:33:20.582 23052 23052 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+03-30 04:33:20.590 23052 23052 I cr_WebViewApkApp: version=145.0.7632.79 (763207908) minSdkVersion=29 processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 splits=<none>
+03-30 04:33:20.594   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:20.596   808   848 W ActivityManager: Slow operation: 65ms so far, now at startProcess: returned from zygote!
+03-30 04:33:20.604 23052 23052 I cr_ChildProcessService: Creating new ChildProcessService pid=23052
+03-30 04:33:20.642 23011 23070 W chromium: [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+03-30 04:33:20.669  1765  1765 D BoundBrokerSvc: onRebind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+03-30 04:33:20.686 23011 23011 W chromium: [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+03-30 04:33:20.850 23011 23011 D Capacitor: Starting BridgeActivity
+03-30 04:33:20.915 23011 23011 D Capacitor: Registering plugin instance: CapacitorCookies
+03-30 04:33:20.919 23011 23011 D Capacitor: Registering plugin instance: WebView
+03-30 04:33:20.920 23011 23011 D Capacitor: Registering plugin instance: CapacitorHttp
+03-30 04:33:20.921 23011 23011 D Capacitor: Registering plugin instance: SystemBars
+03-30 04:33:20.925 23011 23011 D Capacitor: Registering plugin instance: App
+03-30 04:33:20.927 23011 23011 D Capacitor: Registering plugin instance: Browser
+03-30 04:33:20.930 23011 23011 D Capacitor: Registering plugin instance: Haptics
+03-30 04:33:20.935 23011 23011 D Capacitor: Registering plugin instance: LocalNotifications
+03-30 04:33:20.954 23011 23011 D Capacitor: Registering plugin instance: Preferences
+03-30 04:33:20.957 23011 23011 D Capacitor: Registering plugin instance: SplashScreen
+03-30 04:33:20.964 23011 23011 D Capacitor: Registering plugin instance: StatusBar
+03-30 04:33:20.973 23011 23011 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+03-30 04:33:20.973 23011 23011 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+03-30 04:33:20.974 23011 23011 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+03-30 04:33:20.974 23011 23011 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+03-30 04:33:20.988 23011 23011 W Capacitor: Unable to read file at path public/plugins
+03-30 04:33:20.997 23011 23011 D Capacitor: Loading app at https://localhost
+03-30 04:33:21.031 23011 23071 W cr_media: BLUETOOTH_CONNECT permission is missing.
+03-30 04:33:21.033 23011 23071 W cr_media: getBluetoothAdapter() requires BLUETOOTH permission
+03-30 04:33:21.033 23011 23071 W cr_media: registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+03-30 04:33:21.037 23052 23064 I cr_LibraryLoader: Successfully loaded native library
+03-30 04:33:21.037 23052 23064 I cr_CachingUmaRecorder: Flushed 2 samples from 2 histograms, 0 samples were dropped.
+03-30 04:33:21.071 23011 23086 W libc    : Access denied finding property "vendor.mesa.log"
+03-30 04:33:21.071 23011 23086 W libc    : Access denied finding property "vendor.mesa.log.file"
+03-30 04:33:21.071 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.071 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.076 23011 23071 D AudioSystem: onNewService: media.audio_policy service obtained 0x776f1d09bf40
+03-30 04:33:21.077 23052 23064 W chromium: [WARNING:content/child/runtime_features.cc:564] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+03-30 04:33:21.077 23052 23064 W chromium: [WARNING:content/child/runtime_features.cc:589] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+03-30 04:33:21.077 23052 23064 W chromium: [WARNING:content/child/runtime_features.cc:610] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+03-30 04:33:21.085 23011 23071 D AudioSystem: getService: IAudioPolicyService retrieved: 0x776f1d09bf40  cached: 0x776f1d09bf40
+03-30 04:33:21.086 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.086 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.087 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.087 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.088 23011 23065 D Capacitor: Handling local request: https://localhost/
+03-30 04:33:21.097 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.097 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.099 23011 23086 W libc    : Access denied finding property "vendor.mesa.vk.trace.per.submit"
+03-30 04:33:21.099 23011 23086 W libc    : Access denied finding property "vendor.mesa.gallium.print.optio"
+03-30 04:33:21.099 23011 23086 W libc    : Access denied finding property "vendor.mesa.vk.trace.frame"
+03-30 04:33:21.099   639  4153 D NativePermissionController: checkPermission: missing 13 for 10228
+03-30 04:33:21.104   639  4153 D NativePermissionController: checkPermission: missing 13 for 10228
+03-30 04:33:21.134  1403  2008 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.138  1403  2008 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.138 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.140 23011 23086 W libc    : Access denied finding property "vendor.mesa.vk.wsi.headless.swa"
+03-30 04:33:21.140 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.140 23011 23086 E MESA    : Failed to open rendernode: No such file or directory
+03-30 04:33:21.140   639  4153 D NativePermissionController: checkPermission: missing 13 for 10228
+03-30 04:33:21.141   639  4153 D NativePermissionController: checkPermission: missing 13 for 10228
+03-30 04:33:21.150 23011 23011 D Capacitor: App started
+03-30 04:33:21.156 23011 23011 D Capacitor/AppPlugin: Firing change: true
+03-30 04:33:21.157  1403  2008 I FontLog : (REDACTED) Font PFD returned from cache for %s
+03-30 04:33:21.157 23011 23011 V Capacitor/AppPlugin: Notifying listeners for event appStateChange
+03-30 04:33:21.157 23011 23011 D Capacitor/AppPlugin: No listeners found for event appStateChange
+03-30 04:33:21.158  1403  2008 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.168  1403  2008 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.178   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:21.186  1403  2008 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.186  1403  2008 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.193 23011 23011 V Capacitor/BrowserPlugin: Notifying listeners for event browserFinished
+03-30 04:33:21.193 23011 23011 D Capacitor/BrowserPlugin: No listeners found for event browserFinished
+03-30 04:33:21.195 23011 23011 D Capacitor: App resumed
+03-30 04:33:21.198  1403  2008 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.206   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.206  1403  4011 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.206   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.218  1403  4011 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.218  1403  4011 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.218  1403  4011 I FontLog : (REDACTED) Font PFD returned from cache for %s
+03-30 04:33:21.218  1403  4011 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.221  1403  4011 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.226   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.226   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.229  1403  4011 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.229  1403  4011 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.229  1403  4011 I FontLog : (REDACTED) Font PFD returned from cache for %s
+03-30 04:33:21.229  1403  4011 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.233  1403  4011 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.236 23011 23011 W HWUI    : Unknown dataspace 0
+03-30 04:33:21.239  1403  4011 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.240  1403  4011 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.240  1403  4011 I FontLog : (REDACTED) Font PFD returned from cache for %s
+03-30 04:33:21.240  1403  4011 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.242  1403  1419 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.322 23011 23105 I CameraManagerGlobal: Connecting to camera service
+03-30 04:33:21.346 23011 23011 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@68dbd70
+03-30 04:33:21.346 23011 23011 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): androidx.activity.OnBackPressedDispatcher$Api34Impl$createOnBackAnimationCallback$1@eb1f8e9
+03-30 04:33:21.353 23011 23011 D VRI[MainActivity]: WindowInsets changed: 1080x2400 statusBars:[0,63,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,63,0,84] 
+03-30 04:33:21.360   808   897 D CoreBackPreview: Window{c5e7766 u0 app.focusvalley.android/app.focusvalley.android.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@c5b0d3e, mPriority=-1, mIsAnimationCallback=false, mOverrideBehavior=0}
+03-30 04:33:21.360   808   897 D CoreBackPreview: Window{c5e7766 u0 app.focusvalley.android/app.focusvalley.android.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@9142ebb, mPriority=0, mIsAnimationCallback=true, mOverrideBehavior=0}
+03-30 04:33:21.363 23052 23064 E ashmem  : readlink(/proc/self/fd/109) failed: Operation not permitted
+03-30 04:33:21.364 23052 23064 E ashmem  : readlink(/proc/self/fd/109) failed: Operation not permitted
+03-30 04:33:21.396 23011 23066 D Capacitor: Handling local request: https://localhost/assets/index-BG2GMQiP.js
+03-30 04:33:21.415 23011 23073 D Capacitor: Handling local request: https://localhost/assets/sentry-BVBj0R6M.js
+03-30 04:33:21.415 23011 23070 D Capacitor: Handling local request: https://localhost/assets/framer-motion-DWvUvvkE.js
+03-30 04:33:21.417 23011 23111 D Capacitor: Handling local request: https://localhost/assets/supabase-BZ0N5lZN.js
+03-30 04:33:21.455   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:21.466 23011 23066 D Capacitor: Handling local request: https://localhost/assets/index-XELUpCU0.css
+03-30 04:33:21.515   808   837 I ActivityTaskManager: Displayed app.focusvalley.android/.MainActivity for user 0: +2s39ms
+03-30 04:33:21.540 23052 23064 E ashmem  : readlink(/proc/self/fd/112) failed: Operation not permitted
+03-30 04:33:21.544 23052 23064 E ashmem  : readlink(/proc/self/fd/116) failed: Operation not permitted
+03-30 04:33:21.544 23052 23064 E ashmem  : readlink(/proc/self/fd/117) failed: Operation not permitted
+03-30 04:33:21.546 23052 23097 E ashmem  : readlink(/proc/self/fd/118) failed: Operation not permitted
+03-30 04:33:21.551 23052 23097 E ashmem  : readlink(/proc/self/fd/119) failed: Operation not permitted
+03-30 04:33:21.551 23052 23097 E ashmem  : readlink(/proc/self/fd/121) failed: Operation not permitted
+03-30 04:33:21.596   808   941 I ImeTracker: app.focusvalley.android:b766717: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+03-30 04:33:21.605 23011 23011 D InsetsController: hide(ime())
+03-30 04:33:21.606 23011 23011 I ImeTracker: app.focusvalley.android:b766717: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+03-30 04:33:21.620   808  1744 I ImeTracker: system_server:94f2cc6f: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+03-30 04:33:21.622  1243  1243 D BaseActivity: Launcher flags updated: [] -[state_started]
+03-30 04:33:21.622  1243  1243 D BaseDepthController: setSurface:
+03-30 04:33:21.622  1243  1243 D BaseDepthController: 	mWaitingOnSurfaceValidity: false
+03-30 04:33:21.622  1243  1243 D BaseDepthController: 	mBaseSurface: null
+03-30 04:33:21.623   808   840 I ImeTracker: system_server:94f2cc6f: onCancelled at PHASE_SERVER_SHOULD_HIDE
+03-30 04:33:21.625  1243  1243 D BaseDepthController: mSurface is null and mCurrentBlur is: 0
+03-30 04:33:21.631  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2057 
+03-30 04:33:21.636  1243  1243 D LauncherStateManager: StateManager.goToState: fromState: Normal, toState: Normal, partial trace:
+03-30 04:33:21.636  1243  1243 D LauncherStateManager: 	at com.android.launcher3.statemanager.StateManager.moveToRestState(go/retraceme f3a19d912c87c27267cfbc05ba0bc7b202ab72a6648bd76225f5f7e128d94583:6)
+03-30 04:33:21.636  1243  1243 D LauncherStateManager: 	at com.android.launcher3.statemanager.StateManager.moveToRestState(go/retraceme f3a19d912c87c27267cfbc05ba0bc7b202ab72a6648bd76225f5f7e128d94583:2)
+03-30 04:33:21.636  1243  1243 D LauncherStateManager: 	at com.android.launcher3.statemanager.StatefulActivity.onStop(go/retraceme f3a19d912c87c27267cfbc05ba0bc7b202ab72a6648bd76225f5f7e128d94583:32)
+03-30 04:33:21.636  1243  1243 D LauncherStateManager: StateManager.onRepeatStateSetAborted: state: Normal
+03-30 04:33:21.638  1243  1243 D ActivityContext: hideKeyboard
+03-30 04:33:21.638  1243  1243 D ActivityContext: isImeShown: false
+03-30 04:33:21.638  1243  1243 D StatsLog: LAUNCHER_ONSTOP
+03-30 04:33:21.638  1243  4310 D GmsPlayProvider: Shutdown the binder channel gracefully.
+03-30 04:33:21.640  1243  4310 D GmsPlayProvider: Binder channel is terminated gracefully.
+03-30 04:33:21.645  1540  1540 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():100 repeatCheckTimes = 0, locked = false
+03-30 04:33:21.647  1243  1243 D StatsLog: LAUNCHER_GOOGLE_SEARCH_RESTORE_LIST_SIZE_AFTER_ACTIVITY_RESTART
+03-30 04:33:21.654  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1318 onStartInput(EditorInfo{EditorInfo{packageName=app.focusvalley.android, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=12000000, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+03-30 04:33:21.662  1540  1540 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():100 repeatCheckTimes = 1, locked = false
+03-30 04:33:21.670   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:21.676   808  1744 W PackageConfigPersister: App-specific configuration not found for packageName: app.focusvalley.android and userId: 0
+03-30 04:33:21.714 23125 23125 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package
+03-30 04:33:21.733  1403  1419 I FontLog : (REDACTED) Received query %s, URI %s
+03-30 04:33:21.734  1403  1419 I FontLog : (REDACTED) Query [%s] resolved to %s
+03-30 04:33:21.738  1403  1419 I FontLog : (REDACTED) Fetch %s end status %s
+03-30 04:33:21.741  1403  1419 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.749 23011 23127 I HWUI    : Using FreeType backend (prop=Auto)
+03-30 04:33:21.771  1403  1419 I FontLog : (REDACTED) Pulling font file for id = %d, cache size = %d
+03-30 04:33:21.873 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/base.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+03-30 04:33:21.880 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_AdsDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.884 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_CronetDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.887 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteLoader_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.892 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteModulesA_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.896 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteModulesC_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.900 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_GoogleCertificates_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.903 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_MapsDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.909 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_MeasurementDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.915 21669 21669 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_all_locale_splits.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:21.929   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.929   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:21.931 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000e/dl-MlkitBarcodeUi.optional_253434100800.apk has no usable artifacts
+03-30 04:33:21.936 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000d/dl-PlayCloudSearch.optional_253434100000.apk has no usable artifacts
+03-30 04:33:21.939 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000a/dl-TfliteDynamiteDynamite.integ_252130102100800.apk has no usable artifacts
+03-30 04:33:21.943 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000001/CronetDynamite.apk has no usable artifacts
+03-30 04:33:21.946 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000016/dl-AdsFdrDynamite.integ_254380203100000.apk has no usable artifacts
+03-30 04:33:21.949 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000012/dl-MlkitBarcodeUi.optional_260534100800.apk has no usable artifacts
+03-30 04:33:21.952 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.apk has no usable artifacts
+03-30 04:33:21.954 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000014/dl-Appsearch.optional_260534100800.apk has no usable artifacts
+03-30 04:33:21.956 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000005/GoogleCertificates.apk has no usable artifacts
+03-30 04:33:21.958 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000013/dl-VisionOcr.optional_260534100000.apk has no usable artifacts
+03-30 04:33:21.963 21669 21670 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/BF7C023AB90CCF01D1F467FC1CEBAF866511FF29/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+03-30 04:33:21.965 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000010/dl-MlkitOcrCommon.optional_260534100800.apk has no usable artifacts
+03-30 04:33:21.968 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000b/dl-Appsearch.optional_253434100800.apk has no usable artifacts
+03-30 04:33:21.971 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000011/dl-PlayCloudSearch.optional_260534100000.apk has no usable artifacts
+03-30 04:33:21.974 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000008/dl-MlkitOcrCommon.optional_253434100800.apk has no usable artifacts
+03-30 04:33:21.977 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000009/dl-VisionOcr.optional_253434100000.apk has no usable artifacts
+03-30 04:33:21.982 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.apk has no usable artifacts
+03-30 04:33:22.021 23052 23093 E ashmem  : readlink(/proc/self/fd/107) failed: Operation not permitted
+03-30 04:33:22.022 23052 23093 E ashmem  : readlink(/proc/self/fd/113) failed: Operation not permitted
+03-30 04:33:22.044 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.046 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.046 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.047 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.048 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.048 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.052 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724565, pluginId: Preferences, methodName: get
+03-30 04:33:22.053 23011 23011 V Capacitor: callback: 1724565, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-locale"}
+03-30 04:33:22.054 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724566, pluginId: Preferences, methodName: get
+03-30 04:33:22.054 23011 23011 V Capacitor: callback: 1724566, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-timer-settings"}
+03-30 04:33:22.054 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724567, pluginId: Preferences, methodName: get
+03-30 04:33:22.054 23011 23011 V Capacitor: callback: 1724567, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-garden"}
+03-30 04:33:22.054 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724568, pluginId: Preferences, methodName: get
+03-30 04:33:22.054 23011 23011 V Capacitor: callback: 1724568, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-todos"}
+03-30 04:33:22.055 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724569, pluginId: Preferences, methodName: get
+03-30 04:33:22.055 23011 23011 V Capacitor: callback: 1724569, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-categories"}
+03-30 04:33:22.056 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724570, pluginId: Preferences, methodName: get
+03-30 04:33:22.056 23011 23011 V Capacitor: callback: 1724570, pluginId: Preferences, methodName: get, methodData: {"key":"focus-valley-tour"}
+03-30 04:33:22.102 23011 23066 D Capacitor: Handling local request: https://localhost/assets/feature-pack-DT1fPoZ9.js
+03-30 04:33:22.103 23011 23066 D Capacitor: Handling local request: https://localhost/assets/sync-Cdk0ykMP.js
+03-30 04:33:22.103 23011 23065 D Capacitor: Handling local request: https://localhost/assets/AppLazyOverlays-ruG8QzhO.js
+03-30 04:33:22.103 23011 23065 D Capacitor: Handling local request: https://localhost/assets/sync-engine-BFZau28R.js
+03-30 04:33:22.103 23011 23065 D Capacitor: Handling local request: https://localhost/assets/BottomSheet-Cns0yBf1.js
+03-30 04:33:22.109 23011 23066 D Capacitor: Handling local request: https://localhost/assets/lock-lK_Si1T8.js
+03-30 04:33:22.112 23011 23065 D Capacitor: Handling local request: https://localhost/assets/trash-2-jYkzJixI.js
+03-30 04:33:22.112 23011 23065 D Capacitor: Handling local request: https://localhost/assets/trophy-OdyCIR5X.js
+03-30 04:33:22.113 23011 23065 D Capacitor: Handling local request: https://localhost/assets/clock-CBopDzgu.js
+03-30 04:33:22.136 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.136 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.136 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.136 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.136 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.137 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"value":null}
+03-30 04:33:22.144 23011 23011 D Capacitor: onGeolocationPermissionsShowPrompt: DOING IT HERE FOR ORIGIN: https://localhost/
+03-30 04:33:22.148 23011 23065 D Capacitor: Handling local request: https://localhost/assets/timer.worker-BsPCvtbS.js
+03-30 04:33:22.150 23011 23011 V Activity: No requestable permission in the request.
+03-30 04:33:22.153 23011 23011 D Capacitor: Unable to find a Capacitor plugin to handle permission requestCode, trying Cordova plugins 1066403995
+03-30 04:33:22.173 23011 23065 D Capacitor: Handling local request: https://localhost/favicon.svg
+03-30 04:33:22.207 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.207 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.207 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.207 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.208 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.208 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.209 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.209 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.210 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.210 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:22.215 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724571, pluginId: App, methodName: addListener
+03-30 04:33:22.215 23011 23011 V Capacitor: callback: 1724571, pluginId: App, methodName: addListener, methodData: {"eventName":"appStateChange"}
+03-30 04:33:22.216 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724572, pluginId: LocalNotifications, methodName: createChannel
+03-30 04:33:22.216 23011 23011 V Capacitor: callback: 1724572, pluginId: LocalNotifications, methodName: createChannel, methodData: {"id":"focus-valley-timer","name":"Timer Notifications","description":"Focus and break session completion alerts","importance":4,"visibility":1,"vibration":true}
+03-30 04:33:22.216 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724573, pluginId: App, methodName: addListener
+03-30 04:33:22.216 23011 23011 V Capacitor: callback: 1724573, pluginId: App, methodName: addListener, methodData: {"eventName":"appStateChange"}
+03-30 04:33:22.216 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724574, pluginId: App, methodName: addListener
+03-30 04:33:22.216 23011 23011 V Capacitor: callback: 1724574, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+03-30 04:33:22.216 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724575, pluginId: SplashScreen, methodName: hide
+03-30 04:33:22.216 23011 23011 V Capacitor: callback: 1724575, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":300}
+03-30 04:33:22.216 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724576, pluginId: StatusBar, methodName: setStyle
+03-30 04:33:22.216 23011 23011 V Capacitor: callback: 1724576, pluginId: StatusBar, methodName: setStyle, methodData: {"style":"LIGHT"}
+03-30 04:33:22.217 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724577, pluginId: StatusBar, methodName: setBackgroundColor
+03-30 04:33:22.217 23011 23011 V Capacitor: callback: 1724577, pluginId: StatusBar, methodName: setBackgroundColor, methodData: {"color":"#f5f5f7"}
+03-30 04:33:22.217 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724578, pluginId: StatusBar, methodName: setOverlaysWebView
+03-30 04:33:22.217 23011 23011 V Capacitor: callback: 1724578, pluginId: StatusBar, methodName: setOverlaysWebView, methodData: {"overlay":false}
+03-30 04:33:22.218 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724579, pluginId: App, methodName: addListener
+03-30 04:33:22.218 23011 23011 V Capacitor: callback: 1724579, pluginId: App, methodName: addListener, methodData: {"eventName":"appStateChange"}
+03-30 04:33:22.219 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724580, pluginId: App, methodName: addListener
+03-30 04:33:22.219 23011 23011 V Capacitor: callback: 1724580, pluginId: App, methodName: addListener, methodData: {"eventName":"appUrlOpen"}
+03-30 04:33:22.233 23052 23093 E ashmem  : readlink(/proc/self/fd/114) failed: Operation not permitted
+03-30 04:33:22.340 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:22.342 23011 23011 V Capacitor/StatusBarPlugin: Notifying listeners for event statusBarOverlayChanged
+03-30 04:33:22.342 23011 23011 D Capacitor/StatusBarPlugin: No listeners found for event statusBarOverlayChanged
+03-30 04:33:22.342 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:22.343 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:22.343 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:22.343 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:22.427 23011 23026 I svalley.android: Compiler allocated 5087KB to compile void android.view.ViewRootImpl.performTraversals()
+03-30 04:33:22.813 23134 23134 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+03-30 04:33:22.813 23134 23134 W libbinder.BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+03-30 04:33:22.814 23134 23134 W libbinder.ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+03-30 04:33:22.966 23052 23093 E ashmem  : readlink(/proc/self/fd/115) failed: Operation not permitted
+03-30 04:33:22.998   808  1699 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+03-30 04:33:23.064   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:23.077   808  1744 D ActivityManager: sync unfroze 11864 com.google.android.webview:webview_service for 6
+03-30 04:33:23.078   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:23.079 11864 11864 D ActivityThread: Package [app.focusvalley.android] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-30 04:33:23.080 11864 11864 D ActivityThread: Package [app.focusvalley.android] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-30 04:33:23.395  1240  1370 D SatelliteController: iisInCarrierRoamingNbIotNtn: satellite is disabled
+03-30 04:33:23.405  1240  1370 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+03-30 04:33:23.408   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:23.737  1403  1403 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.auth.aang.events.services.START dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.PersistentApiService }
+03-30 04:33:23.748  1765  1765 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.mobstore.service.START xflg=0x4 pkg=com.google.android.gms }
+03-30 04:33:23.765 23052 23093 E ashmem  : readlink(/proc/self/fd/114) failed: Operation not permitted
+03-30 04:33:24.629 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:24.629 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724581, pluginId: Preferences, methodName: set
+03-30 04:33:24.629 23011 23011 V Capacitor: callback: 1724581, pluginId: Preferences, methodName: set, methodData: {"key":"focus-valley-timer-settings","value":"{\"state\":{\"focus\":3,\"shortBreak\":5,\"longBreak\":15,\"dailyGoal\":120,\"autoAdvance\":false,\"hapticEnabled\":true,\"presetId\":\"custom\",\"customPreset\":{\"focus\":25,\"shortBreak\":5,\"longBreak\":15},\"updatedAt\":\"2026-03-30T04:33:24.621Z\"},\"version\":3}"}
+03-30 04:33:24.636 23052 23093 E ashmem  : readlink(/proc/self/fd/115) failed: Operation not permitted
+03-30 04:33:24.642 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: undefined
+03-30 04:33:24.644 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:24.644 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724582, pluginId: LocalNotifications, methodName: checkPermissions
+03-30 04:33:24.644 23011 23011 V Capacitor: callback: 1724582, pluginId: LocalNotifications, methodName: checkPermissions, methodData: {}
+03-30 04:33:24.654 23011 23011 I Capacitor/Console: File:  - Line 333 - Msg: {"display":"prompt"}
+03-30 04:33:24.654 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:24.655 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724583, pluginId: LocalNotifications, methodName: requestPermissions
+03-30 04:33:24.655 23011 23011 V Capacitor: callback: 1724583, pluginId: LocalNotifications, methodName: requestPermissions, methodData: {}
+03-30 04:33:24.655 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:24.656 23011 23011 I Capacitor/Console: File:  - Line 349 - Msg: [object Object]
+03-30 04:33:24.657 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724584, pluginId: App, methodName: addListener
+03-30 04:33:24.657 23011 23011 V Capacitor: callback: 1724584, pluginId: App, methodName: addListener, methodData: {"eventName":"appStateChange"}
+03-30 04:33:24.657 23011 23011 V Capacitor/Plugin: To native (Capacitor plugin): callbackId: 1724585, pluginId: App, methodName: removeListener
+03-30 04:33:24.657 23011 23011 V Capacitor: callback: 1724585, pluginId: App, methodName: removeListener, methodData: {"eventName":"appStateChange","callbackId":"1724571"}
+03-30 04:33:24.666   808  1744 V WindowManager: DesktopModeLaunchParamsModifier: phase= 0 task=null activity=null display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 task null, skipping
+03-30 04:33:24.666   808  1744 V WindowManager: TaskLaunchParamsModifier:phase=0 task=null activity=null display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461
+03-30 04:33:24.673   808  1744 D CompatChangeReporter: Compat change id reported: 358129114; UID 10228; state: ENABLED
+03-30 04:33:24.674   808  1744 V WindowManager: DesktopModeLaunchParamsModifier: phase= 0 task=null activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 task null, skipping
+03-30 04:33:24.674   808  1744 V WindowManager: TaskLaunchParamsModifier:phase=0 task=null activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461
+03-30 04:33:24.674   808  1744 V WindowManager: DesktopModeLaunchParamsModifier: phase= 3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 not entering desktop mode, skipping
+03-30 04:33:24.674   808  1744 V WindowManager: TaskLaunchParamsModifier:phase=3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 inherit-from-source=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@140050461 skip-bounds-fullscreen
+03-30 04:33:24.675   808  1744 V WindowManager: DesktopModeLaunchParamsModifier: phase= 3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 not entering desktop mode, skipping
+03-30 04:33:24.675   808  1744 V WindowManager: TaskLaunchParamsModifier:phase=3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 inherit-from-source=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@140050461 skip-bounds-fullscreen
+03-30 04:33:24.675   808  1744 V WindowManager: DesktopModeLaunchParamsModifier: phase= 3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 not entering desktop mode, skipping
+03-30 04:33:24.675   808  1744 V WindowManager: TaskLaunchParamsModifier:phase=3 task=Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android} activity=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t-1} display-area-from-source=DefaultTaskDisplayArea@140050461 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@140050461 inherit-from-source=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@140050461 skip-bounds-fullscreen
+03-30 04:33:24.682   648   685 I libbinder.BpBinder: onLastStrongRef automatically unlinking death recipients for descriptor: '(not cached)'
+03-30 04:33:24.685   808  1744 I ActivityTaskManager: START u0 {act=android.content.pm.action.REQUEST_PERMISSIONS xflg=0x4 pkg=com.google.android.permissioncontroller cmp=com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity (has extras)} with LAUNCH_MULTIPLE from uid 10228 (app.focusvalley.android) (rr=152721807) (BAL_ALLOW_VISIBLE_WINDOW) result code=0
+03-30 04:33:24.691  1078  1136 V WindowManagerShell: Transition requested (#192): android.os.BinderProxy@f8016b3 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=2 lastActiveTime=26386999 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@a9e161} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{1e66470 com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 192 }
+03-30 04:33:24.694  1078  1136 D ShellSplitScreen: logExit: no-op, mLoggerSessionId is null
+03-30 04:33:24.694  1078  1136 V ShellDesktopMode: DesktopTasksController: handleRequest request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=2 lastActiveTime=26386999 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@a9e161} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{1e66470 com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 192 }
+03-30 04:33:24.694  1078  1136 V ShellDesktopMode: DesktopTasksController: skipping handleRequest reason=triggerTask's display doesn't support desktop mode
+03-30 04:33:24.740 23011 23011 V Capacitor/AppPlugin: Notifying listeners for event pause
+03-30 04:33:24.740 23011 23011 D Capacitor/AppPlugin: No listeners found for event pause
+03-30 04:33:24.746   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:24.746   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:24.746 23011 23011 D Capacitor: App paused
+03-30 04:33:24.755   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:24.760   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:24.760   808  1029 D BackgroundInstallControlService: Package event received: 0
+03-30 04:33:24.761  2127  2127 I Finsky  : [2] Memory trim requested to level 40
+03-30 04:33:24.762  3209  3209 I Finsky:background: [2] Memory trim requested to level 40
+03-30 04:33:24.768  2127  2127 I Finsky  : [2] Flushing in-memory image cache
+03-30 04:33:24.769  2186 22164 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv1_CM_emulation.so
+03-30 04:33:24.773  2186 22164 I GFXSTREAM: [eglDisplay.cpp(297)] Opening libGLESv2_emulation.so
+03-30 04:33:24.788   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:24.788   701   788 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:24.792  2186 22164 W HWUI    : Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+03-30 04:33:24.792  2186 22164 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+03-30 04:33:24.800  3209  3280 I Finsky:background: [45] Current account updated in PVS
+03-30 04:33:24.801  2127  2258 I Finsky  : [49] Current account updated in PVS
+03-30 04:33:24.859  1243  1243 D b/417220811: invalidateLoadedTasks - previous requestLoadId: -1
+03-30 04:33:24.925  2186  2186 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@7c7876a
+03-30 04:33:24.926  2186  2186 D VRI[GrantPermissionsActivity]: WindowInsets changed: 1080x2274 mandatorySystemGestures:[0,0,0,21] 
+03-30 04:33:24.926   808  1744 D CoreBackPreview: Window{4df9830 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@c4e01cf, mPriority=-1, mIsAnimationCallback=false, mOverrideBehavior=0}
+03-30 04:33:24.937  2186  2186 D VRI[GrantPermissionsActivity]: WindowInsets changed: 1024x0 mandatorySystemGestures:null 
+03-30 04:33:24.951  1078 13242 V WindowManagerShell: onTransitionReady(transaction=3470333592183)
+03-30 04:33:24.952  1078  1136 V WindowManagerShell: onTransitionReady (#192) android.os.BinderProxy@f8016b3: {id=192 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+03-30 04:33:24.952  1078  1136 V WindowManagerShell:         {m=OPEN f=TRANSLUCENT|FILLS_TASK leash=Surface(name=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t28}#2330)/@0x5313e9 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=-1->0 r=-1->0:-1 bc=ffeeedf6 activity=ActivityTransitionInfo { component = ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}, taskId = 28, appCompatTransitionInfo = null } opt={t=FROM_STYLE mUserId=0}}
+03-30 04:33:24.952  1078  1136 V WindowManagerShell:     ]}
+03-30 04:33:24.952   808   837 I ActivityTaskManager: Displayed com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity for user 0: +284ms
+03-30 04:33:24.954  1078  1136 V WindowManagerShell: Playing animation for (#192) android.os.BinderProxy@f8016b3@0
+03-30 04:33:24.954  1078  1136 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+03-30 04:33:24.954  1078  1136 V ShellDesktopMode: DesktopMixedTransitionHandler: No pending desktop transition
+03-30 04:33:24.954  1078  1136 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=192 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=TRANSLUCENT|FILLS_TASK leash=Surface(name=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t28}#2330)/@0x5313e9 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=-1->0 r=-1->0:-1 bc=ffeeedf6 activity=ActivityTransitionInfo { component = ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}, taskId = 28, appCompatTransitionInfo = null } opt={t=FROM_STYLE mUserId=0}}]}
+03-30 04:33:24.954  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@ea71b4a windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@cb35abb, appThread = android.app.IApplicationThread$Stub$Proxy@5a4cbd8, debugName = overlayBackTransition }}
+03-30 04:33:24.955   808   837 V WindowManager: Sent Transition (#192) createdAt=03-30 04:33:24.674 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=28 effectiveUid=10228 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=app.focusvalley.android/.MainActivity } baseActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} topActivity=ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} origActivity=null realActivity=ComponentInfo{app.focusvalley.android/app.focusvalley.android.MainActivity} numActivities=2 lastActiveTime=26386999 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{a9dc199 Task{7969ab4 #28 type=standard A=10228:app.focusvalley.android}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{691e5f4 com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=false lastNonFullscreenBounds=null capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatMode=undefinedundefined} topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransition = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, flags = 0, debugId = 192 }
+03-30 04:33:24.955   808   837 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+03-30 04:33:24.955   808   837 V WindowManager:     info={id=192 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+03-30 04:33:24.955   808   837 V WindowManager:         {m=OPEN f=TRANSLUCENT|FILLS_TASK leash=Surface(name=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t28}#2330)/@0x78037e1 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=-1->0 r=-1->0:-1 bc=ffeeedf6 activity=ActivityTransitionInfo { component = ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}, taskId = 28, appCompatTransitionInfo = null } opt={t=FROM_STYLE mUserId=0}}
+03-30 04:33:24.955   808   837 V WindowManager:     ]}
+03-30 04:33:24.956  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@e56cb31, appThread = android.app.IApplicationThread$Stub$Proxy@5c3a216, debugName = LauncherToDream }}
+03-30 04:33:24.957  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@2b2e797, appThread = android.app.IApplicationThread$Stub$Proxy@e86cd84, debugName = QuickstepLaunchHome }}
+03-30 04:33:24.957  1078  1136 V WindowManagerShell:  Checking filter Pair{{types=[OPEN,TO_FRONT] flags=0x0] notFlags=0x0 checks=[{atype=standard independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=freeform isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@5ee08dc, appThread = null, debugName = DesktopWindowLimitUnminimize }}
+03-30 04:33:24.957  1078  1136 V WindowManagerShell:  Delegate animation for (#192) to null
+03-30 04:33:24.957  1078  1136 V WindowManagerShell: start default transition animation, info = {id=192 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=TRANSLUCENT|FILLS_TASK leash=Surface(name=ActivityRecord{91192108 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity t28}#2330)/@0x5313e9 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=-1->0 r=-1->0:-1 bc=ffeeedf6 activity=ActivityTransitionInfo { component = ComponentInfo{com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}, taskId = 28, appCompatTransitionInfo = null } opt={t=FROM_STYLE mUserId=0}}]}
+03-30 04:33:24.958  1078  1136 V WindowManagerShell: loadAnimation: anim=null animAttr=0x4 type=OPEN isEntrance=true
+03-30 04:33:24.959  1078  1136 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#192) android.os.BinderProxy@f8016b3@0
+03-30 04:33:24.961   808   837 V WindowManager: Finish Transition (#192): created at 03-30 04:33:24.674 collect-started=0.039ms request-sent=11.008ms started=21.635ms ready=80.001ms sent=274.337ms finished=286.858ms
+03-30 04:33:24.964  1078  1136 V WindowManagerShell: Track 0 became idle
+03-30 04:33:24.964  1078  1136 V WindowManagerShell: All active transition animations finished
+03-30 04:33:24.964  1078  1136 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@4025242
+03-30 04:33:24.964  1078  1136 V WindowManagerShell: Track 0 became idle
+03-30 04:33:24.964  1078  1136 V WindowManagerShell: All active transition animations finished
+03-30 04:33:24.986  2186  2186 D VRI[GrantPermissionsActivity]: WindowInsets changed: 1024x939 
+03-30 04:33:25.013 23052 23093 E ashmem  : readlink(/proc/self/fd/114) failed: Operation not permitted
+03-30 04:33:25.016  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2057 
+03-30 04:33:25.017  1540  1540 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():100 repeatCheckTimes = 0, locked = false
+03-30 04:33:25.018   808  1744 I ImeTracker: system_server:1f9c17ba: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+03-30 04:33:25.018   808   840 I ImeTracker: system_server:1f9c17ba: onCancelled at PHASE_SERVER_SHOULD_HIDE
+03-30 04:33:25.020  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1318 onStartInput(EditorInfo{EditorInfo{packageName=com.google.android.permissioncontroller, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+03-30 04:33:25.020  1540  1540 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatus():100 repeatCheckTimes = 1, locked = false
+03-30 04:33:25.022   808  1744 W PackageConfigPersister: App-specific configuration not found for packageName: com.google.android.permissioncontroller and userId: 0
+03-30 04:33:25.026   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:25.026   701 12784 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:25.679 23052 23093 E ashmem  : readlink(/proc/self/fd/115) failed: Operation not permitted
+03-30 04:33:25.830 23011 23145 D ProfileInstaller: Installing profile for app.focusvalley.android
+03-30 04:33:26.247 23052 23093 E ashmem  : readlink(/proc/self/fd/114) failed: Operation not permitted
+03-30 04:33:26.417   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:26.862 23052 23093 E ashmem  : readlink(/proc/self/fd/115) failed: Operation not permitted
+03-30 04:33:27.757 23148 23148 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+03-30 04:33:27.757 23148 23148 W libbinder.BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+03-30 04:33:27.757 23148 23148 W libbinder.ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+03-30 04:33:28.127   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:28.127   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:28.127   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10180} in 2ms
+03-30 04:33:28.128   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:28.128   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:28.128   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={20180} in 0ms
+03-30 04:33:28.702   808  1048 W AS.PlaybackActivityMon: No piid assigned for invalid/internal port id 15
+03-30 04:33:29.221   306 22971 I keystore2: system/security/keystore2/watchdog/src/lib.rs:371 - Watchdog thread idle -> terminating. Have a great day.
+03-30 04:33:29.281   808   846 W libbinder.IPCThreadState: Sending oneway calls to frozen process.
+03-30 04:33:29.385   808   921 D ActivityManager: freezing 11679 com.google.android.documentsui
+03-30 04:33:29.386   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:29.386   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:29.386   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10110} in 1ms
+03-30 04:33:29.423   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:29.526  2127  2257 I Finsky  : [48] Current account updated in PVS
+03-30 04:33:29.762   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:29.762   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:29.763   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10205} in 1ms
+03-30 04:33:29.763   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:29.763   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:29.763   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={20205} in 0ms
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10162} in 0ms
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:29.769   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={20162} in 1ms
+03-30 04:33:30.760 23159 23159 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+03-30 04:33:30.760 23159 23159 W libbinder.BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+03-30 04:33:30.760 23159 23159 W libbinder.ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10159} in 0ms
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:31.215   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={20159} in 0ms
+03-30 04:33:31.655 23161 23161 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: package
+03-30 04:33:31.728 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/base.odex) is kOatUpToDate with filter 'speed-profile' executable 'false'
+03-30 04:33:31.731 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_AdsDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.733 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_CronetDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.734 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteLoader_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.736 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteModulesA_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.737 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_DynamiteModulesC_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.739 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_GoogleCertificates_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.741 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_MapsDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.742 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_MeasurementDynamite_installtime.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.745 21669 21670 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~kZnI0_appyszeyXcK0C8PQ==/com.google.android.gms-xXsxO6aF3P6YcQP89kFlOw==/oat/x86_64/split_all_locale_splits.odex) is kOatUpToDate with filter 'speed' executable 'false'
+03-30 04:33:31.746 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000e/dl-MlkitBarcodeUi.optional_253434100800.apk has no usable artifacts
+03-30 04:33:31.749 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000d/dl-PlayCloudSearch.optional_253434100000.apk has no usable artifacts
+03-30 04:33:31.752 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000a/dl-TfliteDynamiteDynamite.integ_252130102100800.apk has no usable artifacts
+03-30 04:33:31.753 21669 21670 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000001/CronetDynamite.apk has no usable artifacts
+03-30 04:33:31.756 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000016/dl-AdsFdrDynamite.integ_254380203100000.apk has no usable artifacts
+03-30 04:33:31.757   589  4122 D android.hardware.audio@7.1-impl.ranchu: threadLoop: entering standby, frames: 21810048
+03-30 04:33:31.757   589  4122 D android.hardware.audio@7.1-impl.ranchu: ~TinyalsaSink: joining consumeThread
+03-30 04:33:31.758 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000012/dl-MlkitBarcodeUi.optional_260534100800.apk has no usable artifacts
+03-30 04:33:31.761 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000002/DynamiteLoader.apk has no usable artifacts
+03-30 04:33:31.762 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000014/dl-Appsearch.optional_260534100800.apk has no usable artifacts
+03-30 04:33:31.764 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000005/GoogleCertificates.apk has no usable artifacts
+03-30 04:33:31.765 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000013/dl-VisionOcr.optional_260534100000.apk has no usable artifacts
+03-30 04:33:31.769 21669 21669 I artd    : GetBestInfo: vdex next to the dex file (/data/user/0/com.google.android.gms/app_dg_cache/BF7C023AB90CCF01D1F467FC1CEBAF866511FF29/oat/x86_64/the.vdex) is kOatUpToDate with filter 'verify' executable 'false'
+03-30 04:33:31.770 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000010/dl-MlkitOcrCommon.optional_260534100800.apk has no usable artifacts
+03-30 04:33:31.772 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/0000000b/dl-Appsearch.optional_253434100800.apk has no usable artifacts
+03-30 04:33:31.772   589 23156 D android.hardware.audio@7.1-impl.ranchu: consumeThread: exiting
+03-30 04:33:31.773   589  4122 D android.hardware.audio@7.1-impl.ranchu: ~TinyalsaSink: stopping PCM stream
+03-30 04:33:31.774 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000011/dl-PlayCloudSearch.optional_260534100000.apk has no usable artifacts
+03-30 04:33:31.776 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000008/dl-MlkitOcrCommon.optional_253434100800.apk has no usable artifacts
+03-30 04:33:31.778 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000009/dl-VisionOcr.optional_253434100000.apk has no usable artifacts
+03-30 04:33:31.782 21669 21669 I artd    : GetBestInfo: /data/user_de/0/com.google.android.gms/app_chimera/m/00000007/MeasurementDynamite.apk has no usable artifacts
+03-30 04:33:32.380 23011 23027 W svalley.android: userfaultfd: MOVE ioctl seems unsupported: Connection timed out
+03-30 04:33:32.430   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:33.123   808   921 D ActivityManager: freezing 11864 com.google.android.webview:webview_service
+03-30 04:33:33.124   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:33.124   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:33.124   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10180} in 0ms
+03-30 04:33:33.378  1240  1370 D SatelliteController: iisInCarrierRoamingNbIotNtn: satellite is disabled
+03-30 04:33:33.379  1240  1370 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+03-30 04:33:34.456   808  1048 W ProcessStats: Tracking association SourceState{2f0868c com.google.android.gms.persistent/10155 BTop #10348} whose proc state 2 is better than process ProcessState{6b1fec9 com.google.android.gms/10155 pkg=com.google.android.gms} proc state 14 (284 skipped)
+03-30 04:33:34.752   808   921 D ActivityManager: freezing 7019 com.android.chrome
+03-30 04:33:34.753   808   921 D ActivityManager: freezing 2127 com.android.vending
+03-30 04:33:34.754   808   921 D ActivityManager: freezing 4209 com.google.android.adservices.api
+03-30 04:33:34.754   808   921 D ActivityManager: freezing 3209 com.android.vending:background
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10162} in 1ms
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:34.756   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10205} in 0ms
+03-30 04:33:34.757   808   980 D InetDiagMessage: Destroyed 1 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+03-30 04:33:34.757   808   980 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+03-30 04:33:34.757   808   980 D InetDiagMessage: Destroyed live tcp sockets for uids={10153} in 0ms
+03-30 04:33:34.830  1765  1765 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.backup.GMS_MODULE_RESTORE dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsInternalBoundBrokerService }
+03-30 04:33:35.435   808   974 I HalDevMgr: bestIfaceCreationProposal is null, requestIface=STA, existingIface=[name=wlan0 type=STA]
+03-30 04:33:36.440  1765  1765 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.safebrowsing.SafeBrowsingService.START dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+03-30 04:33:36.782 23166 23166 W libbinder.BackendUnifiedServiceManager: Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+03-30 04:33:36.782 23166 23166 W libbinder.BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+03-30 04:33:36.783 23166 23166 W libbinder.ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.

@@ -443,6 +443,9 @@ function App() {
                 message="앱을 종료하시겠습니까?"
                 confirmLabel="종료"
                 cancelLabel="취소"
+                testId="exit-confirm-dialog"
+                confirmTestId="exit-confirm-confirm"
+                cancelTestId="exit-confirm-cancel"
                 onConfirm={handleConfirmExit}
                 onCancel={handleCloseExitConfirm}
             />

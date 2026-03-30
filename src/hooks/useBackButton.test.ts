@@ -1,22 +1,28 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+
+const { isNativePlatformMock, removeListenerMock, addListenerMock } = vi.hoisted(() => ({
+    isNativePlatformMock: vi.fn(() => false),
+    removeListenerMock: vi.fn(),
+    addListenerMock: vi.fn<(event: string, callback: () => void) => Promise<{ remove: () => void }>>(),
+}));
 
 // --- Mock Capacitor modules before importing hooks ---
 vi.mock("@capacitor/core", () => ({
     Capacitor: {
-        isNativePlatform: vi.fn(() => false),
+        isNativePlatform: isNativePlatformMock,
     },
 }));
 
 vi.mock("@capacitor/app", () => ({
     App: {
-        addListener: vi.fn(() => Promise.resolve({ remove: vi.fn() })),
+        addListener: addListenerMock,
         exitApp: vi.fn(),
     },
 }));
 
-import { resolveBackAction } from "@/hooks/useBackButton";
+import { useBackButton, resolveBackAction } from "@/hooks/useBackButton";
 import { useAppPanels } from "@/hooks/useAppPanels";
 
 // ---- Pure function tests (no mocks needed) ----
@@ -33,6 +39,105 @@ describe("resolveBackAction", () => {
 
     it("returns 'exit-confirm' when no panels and session is not running", () => {
         expect(resolveBackAction(false, false)).toBe("exit-confirm");
+    });
+});
+
+beforeEach(() => {
+    vi.clearAllMocks();
+    isNativePlatformMock.mockReturnValue(false);
+    addListenerMock.mockResolvedValue({ remove: removeListenerMock });
+});
+
+describe("useBackButton", () => {
+    it("registers the native listener once and reads the latest state from refs", async () => {
+        isNativePlatformMock.mockReturnValue(true);
+
+        let listener: (() => void) | undefined;
+        addListenerMock.mockImplementation((_event: string, callback: () => void) => {
+            listener = callback;
+            return Promise.resolve({ remove: removeListenerMock });
+        });
+
+        const firstCloseTopPanel = vi.fn(() => true);
+        const latestCloseTopPanel = vi.fn(() => true);
+        const firstExitConfirm = vi.fn();
+        const latestExitConfirm = vi.fn();
+        const firstGiveUpConfirm = vi.fn();
+        const latestGiveUpConfirm = vi.fn();
+
+        const { rerender, unmount } = renderHook(
+            ({
+                isRunning,
+                openStack,
+                closeTopPanel,
+                onShowExitConfirm,
+                onShowSessionGiveUpConfirm,
+            }) => useBackButton(
+                isRunning,
+                { openStack, closeTopPanel },
+                onShowExitConfirm,
+                onShowSessionGiveUpConfirm,
+            ),
+            {
+                initialProps: {
+                    isRunning: false,
+                    openStack: [] as string[],
+                    closeTopPanel: firstCloseTopPanel,
+                    onShowExitConfirm: firstExitConfirm,
+                    onShowSessionGiveUpConfirm: firstGiveUpConfirm,
+                },
+            },
+        );
+
+        expect(addListenerMock).toHaveBeenCalledTimes(1);
+        expect(listener).toBeTypeOf("function");
+
+        rerender({
+            isRunning: true,
+            openStack: ["settings"],
+            closeTopPanel: latestCloseTopPanel,
+            onShowExitConfirm: latestExitConfirm,
+            onShowSessionGiveUpConfirm: latestGiveUpConfirm,
+        });
+        expect(addListenerMock).toHaveBeenCalledTimes(1);
+
+        act(() => {
+            listener?.();
+        });
+        expect(latestCloseTopPanel).toHaveBeenCalledTimes(1);
+        expect(firstCloseTopPanel).not.toHaveBeenCalled();
+
+        rerender({
+            isRunning: true,
+            openStack: [],
+            closeTopPanel: latestCloseTopPanel,
+            onShowExitConfirm: latestExitConfirm,
+            onShowSessionGiveUpConfirm: latestGiveUpConfirm,
+        });
+
+        act(() => {
+            listener?.();
+        });
+        expect(latestGiveUpConfirm).toHaveBeenCalledTimes(1);
+        expect(firstGiveUpConfirm).not.toHaveBeenCalled();
+
+        rerender({
+            isRunning: false,
+            openStack: [],
+            closeTopPanel: latestCloseTopPanel,
+            onShowExitConfirm: latestExitConfirm,
+            onShowSessionGiveUpConfirm: latestGiveUpConfirm,
+        });
+
+        act(() => {
+            listener?.();
+        });
+        expect(latestExitConfirm).toHaveBeenCalledTimes(1);
+        expect(firstExitConfirm).not.toHaveBeenCalled();
+
+        unmount();
+        await Promise.resolve();
+        expect(removeListenerMock).toHaveBeenCalledTimes(1);
     });
 });
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Capacitor } from "@capacitor/core";
 import { App } from "@capacitor/app";
 
@@ -29,23 +29,48 @@ export function useBackButton(
     onShowExitConfirm: () => void,
     onShowSessionGiveUpConfirm: () => void,
 ): void {
+    const latestStateRef = useRef({
+        isRunning,
+        hasOpenPanels: panels.openStack.length > 0,
+        closeTopPanel: panels.closeTopPanel,
+        onShowExitConfirm,
+        onShowSessionGiveUpConfirm,
+    });
+
+    useEffect(() => {
+        latestStateRef.current = {
+            isRunning,
+            hasOpenPanels: panels.openStack.length > 0,
+            closeTopPanel: panels.closeTopPanel,
+            onShowExitConfirm,
+            onShowSessionGiveUpConfirm,
+        };
+    }, [isRunning, panels.openStack, panels.closeTopPanel, onShowExitConfirm, onShowSessionGiveUpConfirm]);
+
     useEffect(() => {
         if (!Capacitor.isNativePlatform()) return;
 
         const subscription = App.addListener("backButton", () => {
-            const action = resolveBackAction(panels.openStack.length > 0, isRunning);
+            const {
+                hasOpenPanels,
+                isRunning: currentIsRunning,
+                closeTopPanel,
+                onShowExitConfirm: showExitConfirm,
+                onShowSessionGiveUpConfirm: showSessionGiveUpConfirm,
+            } = latestStateRef.current;
+            const action = resolveBackAction(hasOpenPanels, currentIsRunning);
 
             if (action === "close-panel") {
-                panels.closeTopPanel();
+                closeTopPanel();
             } else if (action === "session-giveup") {
-                onShowSessionGiveUpConfirm();
+                showSessionGiveUpConfirm();
             } else {
-                onShowExitConfirm();
+                showExitConfirm();
             }
         });
 
         return () => {
             subscription.then((handle) => handle.remove());
         };
-    }, [isRunning, panels, onShowExitConfirm, onShowSessionGiveUpConfirm]);
+    }, []);
 }

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { User } from "@supabase/supabase-js";
+import { warnDev } from "@/lib/logger";
 
 type Plan = "free" | "pro";
 type SubscriptionStatus = "inactive" | "trialing" | "active" | "past_due" | "canceled" | "unpaid" | "incomplete";
@@ -47,7 +48,7 @@ export const useSubscription = create<SubscriptionState>((set) => ({
             .maybeSingle<SubscriptionRow>();
 
         if (error) {
-            console.warn("[subscription] fetch failed:", error.message);
+            warnDev("[subscription] fetch failed:", error.message);
             set({ plan: "free", expiresAt: null, loading: false, initialized: true });
             return;
         }
