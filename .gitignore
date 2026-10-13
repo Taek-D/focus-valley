@@ -73,3 +73,14 @@ screenshots/
 take-screenshots.mjs
 upgrade_tasks.md
 Focus valley *.md
+
+# 로컬 전용 작업 문서·도구 설정
+/PRD.md
+/PLAY-STORE-SUBMISSION-GUIDE.md
+/ui-improve-diff.md
+/fireauto-output/
+/output/
+/.planning/
+/.omc/
+/CLAUDE.md
+/AGENTS.md
